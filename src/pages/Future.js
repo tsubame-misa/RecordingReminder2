@@ -14,7 +14,7 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
-
+import notifications from "../notification/index";
 export const convertDate = (input) => {
   if (input === null) {
     return "";
@@ -89,6 +89,12 @@ const Future = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Future</IonTitle>
+          <IonButton
+            color="tertiary"
+            onClick={() => notifications.schedule(30)}
+          >
+            Schedule Notification
+          </IonButton>
         </IonToolbar>
       </IonHeader>
 

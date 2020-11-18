@@ -35,17 +35,17 @@ const Setting = () => {
         setUserNoti(data);
       });
   }, []);
-  console.log(userNoti);
+  //console.log(userNoti);
 
   useEffect(() => {
     if (userNoti !== null) {
       const notiList = userNoti.split(/[/:]/);
-      console.log(notiList);
+      //console.log(notiList);
       setPreNotiTime(notiList[1] + ":" + notiList[2]);
       setPreNotiDate(notiList[0]);
     }
   });
-  console.log(notiTime);
+  //console.log(notiTime);
 
   const sendData = () => {
     if (date == null && notiTime == null) {
