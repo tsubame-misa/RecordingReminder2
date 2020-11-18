@@ -60,12 +60,6 @@ const delItem = (ID) => {
   }*/
 };
 
-export async function fetchImages() {
-  const response = await fetch(`http://localhost:8080/get_user_list`);
-  const data = await response.json();
-  return data;
-}
-
 const Loading = () => {
   return <p>Loading...</p>;
 };
