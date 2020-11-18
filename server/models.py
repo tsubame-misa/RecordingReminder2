@@ -16,6 +16,7 @@ class User(Base):
     def to_json(self):
         return {
             'id': self.id,
+            'noti_time': self.notification_time
         }
 
 

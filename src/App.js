@@ -10,7 +10,11 @@ import {
   IonTabs,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ellipse, square, triangle } from "ionicons/icons";
+import {
+  playCircleOutline,
+  playBackCircleOutline,
+  settings,
+} from "ionicons/icons";
 import Future from "./pages/Future";
 import Past from "./pages/Past";
 import Setting from "./pages/Setting";
@@ -41,7 +45,7 @@ const App = () => (
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/future" component={Future} exact={true} />
-          <Route path="/past" component={Past} exact={true} />
+          <Route path="/past" component={Past}  />
           {/*<Route path="/share" component={Share} exact={true} />*/}
           <Route path="/setting" component={Setting} />
           <Route path="/add_program" component={Addprogram} />
@@ -53,15 +57,15 @@ const App = () => (
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="future" href="/future">
-            <IonIcon icon={triangle} />
+            <IonIcon icon={playCircleOutline} />
             <IonLabel>Future</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="past" href="/Past">
-            <IonIcon icon={ellipse} />
+          <IonTabButton tab="past" href="/past">
+            <IonIcon icon={playBackCircleOutline} />
             <IonLabel>Past</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="setting" href="/Setting">
-            <IonIcon icon={square} />
+          <IonTabButton tab="setting" href="/setting">
+            <IonIcon icon={settings} />
             <IonLabel>Setting</IonLabel>
           </IonTabButton>
         </IonTabBar>

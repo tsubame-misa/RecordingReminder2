@@ -110,6 +110,8 @@ const Addprogram = () => {
       0
     );
 
+    console.log(date);
+
     const data = {
       channel: selectedChannel,
       //date: selectedDate,

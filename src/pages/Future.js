@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -69,7 +69,7 @@ const Future = () => {
   const [showAlert, setShowAlert] = useState();
   const [ID, setID] = useState();
 
-  useIonViewWillEnter(() => {
+  useEffect(() => {
     window
       .fetch(`http://localhost:8080/get_user_list`)
       .then((response) => response.json())
@@ -78,7 +78,7 @@ const Future = () => {
       });
   }, []);
 
-  console.log(data);
+  //console.log(data);
 
   if (data === []) {
     return <Loading />;
