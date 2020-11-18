@@ -37,23 +37,25 @@ def add_tv_list():
 
     add_tv_list = UserTvLIst(user_id=user_id, channel=data['channel'], date=data['date'], name=data['name'],
                              artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], check=0)
+
+    share_list = TvLIst(channel=data['channel'], date=data['date'], name=data['name'],
+                        artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'])
+    session.add(share_list)
     session.add(add_tv_list)
     session.commit()
     session.close()
-
-    print(data)
-    print(type(data))
-
-    """
-    session = create_session()
-    user_id = g.current_user['sub']
-    music = Music(user_id=user_id, content=request.data, name="music")
-    session.add(music)
-    session.commit()
-    session.close()
-    """
-    print("ok")
     return 'received'
+
+
+@app.route('/get_user_list', methods=['GET'])
+def get_user_list():
+    session = create_session()
+    user_id = "1"
+
+    data = session.query(UserTvLIst).filter_by(user_id=user_id).all()
+    data = [d.to_json() for d in data]
+    session.close()
+    return jsonify(data)
 
 
 if __name__ == "__main__":

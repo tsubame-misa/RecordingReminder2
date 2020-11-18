@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   IonContent,
   IonHeader,
@@ -8,7 +8,6 @@ import {
   IonTextarea,
   IonItem,
   IonLabel,
-  IonAlert,
   IonButton,
   IonBackButton,
   IonButtons,
@@ -16,10 +15,8 @@ import {
   IonSelectOption,
   IonDatetime,
   IonInput,
-  IonItemDivider,
-  IonList,
 } from "@ionic/react";
-import { add, contractOutline, map, star, trash } from "ionicons/icons";
+//import { add, contractOutline, map, star, trash } from "ionicons/icons";
 import { useState } from "react";
 //import notifications from "../notification/index";
 //import { convertDate } from "../pages/Future";
@@ -34,9 +31,9 @@ const Addprogram = () => {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [artist, setArtist] = useState();
-  const [notiDate, setNotiDate] = useState();
-  const [notiTime, setNotiTime] = useState();
-  const [count, setCount] = useState();
+  // const [notiDate, setNotiDate] = useState();
+  //const [notiTime, setNotiTime] = useState();
+  //const [count, setCount] = useState();
   let history = useHistory();
 
   /*useEffect(() => {
@@ -101,7 +98,7 @@ const Addprogram = () => {
 
     //const dateList = data.date.split(/[-T:]/);
     const dateList = selectedDate.split(/[-T:]/);
-    const current = new Date();
+    //const current = new Date();
     console.log(dateList);
     const date = new Date(
       dateList[0],
@@ -269,8 +266,12 @@ const Addprogram = () => {
               setSelectedChannel(e.detail.value);
             }}
           >
-            {channel.map((t) => {
-              return <IonSelectOption value={t.name}>{t.name}</IonSelectOption>;
+            {channel.map((t, id) => {
+              return (
+                <IonSelectOption value={t.name} key={id}>
+                  {t.name}
+                </IonSelectOption>
+              );
             })}
           </IonSelect>
         </IonItem>
@@ -294,8 +295,12 @@ const Addprogram = () => {
               setArtist(e.detail.value);
             }}
           >
-            {artists.map((a) => {
-              return <IonSelectOption value={a.name}>{a.name}</IonSelectOption>;
+            {artists.map((a, id) => {
+              return (
+                <IonSelectOption value={a.name} key={id}>
+                  {a.name}
+                </IonSelectOption>
+              );
             })}
           </IonSelect>
         </IonItem>
