@@ -7,18 +7,18 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
-const Tab3 = () => {
+const Past = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 3</IonTitle>
+          <IonTitle>Tab 2</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 3</IonTitle>
+            <IonTitle size="large">Tab 2</IonTitle>
           </IonToolbar>
         </IonHeader>
       </IonContent>
@@ -26,4 +26,4 @@ const Tab3 = () => {
   );
 };
 
-export default Tab3;
+export default Past;
