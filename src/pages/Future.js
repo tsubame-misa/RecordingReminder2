@@ -122,7 +122,7 @@ const Future = () => {
                     slot="end"
                     fill="none"
                     color="dark"
-                    href={`/detail/${d.id}`}
+                    href={`/detail/${d.id}/from_future`}
                     onClick={() => {
                       console.log(d.id);
                     }}

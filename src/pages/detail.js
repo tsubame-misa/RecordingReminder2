@@ -57,7 +57,11 @@ const Detail = () => {
   const [data, setData] = useState([]);
   const item = useParams();
   const id = item.id;
-  //console.log(item);
+
+  const path = window.location.pathname;
+  const pathList = path.split(/[/]/);
+  const backPass = pathList[pathList.length - 1];
+  // console.log(pathList[pathList.length - 1]);
 
   useEffect(() => {
     window
@@ -190,7 +194,11 @@ const Detail = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
+            {backPass == "from_future" ? (
+              <IonBackButton defaultHref="/" />
+            ) : (
+              <IonBackButton defaultHref="/past" />
+            )}
           </IonButtons>
           <IonTitle>番組詳細</IonTitle>
         </IonToolbar>

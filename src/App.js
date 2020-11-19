@@ -50,7 +50,8 @@ const App = () => (
           {/*<Route path="/share" component={Share} exact={true} />*/}
           <Route path="/setting" component={Setting} />
           <Route path="/add_program" component={Addprogram} />
-          <Route path="/detail/:id" component={Detail} />
+          <Route path="/detail/:id/from_future" component={Detail} />
+          <Route path="/detail/:id/from_past" component={Detail} />
           <Route
             path="/"
             render={() => <Redirect to="/future" />}

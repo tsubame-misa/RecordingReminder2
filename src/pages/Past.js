@@ -114,7 +114,7 @@ const Past = () => {
                     slot="end"
                     fill="none"
                     color="dark"
-                    href={`/host/detail/${id}`}
+                    href={`/detail/${d.id}/from_past`}
                   >
                     <IonIcon icon={ellipsisHorizontal}></IonIcon>
                   </IonButton>
@@ -144,12 +144,6 @@ const Past = () => {
           message={"This is an alert message."}
           buttons={["OK"]}
         />
-
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton href="/add_program" color="dark">
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
       </IonContent>
     </IonPage>
   );
