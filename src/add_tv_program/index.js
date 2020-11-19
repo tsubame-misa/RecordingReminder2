@@ -131,16 +131,6 @@ const Addprogram = ({ history }) => {
       comment: text,
     };
 
-    window
-      .fetch(`http://localhost:8080/add_tv_list`, {
-        method: "PUT",
-        body: JSON.stringify(data),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-
     setSelectedChannel(null);
     setSelectedDate(null);
     setProgramName(null);
@@ -148,6 +138,11 @@ const Addprogram = ({ history }) => {
     setStartTime(null);
     setEndTime(null);
     setText(null);
+
+    return window.fetch(`http://localhost:8080/add_tv_list`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
 
     //history.push("/future");
   };
@@ -323,8 +318,8 @@ const Addprogram = ({ history }) => {
         <IonButton
           color="dark"
           expand="full"
-          onClick={() => {
-            sendData();
+          onClick={async () => {
+            await sendData();
             history.push("/future");
           }}
         >

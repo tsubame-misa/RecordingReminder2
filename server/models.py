@@ -67,8 +67,8 @@ class UserTvLIst(Base):
             'date': self.date,
             'name': self.name,
             'artist': self.artist,
-            'start_time': self.start_time,
-            'end_time': self.end_time,
+            'startTime': self.start_time,
+            'endTime': self.end_time,
             'comment': self.comment,
             'check': self.check
         }
