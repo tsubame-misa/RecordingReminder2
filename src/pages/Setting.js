@@ -116,7 +116,7 @@ const Setting = () => {
         <IonItem>
           カラー
           <IonButton
-            href="/user/color_setting"
+            //href="/user/color_setting"
             color="dark"
             fill="fill"
             slot="end"

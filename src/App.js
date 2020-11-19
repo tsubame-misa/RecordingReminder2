@@ -24,7 +24,7 @@ import Past from "./pages/Past";
 import Setting from "./pages/Setting";
 import Addprogram from "./add_tv_program/index";
 import Detail from "./pages/detail";
-
+import Share from "./pages/share";
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -51,7 +51,7 @@ const App = () => (
         <IonRouterOutlet>
           <Route path="/future" component={Future} exact={true} />
           <Route path="/past" component={Past} exact={true} />
-          {/*<Route path="/share" component={Share} exact={true} />*/}
+          <Route path="/share" component={Share} exact={true} />
           <Route path="/setting" component={Setting} exact={true} />
           <Route path="/add_program" component={Addprogram} exact={true} />
           <Route
@@ -81,6 +81,10 @@ const App = () => (
           <IonTabButton tab="past" href="/past">
             <IonIcon icon={playBackCircleOutline} />
             <IonLabel>Past</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="share" href="/share">
+            <IonIcon icon={playBackCircleOutline} />
+            <IonLabel>Share</IonLabel>
           </IonTabButton>
           <IonTabButton tab="setting" href="/setting">
             <IonIcon icon={settings} />

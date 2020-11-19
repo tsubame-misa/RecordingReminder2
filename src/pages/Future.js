@@ -51,13 +51,11 @@ const Loading = () => {
   return <p>Loading...</p>;
 };
 
-const Future = () => {
+const Future = ({ history }) => {
   const [data, setData] = useState([]);
-  const [showAlert, setShowAlert] = useState();
-  const [ID, setID] = useState();
-  let history = useHistory();
+  // let history = useHistory();
 
-  useEffect(() => {
+  useIonViewWillEnter(() => {
     window
       .fetch(`http://localhost:8080/get_user_list`)
       .then((response) => response.json())
@@ -95,12 +93,12 @@ const Future = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Future</IonTitle>
-          <IonButton
+          {/*} <IonButton
             color="tertiary"
             onClick={() => notifications.schedule(10)}
           >
             Schedule Notification
-          </IonButton>
+  </IonButton>*/}
         </IonToolbar>
       </IonHeader>
 
@@ -111,46 +109,34 @@ const Future = () => {
           })
           .map((d, id) => {
             return (
-              <div>
-                <IonItem key={id}>
-                  {d.channel} &emsp;
-                  {convertDate(d.date)} &emsp;
-                  {d.name}
-                  <IonButton
-                    slot="end"
-                    fill="none"
-                    color="dark"
-                    //href={`/detail/${d.id}/from_future`}
-                    onClick={() => {
-                      history.push(`/detail/${d.id}/from_future`);
-                    }}
-                  >
-                    <IonIcon icon={ellipsisHorizontal}></IonIcon>
-                  </IonButton>
-                  <IonButton
-                    slot="end"
-                    fill="none"
-                    color="dark"
-                    onClick={() => {
-                      delItem(d.id);
-                    }}
-                  >
-                    <IonIcon icon={trash}></IonIcon>
-                  </IonButton>
-                </IonItem>
-              </div>
+              <IonItem key={id}>
+                {d.channel} &emsp;
+                {convertDate(d.date)} &emsp;
+                {d.name}
+                <IonButton
+                  slot="end"
+                  fill="none"
+                  color="dark"
+                  //href={`/detail/${d.id}/from_future`}
+                  onClick={() => {
+                    history.push(`/detail/${d.id}/from_future`);
+                  }}
+                >
+                  <IonIcon icon={ellipsisHorizontal}></IonIcon>
+                </IonButton>
+                <IonButton
+                  slot="end"
+                  fill="none"
+                  color="dark"
+                  onClick={() => {
+                    delItem(d.id);
+                  }}
+                >
+                  <IonIcon icon={trash}></IonIcon>
+                </IonButton>
+              </IonItem>
             );
           })}
-
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          cssClass="my-custom-class"
-          header={data[ID]}
-          subHeader={"Subtitle"}
-          message={"This is an alert message."}
-          buttons={["OK"]}
-        />
 
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton

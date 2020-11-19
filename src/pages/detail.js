@@ -29,7 +29,7 @@ import notifications from "../notification/index";
 import { useHistory, useParams } from "react-router-dom";
 import { convertToObject } from "typescript";
 
-const Detail = () => {
+const Detail = ({ history }) => {
   const [programName, setProgramName] = useState(null);
   const [text, setText] = useState();
   const [selectedChannel, setSelectedChannel] = useState(null);
@@ -53,7 +53,7 @@ const Detail = () => {
   // const [cgArtist, setCgArtist] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
 
-  let history = useHistory();
+  //let history = useHistory();
   const [data, setData] = useState([]);
   const item = useParams();
   const id = item.id;
@@ -76,7 +76,7 @@ const Detail = () => {
   useEffect(() => {
     if (data != []) {
       setPreChannel(data.channel);
-      setPreProgramName(data.name);
+      setPreProgramName(data?.name);
       setPreDate(data.date);
       setPreArtist(data.artist);
       setPreStartTime(data.start_time);
@@ -85,6 +85,8 @@ const Detail = () => {
       setPreText(data.comment);
     }
   });
+  //console.log(preChannel);
+  //console.log(preProgramName);
 
   const channel = [
     { name: "NHK総合" },

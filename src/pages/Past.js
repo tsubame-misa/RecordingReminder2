@@ -55,7 +55,7 @@ const Past = () => {
   const [data, setData] = useState([]);
   let history = useHistory();
 
-  useEffect(() => {
+  useIonViewWillEnter(() => {
     window
       .fetch(`http://localhost:8080/get_user_list`)
       .then((response) => response.json())
@@ -95,12 +95,12 @@ const Past = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Past</IonTitle>
-          <IonButton
+          {/*<IonButton
             color="tertiary"
             onClick={() => notifications.schedule(30)}
           >
             Schedule Notification
-          </IonButton>
+          </IonButton>*/}
         </IonToolbar>
       </IonHeader>
 
@@ -111,35 +111,34 @@ const Past = () => {
           })
           .map((d, id) => {
             return (
-              <div>
-                <IonItem key={id}>
-                  {d.channel} &emsp;
-                  {convertDate(d.date)} &emsp;
-                  {d?.name}
-                  <IonButton
-                    slot="end"
-                    fill="none"
-                    color="dark"
-                    key={id}
-                    //href={`/detail/${d.id}/from_past`}
-                    onClick={() => {
-                      history.push(`/detail/${d.id}/from_past`);
-                    }}
-                  >
-                    <IonIcon icon={ellipsisHorizontal}></IonIcon>
-                  </IonButton>
-                  <IonButton
-                    slot="end"
-                    fill="none"
-                    color="dark"
-                    onClick={() => {
-                      delItem(d.id);
-                    }}
-                  >
-                    <IonIcon icon={trash}></IonIcon>
-                  </IonButton>
-                </IonItem>
-              </div>
+              <IonItem key={id}>
+                {d.channel} &emsp;
+                {convertDate(d.date)} &emsp;
+                {d?.name}
+                <IonButton
+                  slot="end"
+                  fill="none"
+                  color="dark"
+                  //key={id}
+                  //href={`/detail/${d.id}/from_past`}
+                  onClick={() => {
+                    history.push(`/detail/${d.id}/from_past`);
+                  }}
+                >
+                  <IonIcon icon={ellipsisHorizontal}></IonIcon>
+                </IonButton>
+                <IonButton
+                  slot="end"
+                  fill="none"
+                  color="dark"
+                  //key={id}
+                  onClick={() => {
+                    delItem(d.id);
+                  }}
+                >
+                  <IonIcon icon={trash}></IonIcon>
+                </IonButton>
+              </IonItem>
             );
           })}
       </IonContent>

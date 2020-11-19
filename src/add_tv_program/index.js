@@ -24,7 +24,7 @@ import notifications from "../notification/index";
 //import { isComputedPropertyName } from "typescript";
 import { useHistory } from "react-router-dom";
 
-const Addprogram = () => {
+const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
   const [text, setText] = useState();
   const [selectedChannel, setSelectedChannel] = useState(null);
@@ -32,13 +32,13 @@ const Addprogram = () => {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [artist, setArtist] = useState();
-  let history = useHistory();
+  //let history = useHistory();
   const [notiTime, setNotiTime] = useState("20:00");
   const [notiDate, setNotiDate] = useState("pre");
   const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
 
-  useEffect(() => {
+  useIonViewWillEnter(() => {
     window
       .fetch(`http://localhost:8080/get_user_list`)
       .then((response) => response.json())
@@ -149,7 +149,7 @@ const Addprogram = () => {
     setEndTime(null);
     setText(null);
 
-    history.push("/future");
+    //history.push("/future");
   };
 
   const setNotification = () => {
@@ -325,6 +325,7 @@ const Addprogram = () => {
           expand="full"
           onClick={() => {
             sendData();
+            history.push("/future");
           }}
         >
           登録
