@@ -12,6 +12,7 @@ import {
   IonButton,
   IonAlert,
   useIonViewWillEnter,
+  IonCheckbox,
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import notifications from "../notification/index";
@@ -110,6 +111,7 @@ const Future = ({ history }) => {
           .map((d, id) => {
             return (
               <IonItem key={id}>
+                <IonCheckbox slot="start" checked={d.check} />
                 {d.channel} &emsp;
                 {convertDate(d.date)} &emsp;
                 {d.name}

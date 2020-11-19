@@ -18,6 +18,7 @@ import {
   playBackCircleOutline,
   settings,
   add,
+  shareOutline,
 } from "ionicons/icons";
 import Future from "./pages/Future";
 import Past from "./pages/Past";
@@ -83,7 +84,7 @@ const App = () => (
             <IonLabel>Past</IonLabel>
           </IonTabButton>
           <IonTabButton tab="share" href="/share">
-            <IonIcon icon={playBackCircleOutline} />
+            <IonIcon icon={shareOutline} />
             <IonLabel>Share</IonLabel>
           </IonTabButton>
           <IonTabButton tab="setting" href="/setting">
