@@ -106,7 +106,7 @@ const Addprogram = () => {
 
     //const dateList = data.date.split(/[-T:]/);
     const dateList = selectedDate.split(/[-T:]/);
-    const current = new Date();
+    // const current = new Date();
     console.log(dateList);
     const date = new Date(
       dateList[0],
@@ -131,10 +131,15 @@ const Addprogram = () => {
       comment: text,
     };
 
-    window.fetch(`http://localhost:8080/add_tv_list`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
+    window
+      .fetch(`http://localhost:8080/add_tv_list`, {
+        method: "PUT",
+        body: JSON.stringify(data),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
 
     setSelectedChannel(null);
     setSelectedDate(null);
@@ -151,6 +156,7 @@ const Addprogram = () => {
     //let datalist = JSON.parse(localStorage.getItem("data"));
     let d;
     if (data === []) {
+      //通知する
       CheckAndNoti(selectedDate, selectedDate);
     } else {
       for (let i = 0; i < data.length; i++) {
@@ -177,12 +183,12 @@ const Addprogram = () => {
     //console.log(dateB);
 
     if (
+      //すでにその日に番組がある場合通知しない
       a !== b &&
       dateListA[0] === dateListB[0] &&
       dateListA[1] === dateListB[1] &&
       dateListA[2] === dateListB[2]
     ) {
-      //通知しない
       return 0;
     } else {
       //通知する 000* 60 * 60*24

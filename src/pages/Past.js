@@ -15,6 +15,8 @@ import {
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import notifications from "../notification/index";
+import { useHistory } from "react-router-dom";
+
 export const convertDate = (input) => {
   if (input === null) {
     return "";
@@ -51,6 +53,7 @@ const Loading = () => {
 
 const Past = () => {
   const [data, setData] = useState([]);
+  let history = useHistory();
 
   useEffect(() => {
     window
@@ -91,7 +94,7 @@ const Past = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Future</IonTitle>
+          <IonTitle>Past</IonTitle>
           <IonButton
             color="tertiary"
             onClick={() => notifications.schedule(30)}
@@ -118,7 +121,10 @@ const Past = () => {
                     fill="none"
                     color="dark"
                     key={id}
-                    href={`/detail/${d.id}/from_past`}
+                    //href={`/detail/${d.id}/from_past`}
+                    onClick={() => {
+                      history.push(`/detail/${d.id}/from_past`);
+                    }}
                   >
                     <IonIcon icon={ellipsisHorizontal}></IonIcon>
                   </IonButton>

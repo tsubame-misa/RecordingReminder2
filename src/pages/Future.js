@@ -15,6 +15,8 @@ import {
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import notifications from "../notification/index";
+import { useHistory } from "react-router-dom";
+
 export const convertDate = (input) => {
   if (input === null) {
     return "";
@@ -53,6 +55,7 @@ const Future = () => {
   const [data, setData] = useState([]);
   const [showAlert, setShowAlert] = useState();
   const [ID, setID] = useState();
+  let history = useHistory();
 
   useEffect(() => {
     window
@@ -94,7 +97,7 @@ const Future = () => {
           <IonTitle>Future</IonTitle>
           <IonButton
             color="tertiary"
-            onClick={() => notifications.schedule(30)}
+            onClick={() => notifications.schedule(10)}
           >
             Schedule Notification
           </IonButton>
@@ -117,7 +120,10 @@ const Future = () => {
                     slot="end"
                     fill="none"
                     color="dark"
-                    href={`/detail/${d.id}/from_future`}
+                    //href={`/detail/${d.id}/from_future`}
+                    onClick={() => {
+                      history.push(`/detail/${d.id}/from_future`);
+                    }}
                   >
                     <IonIcon icon={ellipsisHorizontal}></IonIcon>
                   </IonButton>
@@ -147,7 +153,13 @@ const Future = () => {
         />
 
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton href="/add_program" color="dark">
+          <IonFabButton
+            color="dark"
+            //href="/add_program"
+            onClick={() => {
+              history.push("/add_program");
+            }}
+          >
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>

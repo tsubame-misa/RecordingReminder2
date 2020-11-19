@@ -8,12 +8,16 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonFab,
+  IonFabButton,
+  IonContent,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
   playCircleOutline,
   playBackCircleOutline,
   settings,
+  add,
 } from "ionicons/icons";
 import Future from "./pages/Future";
 import Past from "./pages/Past";
@@ -46,18 +50,29 @@ const App = () => (
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/future" component={Future} exact={true} />
-          <Route path="/past" component={Past} />
+          <Route path="/past" component={Past} exact={true} />
           {/*<Route path="/share" component={Share} exact={true} />*/}
-          <Route path="/setting" component={Setting} />
-          <Route path="/add_program" component={Addprogram} />
-          <Route path="/detail/:id/from_future" component={Detail} />
-          <Route path="/detail/:id/from_past" component={Detail} />
+          <Route path="/setting" component={Setting} exact={true} />
+          <Route path="/add_program" component={Addprogram} exact={true} />
+          <Route
+            path="/detail/:id/from_future"
+            component={Detail}
+            exact={true}
+          />
+          <Route path="/detail/:id/from_past" component={Detail} exact={true} />
           <Route
             path="/"
             render={() => <Redirect to="/future" />}
             exact={true}
           />
         </IonRouterOutlet>
+
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton href="/add_program" color="dark">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
+
         <IonTabBar slot="bottom">
           <IonTabButton tab="future" href="/future">
             <IonIcon icon={playCircleOutline} />

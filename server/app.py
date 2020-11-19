@@ -42,7 +42,7 @@ def add_tv_list():
     session.commit()
     session.close()
 
-    return 'received'
+    return get_user_list()
 
 
 @app.route('/get_user_list', methods=['GET'])
