@@ -14,6 +14,7 @@ import {
   IonCheckbox,
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const convertDate = (input) => {
   if (input === null) {
@@ -52,6 +53,14 @@ const Loading = () => {
 const Future = ({ history }) => {
   const [data, setData] = useState([]);
   // let history = useHistory();
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
 
   useIonViewWillEnter(() => {
     window
@@ -95,6 +104,12 @@ const Future = ({ history }) => {
         <IonToolbar>
           <IonTitle>Future</IonTitle>
         </IonToolbar>
+        <IonButton
+          color="light"
+          onClick={() => logout({ returnTo: window.location.origin })}
+        >
+          Log out
+        </IonButton>
       </IonHeader>
 
       <IonContent fullscreen>

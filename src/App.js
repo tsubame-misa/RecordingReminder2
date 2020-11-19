@@ -13,6 +13,7 @@ import {
   IonContent,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   playCircleOutline,
   playBackCircleOutline,
@@ -45,56 +46,83 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-const App = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/future" component={Future} exact={true} />
-          <Route path="/past" component={Past} exact={true} />
-          <Route path="/share" component={Share} exact={true} />
-          <Route path="/setting" component={Setting} exact={true} />
-          <Route path="/add_program" component={Addprogram} exact={true} />
-          <Route
-            path="/detail/:id/from_future"
-            component={Detail}
-            exact={true}
-          />
-          <Route path="/detail/:id/from_past" component={Detail} exact={true} />
-          <Route
-            path="/"
-            render={() => <Redirect to="/future" />}
-            exact={true}
-          />
-        </IonRouterOutlet>
+const App = () => {
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
+  //useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/users`);
 
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton href="/add_program" color="dark">
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
 
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="future" href="/future">
-            <IonIcon icon={playCircleOutline} />
-            <IonLabel>Future</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="past" href="/past">
-            <IonIcon icon={playBackCircleOutline} />
-            <IonLabel>Past</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="share" href="/share">
-            <IonIcon icon={shareOutline} />
-            <IonLabel>Share</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="setting" href="/setting">
-            <IonIcon icon={settings} />
-            <IonLabel>Setting</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+  if (isAuthenticated) {
+    return (
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route path="/future" component={Future} exact={true} />
+              <Route path="/past" component={Past} exact={true} />
+              <Route path="/share" component={Share} exact={true} />
+              <Route path="/setting" component={Setting} exact={true} />
+              <Route path="/add_program" component={Addprogram} exact={true} />
+              <Route
+                path="/detail/:id/from_future"
+                component={Detail}
+                exact={true}
+              />
+              <Route
+                path="/detail/:id/from_past"
+                component={Detail}
+                exact={true}
+              />
+              <Route
+                path="/"
+                render={() => <Redirect to="/future" />}
+                exact={true}
+              />
+            </IonRouterOutlet>
+
+            <IonFab vertical="bottom" horizontal="end" slot="fixed">
+              <IonFabButton href="/add_program" color="dark">
+                <IonIcon icon={add} />
+              </IonFabButton>
+            </IonFab>
+
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="future" href="/future">
+                <IonIcon icon={playCircleOutline} />
+                <IonLabel>Future</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="past" href="/past">
+                <IonIcon icon={playBackCircleOutline} />
+                <IonLabel>Past</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="share" href="/share">
+                <IonIcon icon={shareOutline} />
+                <IonLabel>Share</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="setting" href="/setting">
+                <IonIcon icon={settings} />
+                <IonLabel>Setting</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+    );
+  } else {
+    return <button onClick={loginWithRedirect}>Log in</button>;
+  }
+};
 
 export default App;
