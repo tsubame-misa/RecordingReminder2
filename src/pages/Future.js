@@ -45,21 +45,6 @@ export const CmpTime = (item) => {
   }
 };
 
-const delItem = (ID) => {
-  console.log("del", ID);
-  /* for (let i = 0; i < data.length; i++) {
-    if (data[i].id === ID) {
-      setData((prevState) => {
-        prevState.splice(i, 1);
-        console.log(prevState);
-        localStorage.setItem("data", JSON.stringify(prevState));
-        return prevState;
-      });
-      break;
-    }
-  }*/
-};
-
 const Loading = () => {
   return <p>Loading...</p>;
 };
@@ -86,7 +71,17 @@ const Future = () => {
     }
   });
 
-  console.log(data);
+  const delItem = (id) => {
+    console.log("del", id);
+    window
+      .fetch(`http://localhost:8080/delete_user_program_list/${id}`, {
+        method: "DELETE",
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  };
 
   if (data === []) {
     return <Loading />;
@@ -123,9 +118,6 @@ const Future = () => {
                     fill="none"
                     color="dark"
                     href={`/detail/${d.id}/from_future`}
-                    onClick={() => {
-                      console.log(d.id);
-                    }}
                   >
                     <IonIcon icon={ellipsisHorizontal}></IonIcon>
                   </IonButton>
@@ -134,8 +126,6 @@ const Future = () => {
                     fill="none"
                     color="dark"
                     onClick={() => {
-                      setID(d.id);
-                      console.log(d.id);
                       delItem(d.id);
                     }}
                   >

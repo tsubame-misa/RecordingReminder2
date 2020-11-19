@@ -21,11 +21,6 @@ app = Flask(__name__)
 cors = CORS(app)
 
 
-@app.route('/musics', methods=['GET'])
-def get_musics():
-    return jsonify("hello")
-
-
 @app.route('/add_tv_list', methods=['PUT'])
 def add_tv_list():
     session = create_session()
@@ -128,15 +123,22 @@ def change_user_tv_program(id):
     user.start_time = data['startTime']
     user.end_time = data['endTime']
     user.comment = data['comment']
-    print(user.to_json())
 
     session.add(user)
     session.commit()
     session.close()
+    return "resive"
 
-    print(type(user))
 
-    return "hello"
+@app.route('/delete_user_program_list/<id>', methods=['DELETE'])
+def delete_user_program_list(id):
+    session = create_session()
+    user_id = "1"
+    session.query(UserTvLIst).filter_by(
+        user_id=user_id, id=id).delete()
+    session.commit()
+    session.close()
+    return get_user_list()
 
 
 if __name__ == "__main__":

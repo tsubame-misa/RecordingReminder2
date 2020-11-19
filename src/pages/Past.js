@@ -45,29 +45,12 @@ export const CmpTime = (item) => {
   }
 };
 
-const delItem = (ID) => {
-  console.log("del", ID);
-  /* for (let i = 0; i < data.length; i++) {
-    if (data[i].id === ID) {
-      setData((prevState) => {
-        prevState.splice(i, 1);
-        console.log(prevState);
-        localStorage.setItem("data", JSON.stringify(prevState));
-        return prevState;
-      });
-      break;
-    }
-  }*/
-};
-
 const Loading = () => {
   return <p>Loading...</p>;
 };
 
 const Past = () => {
   const [data, setData] = useState([]);
-  const [showAlert, setShowAlert] = useState();
-  const [ID, setID] = useState();
 
   useEffect(() => {
     window
@@ -78,7 +61,27 @@ const Past = () => {
       });
   }, []);
 
-  console.log(data);
+  //console.log(data);
+
+  data.sort((a, b) => {
+    if (a.date > b.date) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
+  const delItem = (id) => {
+    console.log("del", id);
+    window
+      .fetch(`http://localhost:8080/delete_user_program_list/${id}`, {
+        method: "DELETE",
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  };
 
   if (data === []) {
     return <Loading />;
@@ -114,6 +117,7 @@ const Past = () => {
                     slot="end"
                     fill="none"
                     color="dark"
+                    key={id}
                     href={`/detail/${d.id}/from_past`}
                   >
                     <IonIcon icon={ellipsisHorizontal}></IonIcon>
@@ -123,8 +127,6 @@ const Past = () => {
                     fill="none"
                     color="dark"
                     onClick={() => {
-                      setID(d.id);
-                      console.log(d.id);
                       delItem(d.id);
                     }}
                   >
@@ -134,16 +136,6 @@ const Past = () => {
               </div>
             );
           })}
-
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          cssClass="my-custom-class"
-          header={data[ID]}
-          subHeader={"Subtitle"}
-          message={"This is an alert message."}
-          buttons={["OK"]}
-        />
       </IonContent>
     </IonPage>
   );
