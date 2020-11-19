@@ -16,6 +16,10 @@ import {
   IonDatetime,
   IonInput,
   useIonViewWillEnter,
+  IonCheckbox,
+  IonList,
+  IonCard,
+  IonAlert,
 } from "@ionic/react";
 //import { add, contractOutline, map, star, trash } from "ionicons/icons";
 import { useState } from "react";
@@ -25,13 +29,13 @@ import notifications from "../notification/index";
 import { useHistory, useParams } from "react-router-dom";
 
 const Detail = () => {
-  const [programName, setProgramName] = useState();
+  const [programName, setProgramName] = useState(null);
   const [text, setText] = useState();
   const [selectedChannel, setSelectedChannel] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
-  const [artist, setArtist] = useState();
+  //const [artist, setArtist] = useState();
   const [preProgramName, setPreProgramName] = useState();
   const [preText, setPreText] = useState();
   const [preChannel, setPreChannel] = useState(null);
@@ -45,13 +49,14 @@ const Detail = () => {
   const [cgDate, setCgDate] = useState(1);
   const [cgStartTime, setCgStartTime] = useState(1);
   const [cgEndTime, setCgEndTime] = useState(1);
-  const [cgArtist, setCgArtist] = useState(1);
+  // const [cgArtist, setCgArtist] = useState(1);
+  const [showAlert, setShowAlert] = useState(false);
 
   let history = useHistory();
   const [data, setData] = useState([]);
   const item = useParams();
   const id = item.id;
-  console.log(item);
+  //console.log(item);
 
   useEffect(() => {
     window
@@ -61,17 +66,17 @@ const Detail = () => {
         setData(data);
       });
   }, []);
-  console.log(data);
+  //console.log(data);
 
   useEffect(() => {
     if (data != []) {
       setPreChannel(data.channel);
-      setProgramName(data.name);
+      setPreProgramName(data.name);
       setPreDate(data.date);
       setPreArtist(data.artist);
-      console.log(preArtist);
-      setPreStartTime(data.startTime);
-      setPreEndTime(data.end);
+      setPreStartTime(data.start_time);
+      //console.log(preStartTime);
+      setPreEndTime(data.end_time);
       setPreText(data.comment);
     }
   });
@@ -100,21 +105,42 @@ const Detail = () => {
     { name: "全員" },
   ];
 
+  const isChecked = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  if (preArtist != undefined) {
+    for (let i = 0; i < artists.length; i++) {
+      if (preArtist.includes(artists[i].name)) {
+        isChecked[i] = 1;
+      }
+    }
+  }
+
   const sendData = () => {
+    let artistData = [];
+    for (let i = 0; i < artists.length; i++) {
+      if (isChecked[i]) {
+        artistData.push(artists[i].name);
+      }
+    }
+    console.log(artistData);
+    console.log(preArtist);
+
     if (
-      selectedChannel === null ||
-      selectedDate === null ||
-      programName === null ||
-      artist === null
+      selectedChannel === preChannel &&
+      selectedDate === preDate &&
+      programName === preProgramName &&
+      artistData === preArtist &&
+      startTime === preStartTime &&
+      endTime === preEndTime &&
+      text === preText
     ) {
-      alert("記入漏れがあります");
+      alert("変更はありません");
       return;
     }
 
     //const dateList = data.date.split(/[-T:]/);
     const dateList = selectedDate.split(/[-T:]/);
     const current = new Date();
-    console.log(dateList);
+    //console.log(dateList);
     const date = new Date(
       dateList[0],
       dateList[1] - 1,
@@ -125,33 +151,26 @@ const Detail = () => {
       0
     );
 
-    console.log(date);
+    //console.log(date);
 
     const data = {
       channel: selectedChannel,
       //date: selectedDate,
       date: date,
       name: programName,
-      artist: artist,
+      artist: artistData,
       startTime: startTime,
       endTime: endTime,
       comment: text,
     };
 
-    window.fetch(`http://localhost:8080/add_tv_list`, {
+    window.fetch(`http://localhost:8080/change_user_tv_program/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
     });
 
-    setSelectedChannel(null);
-    setSelectedDate(null);
-    setProgramName(null);
-    setArtist(null);
-    setStartTime(null);
-    setEndTime(null);
-    setText(null);
-
-    history.push("/future");
+    setShowAlert(true);
+    //history.push("/future");
   };
 
   return (
@@ -175,6 +194,7 @@ const Detail = () => {
             }}
           ></IonInput>
         </IonItem>
+
         <IonItem>
           <IonLabel>チャンネル名</IonLabel>
           <IonSelect
@@ -208,26 +228,23 @@ const Detail = () => {
           ></IonDatetime>
         </IonItem>
 
-        <IonItem>
-          <IonLabel>アーティスト</IonLabel>
-          <IonSelect
-            value={artist}
-            okText="Okay"
-            cancelText="Dismiss"
-            multiple={true}
-            onIonChange={(e) => {
-              setArtist(e.detail.value);
-            }}
-          >
-            {artists.map((a, id) => {
-              return (
-                <IonSelectOption value={a.name} key={id}>
-                  {a.name}
-                </IonSelectOption>
-              );
-            })}
-          </IonSelect>
-        </IonItem>
+        {/*できれば２＊５にしたい*/}
+        <IonCard>
+          <IonItem>アーティスト</IonItem>
+          {artists.map((a, i) => (
+            <IonItem key={i}>
+              <IonLabel>{a.name}</IonLabel>
+              <IonCheckbox
+                slot="end"
+                value={1}
+                checked={isChecked[i]}
+                onIonChange={() => {
+                  isChecked[i] == 1 ? (isChecked[i] = 0) : (isChecked[i] = 1);
+                }}
+              />
+            </IonItem>
+          ))}
+        </IonCard>
 
         <IonItem>
           <IonLabel>アーティスト出演時刻</IonLabel>
@@ -237,7 +254,7 @@ const Detail = () => {
             placeholder="Start"
             value={cgStartTime == 1 ? preStartTime : startTime}
             onIonChange={(e) => {
-              cgStartTime(0);
+              setCgStartTime(0);
               setStartTime(e.detail.value);
             }}
           ></IonDatetime>
@@ -270,6 +287,13 @@ const Detail = () => {
         >
           変更する
         </IonButton>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          cssClass="my-custom-class"
+          header={"変更しました"}
+          buttons={["OK"]}
+        />
       </IonContent>
     </IonPage>
   );

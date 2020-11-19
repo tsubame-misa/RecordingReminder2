@@ -62,6 +62,7 @@ class UserTvLIst(Base):
     def to_json(self):
         return {
             'id': self.id,
+            'user_id': self.user_id,
             'channel': self.channel,
             'date': self.date,
             'name': self.name,

@@ -112,6 +112,33 @@ def get_user_program(id):
     return jsonify(data)
 
 
+@app.route('/change_user_tv_program/<id>', methods=['PUT'])
+def change_user_tv_program(id):
+    session = create_session()
+    user_id = "1"
+
+    data = json.loads(request.data.decode())
+    print(data)
+
+    user = session.query(UserTvLIst).filter_by(user_id=user_id, id=id).first()
+    user.channel = data["channel"]
+    user.name = data['name']
+    user.date = data['date']
+    user.artist = data['artist']
+    user.start_time = data['startTime']
+    user.end_time = data['endTime']
+    user.comment = data['comment']
+    print(user.to_json())
+
+    session.add(user)
+    session.commit()
+    session.close()
+
+    print(type(user))
+
+    return "hello"
+
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0',
             port=int(os.environ.get('PORT', 8080)))
