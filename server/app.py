@@ -34,16 +34,19 @@ def add_tv_list():
     print(data["channel"])
     print(data["date"])
     print(data["name"])
+    print(data["artist"])
 
     add_tv_list = UserTvLIst(user_id=user_id, channel=data['channel'], date=data['date'], name=data['name'],
                              artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], check=0)
 
     share_list = TvLIst(channel=data['channel'], date=data['date'], name=data['name'],
                         artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'])
+
     session.add(share_list)
     session.add(add_tv_list)
     session.commit()
     session.close()
+
     return 'received'
 
 
@@ -94,6 +97,19 @@ def change_notification():
     session.close()
 
     return 'received'
+
+
+@app.route('/get_user_list/<id>', methods=['GET'])
+def get_user_program(id):
+    session = create_session()
+    user_id = "1"
+    data = session.query(UserTvLIst).filter_by(user_id=user_id, id=id).first()
+    # data = [d.to_json() for d in data]
+    data = data.to_json()
+    artistList = re.split('[}{,]', data["artist"])
+    data["artist"] = artistList[1:-1]
+    session.close()
+    return jsonify(data)
 
 
 if __name__ == "__main__":

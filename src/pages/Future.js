@@ -78,7 +78,15 @@ const Future = () => {
       });
   }, []);
 
-  //console.log(data);
+  data.sort((a, b) => {
+    if (a.date > b.date) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
+  console.log(data);
 
   if (data === []) {
     return <Loading />;
@@ -109,12 +117,15 @@ const Future = () => {
                 <IonItem key={id}>
                   {d.channel} &emsp;
                   {convertDate(d.date)} &emsp;
-                  {d?.name}
+                  {d.name}
                   <IonButton
                     slot="end"
                     fill="none"
                     color="dark"
-                    href={`/host/detail/${id}`}
+                    href={`/detail/${d.id}`}
+                    onClick={() => {
+                      console.log(d.id);
+                    }}
                   >
                     <IonIcon icon={ellipsisHorizontal}></IonIcon>
                   </IonButton>
@@ -144,8 +155,6 @@ const Future = () => {
           message={"This is an alert message."}
           buttons={["OK"]}
         />
-
-        <IonItem>{data[0]?.channel}</IonItem>
 
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton href="/add_program" color="dark">

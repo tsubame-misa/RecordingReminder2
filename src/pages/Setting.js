@@ -89,7 +89,7 @@ const Setting = () => {
             <IonDatetime
               displayFormat="HH:mm"
               value={notiTimeChenged == 1 ? preNotiTime : notiTime}
-              minuteValues="0,15,30,45"
+              //minuteValues="0,15,30,45"
               onIonChange={(e) => {
                 setNotiTimeChanged(0);
                 setNotiTime(e.detail.value);

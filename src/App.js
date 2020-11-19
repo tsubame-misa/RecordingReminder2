@@ -19,6 +19,7 @@ import Future from "./pages/Future";
 import Past from "./pages/Past";
 import Setting from "./pages/Setting";
 import Addprogram from "./add_tv_program/index";
+import Detail from "./pages/detail";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -45,10 +46,11 @@ const App = () => (
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/future" component={Future} exact={true} />
-          <Route path="/past" component={Past}  />
+          <Route path="/past" component={Past} />
           {/*<Route path="/share" component={Share} exact={true} />*/}
           <Route path="/setting" component={Setting} />
           <Route path="/add_program" component={Addprogram} />
+          <Route path="/detail/:id" component={Detail} />
           <Route
             path="/"
             render={() => <Redirect to="/future" />}
