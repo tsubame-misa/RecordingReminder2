@@ -27,6 +27,7 @@ import notifications from "../notification/index";
 //import { convertDate } from "../pages/Future";
 //import { isComputedPropertyName } from "typescript";
 import { useHistory, useParams } from "react-router-dom";
+import { convertToObject } from "typescript";
 
 const Detail = () => {
   const [programName, setProgramName] = useState(null);
@@ -137,6 +138,16 @@ const Detail = () => {
       return;
     }
 
+    if (
+      selectedChannel === null ||
+      selectedDate === null ||
+      programName === "" ||
+      artistData === null
+    ) {
+      alert("記入漏れがあります");
+      return;
+    }
+
     //const dateList = data.date.split(/[-T:]/);
     const dateList = selectedDate.split(/[-T:]/);
     const current = new Date();
@@ -163,6 +174,7 @@ const Detail = () => {
       endTime: endTime,
       comment: text,
     };
+    console.log(data);
 
     window.fetch(`http://localhost:8080/change_user_tv_program/${id}`, {
       method: "PUT",
