@@ -29,23 +29,20 @@ const Setting = () => {
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`http://localhost:8080/get_user_notification`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`)
       .then((response) => response.json())
       .then((data) => {
         setUserNoti(data);
       });
   }, []);
-  //console.log(userNoti);
 
   useEffect(() => {
     if (userNoti !== null) {
       const notiList = userNoti.split(/[/:]/);
-      //console.log(notiList);
       setPreNotiTime(notiList[1] + ":" + notiList[2]);
       setPreNotiDate(notiList[0]);
     }
   });
-  //console.log(notiTime);
 
   const sendData = () => {
     if (date == null && notiTime == null) {
@@ -55,7 +52,7 @@ const Setting = () => {
       date: date,
       time: notiTime,
     };
-    window.fetch(`http://localhost:8080/change_notification`, {
+    window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/change_notification`, {
       method: "PUT",
       body: JSON.stringify(data),
     });
@@ -115,12 +112,7 @@ const Setting = () => {
         </IonCard>
         <IonItem>
           カラー
-          <IonButton
-            //href="/user/color_setting"
-            color="dark"
-            fill="fill"
-            slot="end"
-          >
+          <IonButton color="dark" fill="fill" slot="end">
             <IonIcon icon={chevronForwardOutline}></IonIcon>
           </IonButton>
         </IonItem>

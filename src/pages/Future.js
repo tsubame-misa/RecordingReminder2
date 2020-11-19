@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -10,13 +10,10 @@ import {
   IonIcon,
   IonItem,
   IonButton,
-  IonAlert,
   useIonViewWillEnter,
   IonCheckbox,
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
-import notifications from "../notification/index";
-import { useHistory } from "react-router-dom";
 
 export const convertDate = (input) => {
   if (input === null) {
@@ -58,7 +55,7 @@ const Future = ({ history }) => {
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`http://localhost:8080/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -76,9 +73,12 @@ const Future = ({ history }) => {
   const delItem = (id) => {
     console.log("del", id);
     window
-      .fetch(`http://localhost:8080/delete_user_program_list/${id}`, {
-        method: "DELETE",
-      })
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
+        {
+          method: "DELETE",
+        }
+      )
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -94,12 +94,6 @@ const Future = ({ history }) => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Future</IonTitle>
-          {/*} <IonButton
-            color="tertiary"
-            onClick={() => notifications.schedule(10)}
-          >
-            Schedule Notification
-  </IonButton>*/}
         </IonToolbar>
       </IonHeader>
 
@@ -119,7 +113,6 @@ const Future = ({ history }) => {
                   slot="end"
                   fill="none"
                   color="dark"
-                  //href={`/detail/${d.id}/from_future`}
                   onClick={() => {
                     history.push(`/detail/${d.id}/from_future`);
                   }}
@@ -143,7 +136,6 @@ const Future = ({ history }) => {
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton
             color="dark"
-            //href="/add_program"
             onClick={() => {
               history.push("/add_program");
             }}

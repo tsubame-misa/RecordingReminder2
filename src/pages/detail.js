@@ -21,29 +21,21 @@ import {
   IonCard,
   IonAlert,
 } from "@ionic/react";
-//import { add, contractOutline, map, star, trash } from "ionicons/icons";
 import { useState } from "react";
-import notifications from "../notification/index";
-//import { convertDate } from "../pages/Future";
-//import { isComputedPropertyName } from "typescript";
 import { useHistory, useParams } from "react-router-dom";
-import { convertToObject } from "typescript";
 
 const Detail = ({ history }) => {
   const [showAlert, setShowAlert] = useState(false);
-
-  //let history = useHistory();
   const [data, setData] = useState(null);
   const item = useParams();
   const id = item.id;
   const path = window.location.pathname;
   const pathList = path.split(/[/]/);
   const backPass = pathList[pathList.length - 1];
-  // console.log(pathList[pathList.length - 1]);
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`http://localhost:8080/get_user_list/${id}`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -78,13 +70,15 @@ const Detail = ({ history }) => {
   const sendData = () => {
     const date = new Date(data.date);
     data.date = date;
-    window.fetch(`http://localhost:8080/change_user_tv_program/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
+    window.fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/change_user_tv_program/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(data),
+      }
+    );
 
     setShowAlert(true);
-    //history.push("/future");
   };
 
   if (data == null) {

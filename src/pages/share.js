@@ -71,7 +71,7 @@ const Future = ({ history }) => {
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`http://localhost:8080/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);

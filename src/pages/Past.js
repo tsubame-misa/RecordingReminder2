@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
   IonPage,
   IonTitle,
   IonToolbar,
-  IonFab,
-  IonFabButton,
   IonIcon,
   IonItem,
   IonButton,
-  IonAlert,
   useIonViewWillEnter,
 } from "@ionic/react";
-import { add, ellipsisHorizontal, trash } from "ionicons/icons";
-import notifications from "../notification/index";
+import { ellipsisHorizontal, trash } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 
 export const convertDate = (input) => {
@@ -57,7 +53,7 @@ const Past = () => {
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`http://localhost:8080/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -77,9 +73,12 @@ const Past = () => {
   const delItem = (id) => {
     console.log("del", id);
     window
-      .fetch(`http://localhost:8080/delete_user_program_list/${id}`, {
-        method: "DELETE",
-      })
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
+        {
+          method: "DELETE",
+        }
+      )
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -119,8 +118,6 @@ const Past = () => {
                   slot="end"
                   fill="none"
                   color="dark"
-                  //key={id}
-                  //href={`/detail/${d.id}/from_past`}
                   onClick={() => {
                     history.push(`/detail/${d.id}/from_past`);
                   }}
@@ -131,7 +128,6 @@ const Past = () => {
                   slot="end"
                   fill="none"
                   color="dark"
-                  //key={id}
                   onClick={() => {
                     delItem(d.id);
                   }}

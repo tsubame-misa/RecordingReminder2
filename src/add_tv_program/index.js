@@ -9,7 +9,6 @@ import {
   IonItem,
   IonLabel,
   IonButton,
-  IonBackButton,
   IonButtons,
   IonSelect,
   IonSelectOption,
@@ -17,12 +16,8 @@ import {
   IonInput,
   useIonViewWillEnter,
 } from "@ionic/react";
-//import { add, contractOutline, map, star, trash } from "ionicons/icons";
 import { useState } from "react";
 import notifications from "../notification/index";
-//import { convertDate } from "../pages/Future";
-//import { isComputedPropertyName } from "typescript";
-import { useHistory } from "react-router-dom";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -32,7 +27,6 @@ const Addprogram = ({ history }) => {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [artist, setArtist] = useState();
-  //let history = useHistory();
   const [notiTime, setNotiTime] = useState("20:00");
   const [notiDate, setNotiDate] = useState("pre");
   const [data, setData] = useState([]);
@@ -40,7 +34,7 @@ const Addprogram = ({ history }) => {
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`http://localhost:8080/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -49,7 +43,7 @@ const Addprogram = ({ history }) => {
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`http://localhost:8080/get_user_notification`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`)
       .then((response) => response.json())
       .then((data) => {
         setUserNoti(data);
@@ -139,16 +133,13 @@ const Addprogram = ({ history }) => {
     setEndTime(null);
     setText(null);
 
-    return window.fetch(`http://localhost:8080/add_tv_list`, {
+    return window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`, {
       method: "PUT",
       body: JSON.stringify(data),
     });
-
-    //history.push("/future");
   };
 
   const setNotification = () => {
-    //let datalist = JSON.parse(localStorage.getItem("data"));
     let d;
     if (data === []) {
       //通知する
@@ -175,7 +166,6 @@ const Addprogram = ({ history }) => {
       0,
       0
     );
-    //console.log(dateB);
 
     if (
       //すでにその日に番組がある場合通知しない
