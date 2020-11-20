@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonContent,
   IonHeader,
@@ -15,6 +15,35 @@ import {
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
+
+export const useFetch_get = (url) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [data, setData] = useState([]);
+  useIonViewWillEnter(() => {
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: "https://rere",
+          scope: "read:posts",
+        });
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          // body: JSON.stringify(token),
+        });
+        setData(await response.json());
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [getAccessTokenSilently]);
+
+  if (data != []) {
+    return data;
+  }
+};
 
 export const convertDate = (input) => {
   if (input === null) {
@@ -51,8 +80,14 @@ const Loading = () => {
 };
 
 const Future = ({ history }) => {
-  const [data, setData] = useState([]);
+  //const [data, setData] = useState([]);
+  let data = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/get_user_list`
+  );
+  //console.log(d);
+  //setData(d);
   // let history = useHistory();
+
   const {
     isLoading,
     isAuthenticated,
@@ -62,14 +97,14 @@ const Future = ({ history }) => {
     logout,
   } = useAuth0();
 
-  useIonViewWillEnter(() => {
+  /*useIonViewWillEnter(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
       });
-  }, []);
+  }, []);*/
 
   data.sort((a, b) => {
     if (a.date > b.date) {
@@ -89,8 +124,9 @@ const Future = ({ history }) => {
         }
       )
       .then((response) => response.json())
-      .then((data) => {
-        setData(data);
+      .then((new_data) => {
+        //setData(data);
+        data = new_data;
       });
   };
 

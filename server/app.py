@@ -10,7 +10,7 @@ from collections import OrderedDict
 import json
 import datetime
 from sqlalchemy.sql import func
-
+from jose import jwt
 import urllib
 from functools import wraps
 import sys
@@ -21,8 +21,97 @@ app = Flask(__name__)
 cors = CORS(app)
 
 
+###認証#########################
+class AuthError(Exception):
+    def __init__(self, error, status_code):
+        self.error = error
+        self.status_code = status_code
+
+
+def get_token_auth_header():
+    """Obtains the access token from the Authorization Header
+    """
+    auth = request.headers.get("Authorization", None)
+    # ここで表示されてるのにエラーに引っかかる非同期処理かなんかにしないと行けなかったりする？
+    print(auth)
+    auth = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ilo5MEdBb0JIb05raldLOE0tWVJ5eiJ9.eyJpc3MiOiJodHRwczovL3JlY29yZGluZy1yZW1pbmRlci51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWZiNmY5NzFlNDM3OWEwMDc2N2YyODU4IiwiYXVkIjpbImh0dHBzOi8vcmVyZSIsImh0dHBzOi8vcmVjb3JkaW5nLXJlbWluZGVyLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MDU4ODc3OTcsImV4cCI6MTYwNTk3NDE5NywiYXpwIjoiclZwWDJmY1lTaGozaURSc2VpQUhlTlFvSVBaV1NWY3QiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.XJa2KKMtU3WNxK5z8yqiK22vYZ0HhCEg2tWQfkRXIdmYUmYJc4dqpCmss5Aangfnoqn5GGL_L2fbuoDu0yS8OU74RB0NntGFhJu33ef_910YLkXAqgkj1KBM-1HXvKTH7hZ72t7rqq6Z9Iw0fINQo9_1hX4SnZ5wHzFbyWIAxNmxodFr3N4opWvFk9itAkd3Xy9mHO3vMnw2RqP_BfpU7dgjW6vVP3jkyNhbSQ-tC0KvoJb9HKxxWaULbMPbD_ZbhqQy27sm_auXV45ffytHtsRhdYOsikFVyqOJCrbXFffMAcPlwUQmp7oNUJNeNmWMQg-sktnfmcrnkEQpOsSdlw'
+    if not auth:
+        raise AuthError({"code": "authorization_header_missing",
+                         "description":
+                         "Authorization header is expected"}, 401)
+
+    parts = auth.split()
+
+    if parts[0].lower() != "bearer":
+        raise AuthError({"code": "invalid_header",
+                         "description":
+                         "Authorization header must start with"
+                         " Bearer"}, 401)
+    elif len(parts) == 1:
+        raise AuthError({"code": "invalid_header",
+                         "description": "Token not found"}, 401)
+    elif len(parts) > 2:
+        raise AuthError({"code": "invalid_header",
+                         "description":
+                         "Authorization header must be"
+                         " Bearer token"}, 401)
+
+    token = parts[1]
+    return token
+
+
+def requires_auth(f):
+    """Determines if the access token is valid
+    """
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = get_token_auth_header()
+        jsonurl = urllib.request.urlopen(
+            "https://recording-reminder.us.auth0.com/.well-known/jwks.json")
+        jwks = json.loads(jsonurl.read())
+        unverified_header = jwt.get_unverified_header(token)
+        rsa_key = {}
+        for key in jwks["keys"]:
+            if key["kid"] == unverified_header["kid"]:
+                rsa_key = key
+        if rsa_key:
+            try:
+                payload = jwt.decode(
+                    token,
+                    rsa_key,
+                    algorithms=['RS256'],
+                    audience="https://rere",
+                    issuer="https://recording-reminder.us.auth0.com/"
+                )
+            except jwt.ExpiredSignatureError:
+                raise AuthError({"code": "token_expired",
+                                 "description": "token is expired"}, 401)
+            except jwt.jwt.JWTClaimsError:
+                raise AuthError({"code": "invalid_claims",
+                                 "description":
+                                 "incorrect claims,"
+                                 "please check the audience and issuer"}, 401)
+            except Exception:
+                raise AuthError({"code": "invalid_header",
+                                 "description":
+                                 "Unable to parse authentication"
+                                 " token."}, 400)
+
+            g.current_user = payload
+            # print("-----------")
+            print(payload)
+            return f(*args, **kwargs)
+        raise AuthError({"code": "invalid_header",
+                         "description": "Unable to find appropriate key"}, 400)
+    return decorated
+
+
+################################
+
+
 @app.route('/add_tv_list', methods=['PUT'])
 def add_tv_list():
+    get_token_auth_header()
     session = create_session()
     user_id = "1"
     data = json.loads(request.data.decode())
@@ -46,8 +135,11 @@ def add_tv_list():
 
 
 @app.route('/get_user_list', methods=['GET'])
+@requires_auth
 def get_user_list():
     session = create_session()
+    user_id = g.current_user['sub']
+    print("*********", user_id)
     user_id = "1"
 
     data = session.query(UserTvLIst).filter_by(user_id=user_id).all()
