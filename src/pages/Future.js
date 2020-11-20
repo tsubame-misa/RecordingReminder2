@@ -17,7 +17,7 @@ import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const convertDate = (input) => {
-  if (input === null) {
+  if (input === null || input == undefined) {
     return "";
   }
 

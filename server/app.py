@@ -112,9 +112,8 @@ def requires_auth(f):
 @app.route('/add_tv_list', methods=['PUT'])
 @requires_auth
 def add_tv_list():
-    get_token_auth_header()
     session = create_session()
-    user_id = "1"
+    user_id = g.current_user['sub']
     data = json.loads(request.data.decode())
     print(data["channel"])
     print(data["date"])
@@ -158,9 +157,17 @@ def get_user_list():
         session.add(u)
         session.commit()
 
-    user_id = "1"
-
     data = session.query(UserTvLIst).filter_by(user_id=user_id).all()
+    data = [d.to_json() for d in data]
+    session.close()
+    return jsonify(data)
+
+
+@app.route('/get_all_list', methods=['GET'])
+@requires_auth
+def get_all_list():
+    session = create_session()
+    data = session.query(TvLIst).all()
     data = [d.to_json() for d in data]
     session.close()
     return jsonify(data)
@@ -170,7 +177,7 @@ def get_user_list():
 @requires_auth
 def get_user_noti():
     session = create_session()
-    user_id = "1"
+    user_id = g.current_user['sub']
     data = session.query(User).filter_by(id=user_id).first()
     # data = [d.to_json() for d in data]
     data = data.to_json()
@@ -182,7 +189,7 @@ def get_user_noti():
 @requires_auth
 def change_notification():
     session = create_session()
-    user_id = "1"
+    user_id = g.current_user['sub']
 
     data = json.loads(request.data.decode())
     print(data)
@@ -210,7 +217,7 @@ def change_notification():
 @requires_auth
 def get_user_program(id):
     session = create_session()
-    user_id = "1"
+    user_id = g.current_user['sub']
     data = session.query(UserTvLIst).filter_by(user_id=user_id, id=id).first()
     # data = [d.to_json() for d in data]
     data = data.to_json()
@@ -224,7 +231,7 @@ def get_user_program(id):
 @requires_auth
 def change_user_tv_program(id):
     session = create_session()
-    user_id = "1"
+    user_id = g.current_user['sub']
 
     data = json.loads(request.data.decode())
     print(data)
@@ -249,8 +256,6 @@ def change_user_tv_program(id):
 def delete_user_program_list(id):
     session = create_session()
     user_id = g.current_user['sub']
-    print(user_id)
-    user_id = "1"
     session.query(UserTvLIst).filter_by(
         user_id=user_id, id=id).delete()
     session.commit()

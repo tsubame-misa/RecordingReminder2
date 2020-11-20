@@ -17,36 +17,7 @@ import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import notifications from "../notification/index";
 import { useHistory } from "react-router-dom";
 import { convertToObject } from "typescript";
-
-export const convertDate = (input) => {
-  if (input === null || input === undefined) {
-    return "";
-  }
-  const dateList = input.split(/[-T:]/);
-  const createdDay =
-    dateList[0] +
-    "/" +
-    dateList[1] +
-    "/" +
-    dateList[2] +
-    " " +
-    dateList[3] +
-    ":" +
-    dateList[4];
-  //console.log(createdDay);
-  return createdDay;
-};
-
-export const CmpTime = (item) => {
-  const current = new Date();
-  const date0 = convertDate(item);
-  const date = Date.parse(date0);
-  if (date < current) {
-    return -1;
-  } else {
-    return 1;
-  }
-};
+import { useGetToken, convertDate, CmpTime } from "../pages/Future";
 
 const splitArtist = (item) => {
   if (item === undefined) {
@@ -66,12 +37,18 @@ const Future = ({ history }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [ID, setID] = useState(null);
   const [idx, setIdx] = useState(-1);
+  const token = useGetToken();
 
   // let history = useHistory();
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_all_list`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
