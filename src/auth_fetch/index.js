@@ -30,31 +30,3 @@ export const useFetch_get = (url) => {
     return data;
   }
 };
-
-export const useFetch_delete = (url) => {
-  const { getAccessTokenSilently } = useAuth0();
-  const [data, setData] = useState([]);
-  useIonViewWillEnter(() => {
-    (async () => {
-      try {
-        const token = await getAccessTokenSilently({
-          audience: "https://rere",
-          scope: "read:posts",
-        });
-        const response = await fetch(url, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setData(await response.json());
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, [getAccessTokenSilently]);
-
-  if (data != []) {
-    return data;
-  }
-};

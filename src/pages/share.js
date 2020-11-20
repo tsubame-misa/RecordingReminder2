@@ -94,10 +94,7 @@ const Future = ({ history }) => {
           .map((d, id) => {
             return (
               <IonItem key={id}>
-                {d.channel} &emsp;
-                {convertDate(d.date)} &emsp;
-                {d.name}
-                <IonButton
+                {/*<IonButton
                   slot="end"
                   fill="none"
                   color="dark"
@@ -109,9 +106,19 @@ const Future = ({ history }) => {
 
                     // history.push(`/detail/${d.id}/from_future`);
                   }}
+                >*/}
+                <IonItem
+                  onClick={() => {
+                    setID(d.id);
+                    findIndx(d.id);
+                    setShowAlert(true);
+                  }}
                 >
-                  <IonIcon icon={ellipsisHorizontal}></IonIcon>
-                </IonButton>
+                  {d.channel} &emsp;
+                  {convertDate(d.date)} &emsp;
+                  {d.name}
+                </IonItem>
+                {/*}  </IonButton>*/}
               </IonItem>
             );
           })}

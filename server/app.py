@@ -32,9 +32,8 @@ def get_token_auth_header():
     """Obtains the access token from the Authorization Header
     """
     auth = request.headers.get("Authorization", None)
-    # ここで表示されてるのにエラーに引っかかる非同期処理かなんかにしないと行けなかったりする？
-    # print(auth)
     auth = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ilo5MEdBb0JIb05raldLOE0tWVJ5eiJ9.eyJpc3MiOiJodHRwczovL3JlY29yZGluZy1yZW1pbmRlci51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWZiNmY5NzFlNDM3OWEwMDc2N2YyODU4IiwiYXVkIjpbImh0dHBzOi8vcmVyZSIsImh0dHBzOi8vcmVjb3JkaW5nLXJlbWluZGVyLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MDU4ODc3OTcsImV4cCI6MTYwNTk3NDE5NywiYXpwIjoiclZwWDJmY1lTaGozaURSc2VpQUhlTlFvSVBaV1NWY3QiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.XJa2KKMtU3WNxK5z8yqiK22vYZ0HhCEg2tWQfkRXIdmYUmYJc4dqpCmss5Aangfnoqn5GGL_L2fbuoDu0yS8OU74RB0NntGFhJu33ef_910YLkXAqgkj1KBM-1HXvKTH7hZ72t7rqq6Z9Iw0fINQo9_1hX4SnZ5wHzFbyWIAxNmxodFr3N4opWvFk9itAkd3Xy9mHO3vMnw2RqP_BfpU7dgjW6vVP3jkyNhbSQ-tC0KvoJb9HKxxWaULbMPbD_ZbhqQy27sm_auXV45ffytHtsRhdYOsikFVyqOJCrbXFffMAcPlwUQmp7oNUJNeNmWMQg-sktnfmcrnkEQpOsSdlw'
+
     if not auth:
         raise AuthError({"code": "authorization_header_missing",
                          "description":

@@ -12,9 +12,15 @@ import {
   IonButton,
   useIonViewWillEnter,
   IonCheckbox,
+  IonList,
+  IonItemSliding,
+  IonItemOption,
+  IonItemOptions,
+  IonLoading,
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useFetch_get } from "../auth_fetch/index";
 
 export const convertDate = (input) => {
   if (input === null || input == undefined) {
@@ -66,19 +72,14 @@ export const useGetToken = () => {
   return data;
 };
 
-const Loading = () => {
-  return <p>Loading...</p>;
-};
-
 const Future = ({ history }) => {
-  const [data, setData] = useState([]);
   /*let data = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/get_user_list`
   );*/
   const token = useGetToken();
-  //console.log(d);
-  //setData(d);
-  // let history = useHistory();
+  const [data, setData] = useState([]);
+  const [showLoading, setShowLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const {
     isLoading,
@@ -132,7 +133,7 @@ const Future = ({ history }) => {
   };
 
   if (data === []) {
-    return <Loading />;
+    //setShowLoading(true);
   }
 
   return (
@@ -140,13 +141,16 @@ const Future = ({ history }) => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Future</IonTitle>
+          <IonButton
+            color="dark"
+            slot="end"
+            size="small"
+            fill="outline"
+            onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Log out
+          </IonButton>
         </IonToolbar>
-        <IonButton
-          color="light"
-          onClick={() => logout({ returnTo: window.location.origin })}
-        >
-          Log out
-        </IonButton>
       </IonHeader>
 
       <IonContent fullscreen>
@@ -156,11 +160,8 @@ const Future = ({ history }) => {
           })
           .map((d, id) => {
             return (
-              <IonItem key={id}>
+              /* <IonItem key={id}>
                 <IonCheckbox slot="start" checked={d.check} />
-                {d.channel} &emsp;
-                {convertDate(d.date)} &emsp;
-                {d.name}
                 <IonButton
                   slot="end"
                   fill="none"
@@ -169,6 +170,9 @@ const Future = ({ history }) => {
                     history.push(`/detail/${d.id}/from_future`);
                   }}
                 >
+                  {d.channel} &emsp;
+                  {convertDate(d.date)} &emsp;
+                  {d.name}
                   <IonIcon icon={ellipsisHorizontal}></IonIcon>
                 </IonButton>
                 <IonButton
@@ -181,9 +185,46 @@ const Future = ({ history }) => {
                 >
                   <IonIcon icon={trash}></IonIcon>
                 </IonButton>
-              </IonItem>
+              </IonItem>*/
+
+              <IonItemSliding key={id}>
+                <IonItem>
+                  <IonCheckbox slot="start" checked={d.check} />
+                  <IonButton
+                    fill="clear"
+                    onClick={() => {
+                      history.push(`/detail/${d.id}/from_future`);
+                    }}
+                  >
+                    <IonItem>
+                      {d.channel} &emsp;
+                      {convertDate(d.date)} &emsp;
+                    </IonItem>
+                    <IonItem> {d.name}</IonItem>
+                  </IonButton>
+
+                  <IonItemOptions side="end">
+                    <IonItemOption
+                      color="danger"
+                      expandable
+                      onClick={() => {
+                        delItem(d.id);
+                      }}
+                    >
+                      Delete
+                    </IonItemOption>
+                  </IonItemOptions>
+                </IonItem>
+              </IonItemSliding>
             );
           })}
+        <IonLoading
+          cssClass="my-custom-class"
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={"Please wait..."}
+          duration={1000}
+        />
 
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton

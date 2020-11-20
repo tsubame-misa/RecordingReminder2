@@ -9,19 +9,20 @@ import {
   IonItem,
   IonButton,
   useIonViewWillEnter,
+  IonItemSliding,
+  IonItemOptions,
+  IonItemOption,
+  IonLoading,
 } from "@ionic/react";
 import { ellipsisHorizontal, trash } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useGetToken, convertDate, CmpTime } from "./Future";
 
-const Loading = () => {
-  return <p>Loading...</p>;
-};
-
 const Past = () => {
   const [data, setData] = useState([]);
   let history = useHistory();
   const token = useGetToken();
+  const [showLoading, setShowLoading] = useState(false);
 
   useIonViewWillEnter(() => {
     window
@@ -66,7 +67,8 @@ const Past = () => {
   };
 
   if (data === []) {
-    return <Loading />;
+    setShowLoading(true);
+    return <div></div>;
   }
 
   return (
@@ -90,33 +92,43 @@ const Past = () => {
           })
           .map((d, id) => {
             return (
-              <IonItem key={id}>
-                {d.channel} &emsp;
-                {convertDate(d.date)} &emsp;
-                {d?.name}
-                <IonButton
-                  slot="end"
-                  fill="none"
-                  color="dark"
-                  onClick={() => {
-                    history.push(`/detail/${d.id}/from_past`);
-                  }}
-                >
-                  <IonIcon icon={ellipsisHorizontal}></IonIcon>
-                </IonButton>
-                <IonButton
-                  slot="end"
-                  fill="none"
-                  color="dark"
-                  onClick={() => {
-                    delItem(d.id);
-                  }}
-                >
-                  <IonIcon icon={trash}></IonIcon>
-                </IonButton>
-              </IonItem>
+              <IonItemSliding key={id}>
+                <IonItem>
+                  <IonButton
+                    fill="clear"
+                    onClick={() => {
+                      history.push(`/detail/${d.id}/from_future`);
+                    }}
+                  >
+                    <IonItem>
+                      {d.channel} &emsp;
+                      {convertDate(d.date)} &emsp;
+                    </IonItem>
+                    <IonItem> {d.name}</IonItem>
+                  </IonButton>
+
+                  <IonItemOptions side="end">
+                    <IonItemOption
+                      color="danger"
+                      expandable
+                      onClick={() => {
+                        delItem(d.id);
+                      }}
+                    >
+                      Delete
+                    </IonItemOption>
+                  </IonItemOptions>
+                </IonItem>
+              </IonItemSliding>
             );
           })}
+        <IonLoading
+          cssClass="my-custom-class"
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={"Please wait..."}
+          duration={1500}
+        />
       </IonContent>
     </IonPage>
   );

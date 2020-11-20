@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -11,6 +11,12 @@ import {
   IonFab,
   IonFabButton,
   IonContent,
+  IonPage,
+  IonHeader,
+  IonCard,
+  IonCardContent,
+  IonButton,
+  IonLoading,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -55,13 +61,22 @@ const App = () => {
     loginWithRedirect,
     logout,
   } = useAuth0();
+  const [showLoading, setShowLoading] = useState(false);
   //useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/users`);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <IonPage>
+        <IonCard>Loading...</IonCard>
+      </IonPage>
+    );
   }
   if (error) {
-    return <div>Oops... {error.message}</div>;
+    return (
+      <IonPage>
+        <IonCard>Oops... {error.message}</IonCard>
+      </IonPage>
+    );
   }
 
   if (isAuthenticated) {
@@ -121,7 +136,25 @@ const App = () => {
       </IonApp>
     );
   } else {
-    return <button onClick={loginWithRedirect}>Log in</button>;
+    return (
+      <IonPage>
+        <IonHeader></IonHeader>
+        <IonContent>
+          <IonCard>
+            <IonCardContent>
+              <IonButton onClick={loginWithRedirect}>Log in</IonButton>
+            </IonCardContent>
+          </IonCard>
+        </IonContent>
+        <IonLoading
+          cssClass="my-custom-class"
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={"Please wait..."}
+          duration={1500}
+        />
+      </IonPage>
+    );
   }
 };
 

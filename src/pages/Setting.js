@@ -17,6 +17,7 @@ import {
 } from "@ionic/react";
 import { chevronForwardOutline } from "ionicons/icons";
 import { useGetToken } from "./Future";
+import { useFetch_get } from "../auth_fetch/index";
 
 const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);
