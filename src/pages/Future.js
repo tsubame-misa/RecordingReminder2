@@ -16,39 +16,11 @@ import {
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export const useFetch_get = (url) => {
-  const { getAccessTokenSilently } = useAuth0();
-  const [data, setData] = useState([]);
-  useIonViewWillEnter(() => {
-    (async () => {
-      try {
-        const token = await getAccessTokenSilently({
-          audience: "https://rere",
-          scope: "read:posts",
-        });
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          // body: JSON.stringify(token),
-        });
-        setData(await response.json());
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, [getAccessTokenSilently]);
-
-  if (data != []) {
-    return data;
-  }
-};
-
 export const convertDate = (input) => {
   if (input === null) {
     return "";
   }
+
   const dateList = input.split(/[-T:]/);
   const createdDay =
     dateList[0] +
@@ -75,15 +47,35 @@ export const CmpTime = (item) => {
   }
 };
 
+export const useGetToken = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: "https://rere",
+          scope: "read:posts",
+        });
+        setData(await token);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [getAccessTokenSilently]);
+  return data;
+};
+
 const Loading = () => {
   return <p>Loading...</p>;
 };
 
 const Future = ({ history }) => {
-  //const [data, setData] = useState([]);
-  let data = useFetch_get(
+  const [data, setData] = useState([]);
+  /*let data = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/get_user_list`
-  );
+  );*/
+  const token = useGetToken();
   //console.log(d);
   //setData(d);
   // let history = useHistory();
@@ -97,14 +89,19 @@ const Future = ({ history }) => {
     logout,
   } = useAuth0();
 
-  /*useIonViewWillEnter(() => {
+  useIonViewWillEnter(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
       });
-  }, []);*/
+  }, []);
 
   data.sort((a, b) => {
     if (a.date > b.date) {
@@ -121,12 +118,16 @@ const Future = ({ history }) => {
         `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
       .then((response) => response.json())
-      .then((new_data) => {
-        //setData(data);
-        data = new_data;
+      .then((data) => {
+        setData(data);
+        //console.log("henkou");
+        //data = new_data;
       });
   };
 

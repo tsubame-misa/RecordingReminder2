@@ -33,7 +33,7 @@ def get_token_auth_header():
     """
     auth = request.headers.get("Authorization", None)
     # ここで表示されてるのにエラーに引っかかる非同期処理かなんかにしないと行けなかったりする？
-    print(auth)
+    # print(auth)
     auth = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ilo5MEdBb0JIb05raldLOE0tWVJ5eiJ9.eyJpc3MiOiJodHRwczovL3JlY29yZGluZy1yZW1pbmRlci51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWZiNmY5NzFlNDM3OWEwMDc2N2YyODU4IiwiYXVkIjpbImh0dHBzOi8vcmVyZSIsImh0dHBzOi8vcmVjb3JkaW5nLXJlbWluZGVyLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MDU4ODc3OTcsImV4cCI6MTYwNTk3NDE5NywiYXpwIjoiclZwWDJmY1lTaGozaURSc2VpQUhlTlFvSVBaV1NWY3QiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.XJa2KKMtU3WNxK5z8yqiK22vYZ0HhCEg2tWQfkRXIdmYUmYJc4dqpCmss5Aangfnoqn5GGL_L2fbuoDu0yS8OU74RB0NntGFhJu33ef_910YLkXAqgkj1KBM-1HXvKTH7hZ72t7rqq6Z9Iw0fINQo9_1hX4SnZ5wHzFbyWIAxNmxodFr3N4opWvFk9itAkd3Xy9mHO3vMnw2RqP_BfpU7dgjW6vVP3jkyNhbSQ-tC0KvoJb9HKxxWaULbMPbD_ZbhqQy27sm_auXV45ffytHtsRhdYOsikFVyqOJCrbXFffMAcPlwUQmp7oNUJNeNmWMQg-sktnfmcrnkEQpOsSdlw'
     if not auth:
         raise AuthError({"code": "authorization_header_missing",
@@ -110,6 +110,7 @@ def requires_auth(f):
 
 
 @app.route('/add_tv_list', methods=['PUT'])
+@requires_auth
 def add_tv_list():
     get_token_auth_header()
     session = create_session()
@@ -137,9 +138,26 @@ def add_tv_list():
 @app.route('/get_user_list', methods=['GET'])
 @requires_auth
 def get_user_list():
+    # 関数分けたほうがいい…
     session = create_session()
     user_id = g.current_user['sub']
-    print("*********", user_id)
+
+    # get user list
+    user_t = session.query(User).all()
+    user_list = list(user_t[i].id for i in range(len(user_t)))
+    print(user_list)
+    registered = False
+    # check registerd
+    for _id in user_list:
+        if _id == user_id:
+            registered = True
+            break
+    # register
+    if registered == False:
+        u = User(id=user_id)
+        session.add(u)
+        session.commit()
+
     user_id = "1"
 
     data = session.query(UserTvLIst).filter_by(user_id=user_id).all()
@@ -149,6 +167,7 @@ def get_user_list():
 
 
 @app.route('/get_user_notification', methods=['GET'])
+@requires_auth
 def get_user_noti():
     session = create_session()
     user_id = "1"
@@ -160,6 +179,7 @@ def get_user_noti():
 
 
 @app.route('/change_notification', methods=['PUT'])
+@requires_auth
 def change_notification():
     session = create_session()
     user_id = "1"
@@ -187,6 +207,7 @@ def change_notification():
 
 
 @app.route('/get_user_list/<id>', methods=['GET'])
+@requires_auth
 def get_user_program(id):
     session = create_session()
     user_id = "1"
@@ -200,6 +221,7 @@ def get_user_program(id):
 
 
 @app.route('/change_user_tv_program/<id>', methods=['PUT'])
+@requires_auth
 def change_user_tv_program(id):
     session = create_session()
     user_id = "1"
@@ -223,8 +245,11 @@ def change_user_tv_program(id):
 
 
 @app.route('/delete_user_program_list/<id>', methods=['DELETE'])
+@requires_auth
 def delete_user_program_list(id):
     session = create_session()
+    user_id = g.current_user['sub']
+    print(user_id)
     user_id = "1"
     session.query(UserTvLIst).filter_by(
         user_id=user_id, id=id).delete()

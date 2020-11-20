@@ -16,6 +16,7 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import { chevronForwardOutline } from "ionicons/icons";
+import { useGetToken } from "./Future";
 
 const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);
@@ -26,10 +27,16 @@ const Setting = () => {
   const [notiDateChenged, setNotiDateChanged] = useState(1);
   const [preNotiTime, setPreNotiTime] = useState("20:00");
   const [preNotiDate, setPreNotiDate] = useState("pre");
+  const token = useGetToken();
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.json())
       .then((data) => {
         setUserNoti(data);
@@ -54,6 +61,9 @@ const Setting = () => {
     };
     window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/change_notification`, {
       method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(data),
     });
     setShowAlert(true);

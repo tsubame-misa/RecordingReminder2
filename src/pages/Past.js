@@ -12,36 +12,7 @@ import {
 } from "@ionic/react";
 import { ellipsisHorizontal, trash } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-
-export const convertDate = (input) => {
-  if (input === null) {
-    return "";
-  }
-  const dateList = input.split(/[-T:]/);
-  const createdDay =
-    dateList[0] +
-    "/" +
-    dateList[1] +
-    "/" +
-    dateList[2] +
-    " " +
-    dateList[3] +
-    ":" +
-    dateList[4];
-  //console.log(createdDay);
-  return createdDay;
-};
-
-export const CmpTime = (item) => {
-  const current = new Date();
-  const date0 = convertDate(item);
-  const date = Date.parse(date0);
-  if (date < current) {
-    return -1;
-  } else {
-    return 1;
-  }
-};
+import { useGetToken, convertDate, CmpTime } from "./Future";
 
 const Loading = () => {
   return <p>Loading...</p>;
@@ -50,10 +21,16 @@ const Loading = () => {
 const Past = () => {
   const [data, setData] = useState([]);
   let history = useHistory();
+  const token = useGetToken();
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -77,6 +54,9 @@ const Past = () => {
         `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
       .then((response) => response.json())

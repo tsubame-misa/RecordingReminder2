@@ -23,6 +23,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useGetToken } from "./Future";
 
 const Detail = ({ history }) => {
   const [showAlert, setShowAlert] = useState(false);
@@ -32,10 +33,16 @@ const Detail = ({ history }) => {
   const path = window.location.pathname;
   const pathList = path.split(/[/]/);
   const backPass = pathList[pathList.length - 1];
+  const token = useGetToken();
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -74,6 +81,9 @@ const Detail = ({ history }) => {
       `${process.env.REACT_APP_API_ENDPOINT}/change_user_tv_program/${id}`,
       {
         method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(data),
       }
     );

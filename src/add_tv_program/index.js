@@ -18,6 +18,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import notifications from "../notification/index";
+import { useGetToken } from "../pages/Future";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -31,10 +32,16 @@ const Addprogram = ({ history }) => {
   const [notiDate, setNotiDate] = useState("pre");
   const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
+  const token = useGetToken();
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -43,7 +50,12 @@ const Addprogram = ({ history }) => {
 
   useIonViewWillEnter(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.json())
       .then((data) => {
         setUserNoti(data);
@@ -111,6 +123,8 @@ const Addprogram = ({ history }) => {
       0,
       0
     );
+    //const realDate = date.getUTCMonth();
+    //console.log(realDate);
 
     console.log(date);
 
@@ -133,8 +147,13 @@ const Addprogram = ({ history }) => {
     setEndTime(null);
     setText(null);
 
+    console.log(data);
+
     return window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`, {
       method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(data),
     });
   };
