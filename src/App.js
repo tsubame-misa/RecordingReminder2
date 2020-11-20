@@ -17,6 +17,8 @@ import {
   IonCardContent,
   IonButton,
   IonLoading,
+  IonTitle,
+  IonItem,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -142,17 +144,21 @@ const App = () => {
         <IonContent>
           <IonCard>
             <IonCardContent>
-              <IonButton onClick={loginWithRedirect}>Log in</IonButton>
+              <IonItem lines="none">Wellcome to Re-Re</IonItem>
+            </IonCardContent>
+
+            <IonCardContent>
+              <IonButton
+                slot="center"
+                fill="outline"
+                expand="full"
+                onClick={loginWithRedirect}
+              >
+                Log in
+              </IonButton>
             </IonCardContent>
           </IonCard>
         </IonContent>
-        <IonLoading
-          cssClass="my-custom-class"
-          isOpen={showLoading}
-          onDidDismiss={() => setShowLoading(false)}
-          message={"Please wait..."}
-          duration={1500}
-        />
       </IonPage>
     );
   }
