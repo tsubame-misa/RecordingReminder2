@@ -20,7 +20,11 @@ import {
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useFetch_get } from "../auth_fetch/index";
+import {
+  request_user_tv_list,
+  request,
+  request_delete,
+} from "../auth_fetch/index";
 
 export const convertDate = (input) => {
   if (input === null || input == undefined) {
@@ -73,9 +77,6 @@ export const useGetToken = () => {
 };
 
 const Future = ({ history }) => {
-  /*let data = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/get_user_list`
-  );*/
   const token = useGetToken();
   const [data, setData] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
@@ -88,51 +89,38 @@ const Future = ({ history }) => {
     user,
     loginWithRedirect,
     logout,
+    getAccessTokenSilently,
   } = useAuth0();
 
   useIonViewWillEnter(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
+    request_user_tv_list(getAccessTokenSilently).then((data) => {
+      setData(data);
+    });
   }, []);
-  //
-  data.sort((a, b) => {
-    if (a.date > b.date) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+
+  if (data != undefined) {
+    data.sort((a, b) => {
+      if (a.date > b.date) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }
 
   const delItem = (id) => {
     console.log("del", id);
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        //console.log("henkou");
-        //data = new_data;
-      });
+
+    request_delete(
+      `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
+      getAccessTokenSilently
+    ).then((data) => {
+      setData(data);
+    });
   };
 
-  if (data === []) {
+  if (data === [] || data === undefined) {
+    return <div>loading</div>;
     //setShowLoading(true);
   }
 
