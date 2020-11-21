@@ -12,6 +12,8 @@ import {
   IonButton,
   IonAlert,
   useIonViewWillEnter,
+  IonChip,
+  IonLabel,
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import notifications from "../notification/index";
@@ -99,7 +101,7 @@ const Future = () => {
           })
           .map((d, id) => {
             return (
-              <IonItem key={id}>
+              /*<IonItem key={id}>
                 <IonItem
                   onClick={() => {
                     setID(d.id);
@@ -111,6 +113,24 @@ const Future = () => {
                   {convertDate(d.date)} &emsp;
                   {d.name}
                 </IonItem>
+                </IonItem>*/
+
+              <IonItem
+                key={id}
+                _ngcontent-yfv-c79=""
+                onClick={() => {
+                  setID(d.id);
+                  findIndx(d.id);
+                  setShowAlert(true);
+                }}
+                detail="false"
+                target="_blank"
+                class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+              >
+                <IonChip>{d.channel}</IonChip>
+                <IonLabel>
+                  {convertDate(d.date)} &emsp; {d.name}
+                </IonLabel>
               </IonItem>
             );
           })}

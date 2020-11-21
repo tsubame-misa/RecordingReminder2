@@ -17,6 +17,10 @@ import {
   IonItemOption,
   IonItemOptions,
   IonLoading,
+  IonItemGroup,
+  IonLabel,
+  IonItemDivider,
+  IonChip,
 } from "@ionic/react";
 import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -25,6 +29,7 @@ import {
   request,
   request_delete,
 } from "../auth_fetch/index";
+import { convertCompilerOptionsFromJson } from "typescript";
 
 export const convertDate = (input) => {
   if (input === null || input == undefined) {
@@ -129,15 +134,6 @@ const Future = ({ history }) => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Future</IonTitle>
-          <IonButton
-            color="dark"
-            slot="end"
-            size="small"
-            fill="outline"
-            onClick={() => logout({ returnTo: window.location.origin })}
-          >
-            Log out
-          </IonButton>
         </IonToolbar>
       </IonHeader>
 
@@ -149,21 +145,21 @@ const Future = ({ history }) => {
           .map((d, id) => {
             return (
               <IonItemSliding key={id}>
-                <IonButton
-                  fill="clear"
+                <IonItem
+                  _ngcontent-yfv-c79=""
                   onClick={() => {
                     history.push(`/detail/${d.id}/from_future`);
                   }}
+                  detail="false"
+                  target="_blank"
+                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
-                  <IonItem>
-                    {" "}
-                    {d.channel} &emsp;
-                    {convertDate(d.date)} &emsp;
-                    {d.name}
-                  </IonItem>
-                </IonButton>
-
-                <IonItemOptions side="end">
+                  <IonChip>{d.channel}</IonChip>
+                  <IonLabel>
+                    {convertDate(d.date)} &emsp; {d.name}
+                  </IonLabel>
+                </IonItem>
+                <IonItemOptions>
                   <IonItemOption
                     color="danger"
                     expandable
@@ -171,12 +167,38 @@ const Future = ({ history }) => {
                       delItem(d.id);
                     }}
                   >
-                    Delete
+                    delete
                   </IonItemOption>
                 </IonItemOptions>
               </IonItemSliding>
             );
           })}
+
+        {/*<IonList>
+          <IonItemGroup>
+            <IonItemDivider>
+              <IonLabel>label</IonLabel>
+            </IonItemDivider>
+            <IonItemSliding>
+              <IonItem
+                _ngcontent-yfv-c79=""
+                onClick={() => {
+                  history.push(`/detail/${data[0].id}/from_future`);
+                }}
+                detail="false"
+                target="_blank"
+                class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+              >
+                <IonChip>huji</IonChip>
+                <IonLabel>mezamashi</IonLabel>
+              </IonItem>
+              <IonItemOptions>
+                <IonItemOption>delete</IonItemOption>
+              </IonItemOptions>
+            </IonItemSliding>
+          </IonItemGroup>
+              </IonList>*/}
+
         <IonLoading
           cssClass="my-custom-class"
           isOpen={showLoading}

@@ -14,13 +14,15 @@ import {
   IonAlert,
   IonIcon,
   useIonViewWillEnter,
+  IonList,
+  IonListHeader,
 } from "@ionic/react";
-import { chevronForwardOutline } from "ionicons/icons";
+import { chevronForwardOutline, push } from "ionicons/icons";
 import { useGetToken } from "./Future";
 import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Setting = () => {
+const Setting = ({ history }) => {
   const [notiTime, setNotiTime] = useState(null);
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
@@ -29,8 +31,16 @@ const Setting = () => {
   const [notiDateChenged, setNotiDateChanged] = useState(1);
   const [preNotiTime, setPreNotiTime] = useState("20:00");
   const [preNotiDate, setPreNotiDate] = useState("pre");
-  const token = useGetToken();
-  const { getAccessTokenSilently } = useAuth0();
+
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+    getAccessTokenSilently,
+  } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
@@ -69,59 +79,43 @@ const Setting = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Setting</IonTitle>
+          <IonTitle>設定</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonCard>
-          <IonItem lines="none" color="light">
-            通知
+        <IonList>
+          <IonItem
+            _ngcontent-yfv-c79=""
+            onClick={() => {
+              history.push("/setting/notification");
+            }}
+            detail="false"
+            target="_blank"
+            class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+          >
+            <ion-label>通知</ion-label>
+            <IonIcon slot="end" icon={chevronForwardOutline}></IonIcon>
           </IonItem>
-          <IonItem>
-            <IonSelect
-              value={notiDateChenged == 1 ? preNotiDate : date}
-              onIonChange={(e) => {
-                setNotiDateChanged(0);
-                setDate(e.detail.value);
-              }}
-            >
-              <IonSelectOption value="pre">前日</IonSelectOption>
-              <IonSelectOption value="on">当日</IonSelectOption>
-            </IonSelect>
-            &emsp;
-            <IonDatetime
-              displayFormat="HH:mm"
-              value={notiTimeChenged == 1 ? preNotiTime : notiTime}
-              //minuteValues="0,15,30,45"
-              onIonChange={(e) => {
-                setNotiTimeChanged(0);
-                setNotiTime(e.detail.value);
-              }}
-            ></IonDatetime>
-            <IonButton
-              slot="end"
-              color="dark"
-              onClick={() => {
-                sendData();
-              }}
-            >
-              変更する
-            </IonButton>
-          </IonItem>
-          <IonAlert
-            isOpen={showAlert}
-            onDidDismiss={() => setShowAlert(false)}
-            cssClass="my-custom-class"
-            header={"変更しました"}
-            buttons={["OK"]}
-          />
-        </IonCard>
+        </IonList>
+
         <IonItem>
           カラー
           <IonButton color="dark" fill="fill" slot="end">
             <IonIcon icon={chevronForwardOutline}></IonIcon>
           </IonButton>
         </IonItem>
+
+        <IonList>
+          <IonItem lines="none"></IonItem>
+          <IonButton
+            color="dark"
+            expand="full"
+            fill="outline"
+            onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Log out
+          </IonButton>
+        </IonList>
       </IonContent>
     </IonPage>
   );

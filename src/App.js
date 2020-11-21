@@ -27,7 +27,7 @@ import {
   playBackCircleOutline,
   settings,
   add,
-  shareOutline,
+  telescopeOutline,
   eyeOutline,
 } from "ionicons/icons";
 import Future from "./pages/Future";
@@ -36,6 +36,7 @@ import Setting from "./pages/Setting";
 import Addprogram from "./add_tv_program/index";
 import Detail from "./pages/detail";
 import Share from "./pages/share";
+import NotiSetting from "./setting/noti_setting";
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -104,6 +105,11 @@ const App = () => {
                 exact={true}
               />
               <Route
+                path="/setting/notification"
+                component={NotiSetting}
+                exact={true}
+              />
+              <Route
                 path="/"
                 render={() => <Redirect to="/future" />}
                 exact={true}
@@ -119,19 +125,19 @@ const App = () => {
             <IonTabBar slot="bottom">
               <IonTabButton tab="future" href="/future">
                 <IonIcon icon={playCircleOutline} />
-                <IonLabel>Future</IonLabel>
+                <IonLabel>録画リスト</IonLabel>
               </IonTabButton>
               <IonTabButton tab="past" href="/past">
                 <IonIcon icon={playBackCircleOutline} />
-                <IonLabel>Past</IonLabel>
+                <IonLabel>録画済み</IonLabel>
               </IonTabButton>
               <IonTabButton tab="share" href="/share">
-                <IonIcon icon={eyeOutline} />
-                <IonLabel>Others</IonLabel>
+                <IonIcon icon={telescopeOutline} />
+                <IonLabel>探す</IonLabel>
               </IonTabButton>
               <IonTabButton tab="setting" href="/setting">
                 <IonIcon icon={settings} />
-                <IonLabel>Setting</IonLabel>
+                <IonLabel>設定</IonLabel>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>

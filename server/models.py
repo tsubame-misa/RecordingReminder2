@@ -11,12 +11,13 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Text, primary_key=True, server_default="1")
-    notification_time = Column(Text, server_default="pre/20:00")  # Datetime?
+    # notification_time = Column(Text, server_default="pre/20:00")  # Datetime?
+    notification_allow = Column(Integer)
 
     def to_json(self):
         return {
             'id': self.id,
-            'noti_time': self.notification_time
+            'noti_allow': self.notification_allow
         }
 
 
@@ -73,4 +74,19 @@ class UserTvLIst(Base):
             'endTime': self.end_time,
             'comment': self.comment,
             'check': self.check
+        }
+
+
+class UserNotification(Base):
+    __tablename__ = 'user_notification'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Text, ForeignKey('users.id'))
+    time = Column(Text)
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'time': self.time
         }

@@ -3,7 +3,7 @@ import os
 from flask import Flask, jsonify, request, make_response, g
 from flask_cors import CORS, cross_origin
 from db import create_session
-from models import User, TvLIst, UserTvLIst
+from models import User, TvLIst, UserTvLIst, UserNotification
 import numpy as np
 import requests
 from collections import OrderedDict
@@ -98,7 +98,7 @@ def requires_auth(f):
 
             g.current_user = payload
             # print("-----------")
-            print(payload)
+            # print(payload)
             return f(*args, **kwargs)
         raise AuthError({"code": "invalid_header",
                          "description": "Unable to find appropriate key"}, 400)
@@ -156,8 +156,11 @@ def get_user_list():
             break
     # register
     if registered == False:
-        u = User(id=user_id)
+        u = User(id=user_id, notification_allow=1)
         session.add(u)
+        session.commit()
+        user_noti = UserNotification(user_id=user_id, time="pre/20:00")
+        session.add(user_noti)
         session.commit()
 
     data = session.query(UserTvLIst).filter_by(user_id=user_id).all()
@@ -182,11 +185,14 @@ def get_all_list():
 def get_user_noti():
     session = create_session()
     user_id = g.current_user['sub']
-    data = session.query(User).filter_by(id=user_id).first()
-    # data = [d.to_json() for d in data]
-    data = data.to_json()
+    data = session.query(UserNotification).filter_by(user_id=user_id).all()
+    # = session.query(User).filter_by(id=user_id).first()
+    data = [d.to_json() for d in data]
+    print(data)
+    #data = data.to_json()
     session.close()
-    return jsonify(data['noti_time'])
+    print(data[0]['time'])
+    return jsonify(data[0]['time'])
 
 
 @app.route('/change_notification', methods=['PUT'])
@@ -198,8 +204,8 @@ def change_notification():
     data = json.loads(request.data.decode())
     print(data)
 
-    user = session.query(User).filter_by(id=user_id).first()
-    preNoti = user.notification_time
+    user = session.query(UserNotification).filter_by(user_id=user_id).first()
+    preNoti = user.time
     preNotiList = re.split('[/:]', preNoti)
     newNoti = ""
     if data['date'] == None:
@@ -208,8 +214,8 @@ def change_notification():
         newNoti = data['date']+"/"+preNotiList[1]+":"+preNotiList[2]
     else:
         newNoti = data['date']+"/"+data['time']
-
-    user.notification_time = newNoti
+    print(newNoti)
+    user.time = newNoti
     session.add(user)
     session.commit()
     session.close()

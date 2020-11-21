@@ -15,6 +15,7 @@ import {
   IonDatetime,
   IonInput,
   useIonViewWillEnter,
+  IonBackButton,
 } from "@ionic/react";
 import { useState } from "react";
 import notifications from "../notification/index";
@@ -98,7 +99,7 @@ const Addprogram = ({ history }) => {
       artist === null
     ) {
       alert("記入漏れがあります");
-      return;
+      return 0;
     }
 
     //同じ日にちのものがない確認し、なければ通知の予約をする
@@ -209,12 +210,14 @@ const Addprogram = ({ history }) => {
       const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
 
       //差分の秒数後に通知
+      console.log(date);
+      console.log(current);
       const diff = date.getTime() - current.getTime();
       const second = Math.floor(diff / 1000);
       console.log(second);
       if (second > 0) {
-        const log = notifications.schedule(second);
-        console.log(log);
+        notifications.schedule(second);
+        /*console.log(log);
 
         let notiData = JSON.parse(localStorage.getItem("notiData"));
         if (notiData == null || notiData === undefined) {
@@ -222,7 +225,7 @@ const Addprogram = ({ history }) => {
         } else {
           notiData.push(log);
         }
-        localStorage.setItem("notiData", JSON.stringify(notiData));
+        localStorage.setItem("notiData", JSON.stringify(notiData));*/
       }
 
       return 1;
@@ -233,14 +236,7 @@ const Addprogram = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons
-            slot="start"
-            onclick={() => {
-              history.push("/future");
-            }}
-          >
-            {/*} <IonBackButton defaultHref="/" />*/}
-          </IonButtons>
+          <IonBackButton slot="start" defaultHref="/" />
           <IonTitle>番組を登録する</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -329,8 +325,10 @@ const Addprogram = ({ history }) => {
           color="dark"
           expand="full"
           onClick={async () => {
-            await sendData();
-            history.push("/future");
+            const i = await sendData();
+            if (i !== 0) {
+              history.push("/future");
+            }
           }}
         >
           登録

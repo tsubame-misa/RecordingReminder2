@@ -13,6 +13,8 @@ import {
   IonItemOptions,
   IonItemOption,
   IonLoading,
+  IonChip,
+  IonLabel,
 } from "@ionic/react";
 import { ellipsisHorizontal, trash } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
@@ -24,7 +26,6 @@ import { unchangedTextChangeRange } from "typescript";
 const Past = () => {
   const [data, setData] = useState([]);
   let history = useHistory();
-  const token = useGetToken();
   const [showLoading, setShowLoading] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -83,21 +84,21 @@ const Past = () => {
           .map((d, id) => {
             return (
               <IonItemSliding key={id}>
-                <IonButton
-                  fill="clear"
+                <IonItem
+                  _ngcontent-yfv-c79=""
                   onClick={() => {
                     history.push(`/detail/${d.id}/from_future`);
                   }}
+                  detail="false"
+                  target="_blank"
+                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
-                  <IonItem>
-                    {" "}
-                    {d.channel} &emsp;
-                    {convertDate(d.date)} &emsp;
-                    {d.name}
-                  </IonItem>
-                </IonButton>
-
-                <IonItemOptions side="end">
+                  <IonChip>{d.channel}</IonChip>
+                  <IonLabel>
+                    {convertDate(d.date)} &emsp; {d.name}
+                  </IonLabel>
+                </IonItem>
+                <IonItemOptions>
                   <IonItemOption
                     color="danger"
                     expandable
@@ -105,7 +106,7 @@ const Past = () => {
                       delItem(d.id);
                     }}
                   >
-                    Delete
+                    delete
                   </IonItemOption>
                 </IonItemOptions>
               </IonItemSliding>
