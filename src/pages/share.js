@@ -34,15 +34,12 @@ const Loading = () => {
   return <p>Loading...</p>;
 };
 
-const Future = ({ history }) => {
+const Future = () => {
   const [data, setData] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [ID, setID] = useState(null);
   const [idx, setIdx] = useState(-1);
-  const token = useGetToken();
   const { getAccessTokenSilently } = useAuth0();
-
-  // let history = useHistory();
 
   useIonViewWillEnter(() => {
     request(
@@ -78,6 +75,15 @@ const Future = ({ history }) => {
     console.log(idx);
   };
 
+  const addMyList = (idx) => {
+    console.log(data[idx].name);
+    request_put(
+      `${process.env.REACT_APP_API_ENDPOINT}/put_my_list/${data[idx].id}`,
+      getAccessTokenSilently,
+      data
+    );
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -94,19 +100,6 @@ const Future = ({ history }) => {
           .map((d, id) => {
             return (
               <IonItem key={id}>
-                {/*<IonButton
-                  slot="end"
-                  fill="none"
-                  color="dark"
-                  //href={`/detail/${d.id}/from_future`}
-                  onClick={() => {
-                    setID(d.id);
-                    findIndx(d.id);
-                    setShowAlert(true);
-
-                    // history.push(`/detail/${d.id}/from_future`);
-                  }}
-                >*/}
                 <IonItem
                   onClick={() => {
                     setID(d.id);
@@ -118,7 +111,6 @@ const Future = ({ history }) => {
                   {convertDate(d.date)} &emsp;
                   {d.name}
                 </IonItem>
-                {/*}  </IonButton>*/}
               </IonItem>
             );
           })}
@@ -132,7 +124,19 @@ const Future = ({ history }) => {
           // オプショナルチェイニングoptional chaining演算子 ?.
           subHeader={data[idx]?.channel + " " + convertDate(data[idx]?.date)}
           message={splitArtist(data[idx]?.artist) + " " + data[idx]?.comment}
-          buttons={["OK"]}
+          buttons={[
+            {
+              text: "登録",
+              role: "cancel",
+              cssClass: "secondary",
+              handler: () => {
+                addMyList(idx);
+              },
+            },
+            {
+              text: "戻る",
+            },
+          ]}
         />
       </IonContent>
     </IonPage>

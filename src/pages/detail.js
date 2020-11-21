@@ -91,8 +91,6 @@ const Detail = ({ history }) => {
   if (data == null || data === undefined || data === []) {
     return <IonPage>loading...</IonPage>;
   }
-  console.log(data);
-  console.log(data.artist);
 
   return (
     <IonPage>

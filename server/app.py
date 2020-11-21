@@ -32,7 +32,7 @@ def get_token_auth_header():
     """Obtains the access token from the Authorization Header
     """
     auth = request.headers.get("Authorization", None)
-    auth = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ilo5MEdBb0JIb05raldLOE0tWVJ5eiJ9.eyJpc3MiOiJodHRwczovL3JlY29yZGluZy1yZW1pbmRlci51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWZiNmY5NzFlNDM3OWEwMDc2N2YyODU4IiwiYXVkIjpbImh0dHBzOi8vcmVyZSIsImh0dHBzOi8vcmVjb3JkaW5nLXJlbWluZGVyLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MDU4ODc3OTcsImV4cCI6MTYwNTk3NDE5NywiYXpwIjoiclZwWDJmY1lTaGozaURSc2VpQUhlTlFvSVBaV1NWY3QiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.XJa2KKMtU3WNxK5z8yqiK22vYZ0HhCEg2tWQfkRXIdmYUmYJc4dqpCmss5Aangfnoqn5GGL_L2fbuoDu0yS8OU74RB0NntGFhJu33ef_910YLkXAqgkj1KBM-1HXvKTH7hZ72t7rqq6Z9Iw0fINQo9_1hX4SnZ5wHzFbyWIAxNmxodFr3N4opWvFk9itAkd3Xy9mHO3vMnw2RqP_BfpU7dgjW6vVP3jkyNhbSQ-tC0KvoJb9HKxxWaULbMPbD_ZbhqQy27sm_auXV45ffytHtsRhdYOsikFVyqOJCrbXFffMAcPlwUQmp7oNUJNeNmWMQg-sktnfmcrnkEQpOsSdlw'
+    #auth = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ilo5MEdBb0JIb05raldLOE0tWVJ5eiJ9.eyJpc3MiOiJodHRwczovL3JlY29yZGluZy1yZW1pbmRlci51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWZiNmY5NzFlNDM3OWEwMDc2N2YyODU4IiwiYXVkIjpbImh0dHBzOi8vcmVyZSIsImh0dHBzOi8vcmVjb3JkaW5nLXJlbWluZGVyLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MDU4ODc3OTcsImV4cCI6MTYwNTk3NDE5NywiYXpwIjoiclZwWDJmY1lTaGozaURSc2VpQUhlTlFvSVBaV1NWY3QiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.XJa2KKMtU3WNxK5z8yqiK22vYZ0HhCEg2tWQfkRXIdmYUmYJc4dqpCmss5Aangfnoqn5GGL_L2fbuoDu0yS8OU74RB0NntGFhJu33ef_910YLkXAqgkj1KBM-1HXvKTH7hZ72t7rqq6Z9Iw0fINQo9_1hX4SnZ5wHzFbyWIAxNmxodFr3N4opWvFk9itAkd3Xy9mHO3vMnw2RqP_BfpU7dgjW6vVP3jkyNhbSQ-tC0KvoJb9HKxxWaULbMPbD_ZbhqQy27sm_auXV45ffytHtsRhdYOsikFVyqOJCrbXFffMAcPlwUQmp7oNUJNeNmWMQg-sktnfmcrnkEQpOsSdlw'
 
     if not auth:
         raise AuthError({"code": "authorization_header_missing",
@@ -118,12 +118,13 @@ def add_tv_list():
     print(data["date"])
     print(data["name"])
     print(data["artist"])
+    user_id = "1"
 
     add_tv_list = UserTvLIst(user_id=user_id, channel=data['channel'], date=data['date'], name=data['name'],
                              artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], check=0)
 
     share_list = TvLIst(channel=data['channel'], date=data['date'], name=data['name'],
-                        artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'])
+                        artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], creater=user_id)
 
     session.add(share_list)
     session.add(add_tv_list)
@@ -166,8 +167,9 @@ def get_user_list():
 @requires_auth
 def get_all_list():
     session = create_session()
+    user_id = g.current_user['sub']
     data = session.query(TvLIst).all()
-    data = [d.to_json() for d in data]
+    data = [d.to_json() for d in data if d.creater != user_id]
     session.close()
     return jsonify(data)
 
@@ -260,6 +262,33 @@ def delete_user_program_list(id):
     session.commit()
     session.close()
     return get_user_list()
+
+
+@app.route('/get_user_id', methods=['GET'])
+@requires_auth
+def get_user_id():
+    session = create_session()
+    user_id = g.current_user['sub']
+    return jsonify(user_id)
+
+
+@app.route('/put_my_list/<id>', methods=['PUT'])
+@requires_auth
+def put_my_list(id):
+    session = create_session()
+    user_id = g.current_user['sub']
+
+    data = session.query(TvLIst).filter_by(id=id).first()
+    data = data.to_json()
+    print(data)
+    toMyList = UserTvLIst(user_id=user_id, channel=data['channel'], date=data['date'], name=data['name'],
+                          artist=data['artist'], start_time=data['start_time'], end_time=data['end_time'], comment=data['comment'], check=0)
+
+    session.add(toMyList)
+    session.commit()
+    session.close()
+
+    return "resive"
 
 
 if __name__ == "__main__":

@@ -16,20 +16,23 @@ class Notifications {
         await LocalNotifications.cancel(pending);
       */
 
-      await LocalNotifications.schedule({
+      const notifs = await LocalNotifications.schedule({
         notifications: [
           {
             //ここの文面をどうするのか
             title: "録画しましたか？",
             body: "",
             //変えたほうが良い？
-            id: 1,
+            id: 2,
             sound: "normail",
             //minute秒後に通知
             schedule: { at: new Date(Date.now() + 1000 * minute) },
           },
         ],
       });
+
+      console.log("scheduled notifications", notifs);
+      return await notifs;
     } catch (error) {
       console.error(error);
     }

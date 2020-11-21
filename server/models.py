@@ -31,6 +31,7 @@ class TvLIst(Base):
     start_time = Column(Text)  # Datetimeにするかどうか
     end_time = Column(Text)
     comment = Column(Text)
+    creater = Column(Text)
 
     def to_json(self):
         return {
@@ -41,7 +42,8 @@ class TvLIst(Base):
             'artist': self.artist,
             'start_time': self.start_time,
             'end_time': self.end_time,
-            'comment': self.comment
+            'comment': self.comment,
+            'creater': self.creater
         }
 
 

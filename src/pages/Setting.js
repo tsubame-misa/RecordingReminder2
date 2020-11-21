@@ -33,11 +33,12 @@ const Setting = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
-    request(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`).then(
-      (data) => {
-        setUserNoti(data);
-      }
-    );
+    request(
+      `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
+      getAccessTokenSilently
+    ).then((data) => {
+      setUserNoti(data);
+    });
   }, []);
 
   useEffect(() => {

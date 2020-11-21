@@ -39,7 +39,6 @@ const Addprogram = ({ history }) => {
   const [notiDate, setNotiDate] = useState("pre");
   const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
-  const token = useGetToken();
   const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
@@ -144,7 +143,7 @@ const Addprogram = ({ history }) => {
 
     console.log(data);
 
-    return request_delete(
+    return request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
       getAccessTokenSilently,
       data
@@ -214,7 +213,16 @@ const Addprogram = ({ history }) => {
       const second = Math.floor(diff / 1000);
       console.log(second);
       if (second > 0) {
-        notifications.schedule(second);
+        const log = notifications.schedule(second);
+        console.log(log);
+
+        let notiData = JSON.parse(localStorage.getItem("notiData"));
+        if (notiData == null || notiData === undefined) {
+          notiData = [log];
+        } else {
+          notiData.push(log);
+        }
+        localStorage.setItem("notiData", JSON.stringify(notiData));
       }
 
       return 1;

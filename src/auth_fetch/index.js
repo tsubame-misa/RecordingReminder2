@@ -73,7 +73,8 @@ export const request_put = async (url, getAccessTokenSilently, item) => {
       },
       body: JSON.stringify(item),
     });
-    return await response.json();
+    console.log(response);
+    //return await response;
   } catch (e) {
     console.error(e);
   }

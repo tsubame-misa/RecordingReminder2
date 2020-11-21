@@ -79,34 +79,6 @@ const Past = () => {
           })
           .map((d, id) => {
             return (
-              /*<IonItemSliding key={id}>
-                <IonItem>
-                  <IonButton
-                    fill="clear"
-                    onClick={() => {
-                      history.push(`/detail/${d.id}/from_future`);
-                    }}
-                  >
-                    <IonItem>
-                      {d.channel} &emsp;
-                      {convertDate(d.date)} &emsp;
-                    </IonItem>
-                    <IonItem> {d.name}</IonItem>
-                  </IonButton>
-
-                  <IonItemOptions side="end">
-                    <IonItemOption
-                      color="danger"
-                      expandable
-                      onClick={() => {
-                        delItem(d.id);
-                      }}
-                    >
-                      Delete
-                    </IonItemOption>
-                  </IonItemOptions>
-                </IonItem>
-                    </IonItemSliding>*/
               <IonItemSliding key={id}>
                 <IonButton
                   fill="clear"
@@ -122,11 +94,6 @@ const Past = () => {
                   </IonItem>
                 </IonButton>
 
-                <IonItemOptions side="start">
-                  <IonItemOption color="primary" expandable>
-                    Edit
-                  </IonItemOption>
-                </IonItemOptions>
                 <IonItemOptions side="end">
                   <IonItemOption
                     color="danger"
