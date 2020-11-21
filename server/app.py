@@ -139,7 +139,7 @@ def get_user_list():
     session = create_session()
     user_id = g.current_user['sub']
 
-    # 関数分けたほうがいい…
+    # 関数分けたほうがいい
     # get user list
     user_t = session.query(User).all()
     user_list = list(user_t[i].id for i in range(len(user_t)))
