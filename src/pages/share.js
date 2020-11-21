@@ -18,6 +18,8 @@ import notifications from "../notification/index";
 import { useHistory } from "react-router-dom";
 import { convertToObject } from "typescript";
 import { useGetToken, convertDate, CmpTime } from "../pages/Future";
+import { useAuth0 } from "@auth0/auth0-react";
+import { request, request_put } from "../auth_fetch/index";
 
 const splitArtist = (item) => {
   if (item === undefined) {
@@ -38,32 +40,30 @@ const Future = ({ history }) => {
   const [ID, setID] = useState(null);
   const [idx, setIdx] = useState(-1);
   const token = useGetToken();
+  const { getAccessTokenSilently } = useAuth0();
 
   // let history = useHistory();
 
   useIonViewWillEnter(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_all_list`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
+    request(
+      `${process.env.REACT_APP_API_ENDPOINT}/get_all_list`,
+      getAccessTokenSilently
+    ).then((data) => {
+      setData(data);
+    });
   }, []);
 
-  data.sort((a, b) => {
-    if (a.date > b.date) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+  if (data !== undefined) {
+    data.sort((a, b) => {
+      if (a.date > b.date) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }
 
-  if (data === []) {
+  if (data === [] || data === undefined) {
     return <Loading />;
   }
 

@@ -3,8 +3,6 @@
 //import { useIonViewWillEnter } from "@ionic/react";
 
 export const request = async (url, getAccessTokenSilently) => {
-  //const { getAccessTokenSilently } = useAuth0();
-  //const [data, setData] = useState([]);
   try {
     const token = await getAccessTokenSilently({
       audience: "https://rere",
@@ -24,8 +22,6 @@ export const request = async (url, getAccessTokenSilently) => {
 };
 
 export const request_user_tv_list = async (getAccessTokenSilently) => {
-  //const { getAccessTokenSilently } = useAuth0();
-  //const [data, setData] = useState([]);
   try {
     const token = await getAccessTokenSilently({
       audience: "https://rere",
@@ -38,7 +34,6 @@ export const request_user_tv_list = async (getAccessTokenSilently) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        // body: JSON.stringify(token),
       }
     );
     return await response.json();
@@ -58,6 +53,25 @@ export const request_delete = async (url, getAccessTokenSilently) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    });
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const request_put = async (url, getAccessTokenSilently, item) => {
+  try {
+    const token = await getAccessTokenSilently({
+      audience: "https://rere",
+      scope: "read:posts",
+    });
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(item),
     });
     return await response.json();
   } catch (e) {

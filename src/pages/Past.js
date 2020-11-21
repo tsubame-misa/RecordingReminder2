@@ -17,25 +17,20 @@ import {
 import { ellipsisHorizontal, trash } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useGetToken, convertDate, CmpTime } from "./Future";
+import { request_user_tv_list, request_delete } from "../auth_fetch/index";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Past = () => {
   const [data, setData] = useState([]);
   let history = useHistory();
   const token = useGetToken();
   const [showLoading, setShowLoading] = useState(false);
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
+    request_user_tv_list(getAccessTokenSilently).then((data) => {
+      setData(data);
+    });
   }, []);
 
   //console.log(data);
@@ -50,20 +45,12 @@ const Past = () => {
 
   const delItem = (id) => {
     console.log("del", id);
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
+    request_delete(
+      `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
+      getAccessTokenSilently
+    ).then((data) => {
+      setData(data);
+    });
   };
 
   if (data === []) {

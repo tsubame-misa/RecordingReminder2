@@ -19,6 +19,13 @@ import {
 import { useState } from "react";
 import notifications from "../notification/index";
 import { useGetToken } from "../pages/Future";
+import {
+  request_put,
+  request_user_tv_list,
+  request,
+  request_delete,
+} from "../auth_fetch/index";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -33,33 +40,21 @@ const Addprogram = ({ history }) => {
   const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
   const token = useGetToken();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
+    request_user_tv_list(getAccessTokenSilently).then((data) => {
+      setData(data);
+    });
   }, []);
 
   useIonViewWillEnter(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setUserNoti(data);
-      });
+    request(
+      `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
+      getAccessTokenSilently
+    ).then((data) => {
+      setUserNoti(data);
+    });
   }, []);
   //console.log(notiTime);
 
@@ -149,13 +144,11 @@ const Addprogram = ({ history }) => {
 
     console.log(data);
 
-    return window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+    return request_delete(
+      `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
+      getAccessTokenSilently,
+      data
+    );
   };
 
   const setNotification = () => {

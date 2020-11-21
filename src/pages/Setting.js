@@ -17,7 +17,8 @@ import {
 } from "@ionic/react";
 import { chevronForwardOutline } from "ionicons/icons";
 import { useGetToken } from "./Future";
-import { useFetch_get } from "../auth_fetch/index";
+import { request_put, request } from "../auth_fetch/index";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);
@@ -29,23 +30,18 @@ const Setting = () => {
   const [preNotiTime, setPreNotiTime] = useState("20:00");
   const [preNotiDate, setPreNotiDate] = useState("pre");
   const token = useGetToken();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
+    request(`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`).then(
+      (data) => {
         setUserNoti(data);
-      });
+      }
+    );
   }, []);
 
   useEffect(() => {
-    if (userNoti !== null) {
+    if (userNoti !== null && userNoti !== undefined) {
       const notiList = userNoti.split(/[/:]/);
       setPreNotiTime(notiList[1] + ":" + notiList[2]);
       setPreNotiDate(notiList[0]);
@@ -60,13 +56,11 @@ const Setting = () => {
       date: date,
       time: notiTime,
     };
-    window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/change_notification`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+    request_put(
+      `${process.env.REACT_APP_API_ENDPOINT}/change_notification`,
+      getAccessTokenSilently,
+      data
+    );
     setShowAlert(true);
   };
 

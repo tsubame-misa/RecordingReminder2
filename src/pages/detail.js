@@ -24,6 +24,13 @@ import {
 import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useGetToken } from "./Future";
+import {
+  request_user_tv_list,
+  request_put,
+  request_delete,
+  request,
+} from "../auth_fetch/index";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Detail = ({ history }) => {
   const [showAlert, setShowAlert] = useState(false);
@@ -34,21 +41,16 @@ const Detail = ({ history }) => {
   const pathList = path.split(/[/]/);
   const backPass = pathList[pathList.length - 1];
   const token = useGetToken();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
+    request(
+      `${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`,
+      getAccessTokenSilently
+    ).then((data) => {
+      setData(data);
+    });
   }, []);
-  console.log(data);
 
   const channel = [
     { name: "NHK総合" },
@@ -77,23 +79,20 @@ const Detail = ({ history }) => {
   const sendData = () => {
     const date = new Date(data.date);
     data.date = date;
-    window.fetch(
+    request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/change_user_tv_program/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      }
-    );
-
-    setShowAlert(true);
+      getAccessTokenSilently,
+      data
+    ).then(() => {
+      setShowAlert(true);
+    });
   };
 
-  if (data == null) {
+  if (data == null || data === undefined || data === []) {
     return <IonPage>loading...</IonPage>;
   }
+  console.log(data);
+  console.log(data.artist);
 
   return (
     <IonPage>
@@ -169,7 +168,12 @@ const Detail = ({ history }) => {
                 <IonCheckbox
                   slot="end"
                   required
-                  checked={data != null && data.artist.includes(a.name)}
+                  checked={
+                    data != null &&
+                    data !== undefined &&
+                    data.artist !== undefined &&
+                    data.artist.includes(a.name)
+                  }
                   onIonChange={() => {
                     if (data.artist.includes(a.name)) {
                       setData(

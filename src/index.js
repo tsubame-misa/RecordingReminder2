@@ -2,6 +2,7 @@ import React from "react";
 //import { render } from "@testing-library/react";
 import { render } from "react-dom";
 import App from "./App";
+import { useAuth0 } from "@auth0/auth0-react";
 
 //render(<App />, document.getElementById("root"));
 
