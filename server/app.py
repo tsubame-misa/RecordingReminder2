@@ -114,19 +114,22 @@ def add_tv_list():
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode())
-    print(data["channel"])
-    print(data["date"])
-    print(data["name"])
-    print(data["artist"])
-    user_id = "1"
-
     add_tv_list = UserTvLIst(user_id=user_id, channel=data['channel'], date=data['date'], name=data['name'],
                              artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], check=0)
+    session.add(add_tv_list)
 
-    share_list = TvLIst(channel=data['channel'], date=data['date'], name=data['name'],
-                        artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], creater=user_id)
+    all_t = session.query(TvLIst).filter_by().all()
+    same = False
+    for i in range(len(all_t)):  # ダブりがあったら追加しない
+        if all_t[i].date == data["date"] and user_t[i].channel == all_t['channel']:
+            same = True
+            break
 
-    session.add(share_list)
+    if same == False:
+        share_list = TvLIst(channel=data['channel'], date=data['date'], name=data['name'],
+                            artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], creater=user_id)
+        session.add(share_list)
+
     session.add(add_tv_list)
     session.commit()
     session.close()
@@ -280,6 +283,12 @@ def put_my_list(id):
 
     data = session.query(TvLIst).filter_by(id=id).first()
     data = data.to_json()
+
+    user_t = session.query(UserTvLIst).filter_by(user_id=user_id).all()
+    for i in range(len(user_t)):  # ダブりがあったら追加しない
+        if user_t[i].date == data["date"] and user_t[i].channel == data['channel']:
+            return "resive"
+
     print(data)
     toMyList = UserTvLIst(user_id=user_id, channel=data['channel'], date=data['date'], name=data['name'],
                           artist=data['artist'], start_time=data['start_time'], end_time=data['end_time'], comment=data['comment'], check=0)

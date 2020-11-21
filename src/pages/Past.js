@@ -19,6 +19,7 @@ import { useHistory } from "react-router-dom";
 import { useGetToken, convertDate, CmpTime } from "./Future";
 import { request_user_tv_list, request_delete } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
+import { unchangedTextChangeRange } from "typescript";
 
 const Past = () => {
   const [data, setData] = useState([]);
@@ -35,13 +36,15 @@ const Past = () => {
 
   //console.log(data);
 
-  data.sort((a, b) => {
-    if (a.date > b.date) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+  if (data !== undefined) {
+    data.sort((a, b) => {
+      if (a.date > b.date) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }
 
   const delItem = (id) => {
     console.log("del", id);
