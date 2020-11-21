@@ -14,6 +14,7 @@ export const useFetch_get = (url) => {
         });
         const response = await fetch(url, {
           method: "GET",
+          mode: "no-cors",
           headers: {
             Authorization: `Bearer ${token}`,
           },

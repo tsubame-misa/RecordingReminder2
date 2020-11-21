@@ -160,34 +160,7 @@ const Future = ({ history }) => {
           })
           .map((d, id) => {
             return (
-              /* <IonItem key={id}>
-                <IonCheckbox slot="start" checked={d.check} />
-                <IonButton
-                  slot="end"
-                  fill="none"
-                  color="dark"
-                  onClick={() => {
-                    history.push(`/detail/${d.id}/from_future`);
-                  }}
-                >
-                  {d.channel} &emsp;
-                  {convertDate(d.date)} &emsp;
-                  {d.name}
-                  <IonIcon icon={ellipsisHorizontal}></IonIcon>
-                </IonButton>
-                <IonButton
-                  slot="end"
-                  fill="none"
-                  color="dark"
-                  onClick={() => {
-                    delItem(d.id);
-                  }}
-                >
-                  <IonIcon icon={trash}></IonIcon>
-                </IonButton>
-              </IonItem>*/
-
-              <IonItemSliding key={id}>
+              /*<IonItemSliding key={id}>
                 <IonItem>
                   <IonCheckbox slot="start" checked={d.check} />
                   <IonButton
@@ -215,6 +188,39 @@ const Future = ({ history }) => {
                     </IonItemOption>
                   </IonItemOptions>
                 </IonItem>
+                    </IonItemSliding>*/
+
+              <IonItemSliding key={id}>
+                <IonButton
+                  fill="clear"
+                  onClick={() => {
+                    history.push(`/detail/${d.id}/from_future`);
+                  }}
+                >
+                  <IonItem>
+                    {" "}
+                    {d.channel} &emsp;
+                    {convertDate(d.date)} &emsp;
+                    {d.name}
+                  </IonItem>
+                </IonButton>
+
+                <IonItemOptions side="start">
+                  <IonItemOption color="primary" expandable>
+                    Edit
+                  </IonItemOption>
+                </IonItemOptions>
+                <IonItemOptions side="end">
+                  <IonItemOption
+                    color="danger"
+                    expandable
+                    onClick={() => {
+                      delItem(d.id);
+                    }}
+                  >
+                    Delete
+                  </IonItemOption>
+                </IonItemOptions>
               </IonItemSliding>
             );
           })}

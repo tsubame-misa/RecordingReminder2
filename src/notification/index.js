@@ -7,7 +7,7 @@ class Notifications {
   async schedule(minute) {
     try {
       // Request/ check permissions
-      if (!(await LocalNotifications.requestPermission()).granted) return;
+      //if (!(await LocalNotifications.requestPermission()).granted) return;
 
       /*
       // Clear old notifications in prep for refresh (OPTIONAL)

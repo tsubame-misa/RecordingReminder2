@@ -28,6 +28,7 @@ import {
   settings,
   add,
   shareOutline,
+  eyeOutline,
 } from "ionicons/icons";
 import Future from "./pages/Future";
 import Past from "./pages/Past";
@@ -125,8 +126,8 @@ const App = () => {
                 <IonLabel>Past</IonLabel>
               </IonTabButton>
               <IonTabButton tab="share" href="/share">
-                <IonIcon icon={shareOutline} />
-                <IonLabel>Share</IonLabel>
+                <IonIcon icon={eyeOutline} />
+                <IonLabel>Others</IonLabel>
               </IonTabButton>
               <IonTabButton tab="setting" href="/setting">
                 <IonIcon icon={settings} />
