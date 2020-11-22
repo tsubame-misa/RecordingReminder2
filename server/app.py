@@ -137,7 +137,7 @@ def add_tv_list():
     return get_user_list()
 
 
-@app.route('/get_user_list', methods=['GET'])
+@app.route('/api/get_user_list', methods=['GET'])
 @requires_auth
 def get_user_list():
     session = create_session()
@@ -223,7 +223,7 @@ def change_notification():
     return 'received'
 
 
-@app.route('/get_user_list/<id>', methods=['GET'])
+@app.route('/api/get_user_list/<id>', methods=['GET'])
 @requires_auth
 def get_user_program(id):
     session = create_session()
