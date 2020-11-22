@@ -19,7 +19,7 @@ import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import notifications from "../notification/index";
 import { useHistory } from "react-router-dom";
 import { convertToObject } from "typescript";
-import { useGetToken, convertDate, CmpTime } from "../pages/Future";
+import { convertDate, CmpTime } from "../pages/Future";
 import { useAuth0 } from "@auth0/auth0-react";
 import { request, request_put } from "../auth_fetch/index";
 
@@ -62,10 +62,6 @@ const Future = () => {
     });
   }
 
-  if (data === [] || data === undefined) {
-    return <Loading />;
-  }
-
   const findIndx = (ID) => {
     if (data != undefined) {
       for (let i = 0; i < data.length; i++) {
@@ -85,6 +81,20 @@ const Future = () => {
       data
     );
   };
+
+  if (data === [] || data === undefined) {
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>録画済み</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+
+        <IonContent fullscreen></IonContent>
+      </IonPage>
+    );
+  }
 
   return (
     <IonPage>

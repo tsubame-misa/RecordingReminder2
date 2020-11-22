@@ -18,7 +18,6 @@ import {
   IonListHeader,
 } from "@ionic/react";
 import { chevronForwardOutline, push } from "ionicons/icons";
-import { useGetToken } from "./Future";
 import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 

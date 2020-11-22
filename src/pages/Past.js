@@ -18,7 +18,7 @@ import {
 } from "@ionic/react";
 import { ellipsisHorizontal, trash } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-import { useGetToken, convertDate, CmpTime } from "./Future";
+import { convertDate, CmpTime } from "./Future";
 import { request_user_tv_list, request_delete } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { unchangedTextChangeRange } from "typescript";
@@ -57,9 +57,18 @@ const Past = () => {
     });
   };
 
-  if (data === []) {
-    setShowLoading(true);
-    return <div></div>;
+  if (data === [] || data === undefined) {
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>録画済み</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+
+        <IonContent fullscreen></IonContent>
+      </IonPage>
+    );
   }
 
   return (

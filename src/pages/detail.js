@@ -22,8 +22,7 @@ import {
   IonAlert,
 } from "@ionic/react";
 import { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { useGetToken } from "./Future";
+import { useParams } from "react-router-dom";
 import {
   request_user_tv_list,
   request_put,
@@ -40,7 +39,6 @@ const Detail = ({ history }) => {
   const path = window.location.pathname;
   const pathList = path.split(/[/]/);
   const backPass = pathList[pathList.length - 1];
-  const token = useGetToken();
   const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
@@ -89,7 +87,23 @@ const Detail = ({ history }) => {
   };
 
   if (data == null || data === undefined || data === []) {
-    return <IonPage>loading...</IonPage>;
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              {backPass == "from_future" ? (
+                <IonBackButton defaultHref="/" />
+              ) : (
+                <IonBackButton defaultHref="/past" />
+              )}
+            </IonButtons>
+            <IonTitle>番組詳細</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent></IonContent>
+      </IonPage>
+    );
   }
 
   return (

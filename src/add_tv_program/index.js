@@ -19,7 +19,6 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import notifications from "../notification/index";
-import { useGetToken } from "../pages/Future";
 import {
   request_put,
   request_user_tv_list,
@@ -59,7 +58,7 @@ const Addprogram = ({ history }) => {
   //console.log(notiTime);
 
   useEffect(() => {
-    if (userNoti !== null) {
+    if (userNoti !== null && userNoti !== undefined) {
       const notiList = userNoti.split(/[/:]/);
       //console.log(notiList);
       setNotiTime(notiList[1] + ":" + notiList[2]);

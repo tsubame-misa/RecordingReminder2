@@ -62,27 +62,7 @@ export const CmpTime = (item) => {
   }
 };
 
-export const useGetToken = () => {
-  const { getAccessTokenSilently } = useAuth0();
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const token = await getAccessTokenSilently({
-          audience: "https://rere",
-          scope: "read:posts",
-        });
-        setData(await token);
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, [getAccessTokenSilently]);
-  return data;
-};
-
 const Future = ({ history }) => {
-  const token = useGetToken();
   const [data, setData] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);

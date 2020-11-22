@@ -71,7 +71,26 @@ const App = () => {
   if (isLoading) {
     return (
       <IonPage>
-        <IonCard>Loading...</IonCard>
+        <IonCardContent>
+          <IonCard>Loading...</IonCard>
+
+          {/*} <IonButton
+            slot="center"
+            fill="outline"
+            expand="full"
+            onClick={loginWithRedirect}
+          >
+            Log in
+          </IonButton>
+          <IonButton
+            color="dark"
+            expand="full"
+            fill="outline"
+            onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Log out
+    </IonButton>*/}
+        </IonCardContent>
       </IonPage>
     );
   }
