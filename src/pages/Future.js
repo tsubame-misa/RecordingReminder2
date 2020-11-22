@@ -133,7 +133,7 @@ const Future = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Future</IonTitle>
+          <IonTitle>録画リスト</IonTitle>
         </IonToolbar>
       </IonHeader>
 

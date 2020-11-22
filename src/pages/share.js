@@ -90,7 +90,7 @@ const Future = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Share</IonTitle>
+          <IonTitle>探す</IonTitle>
         </IonToolbar>
       </IonHeader>
 

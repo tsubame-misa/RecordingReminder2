@@ -66,7 +66,7 @@ const Past = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Past</IonTitle>
+          <IonTitle>録画済み</IonTitle>
           {/*<IonButton
             color="tertiary"
             onClick={() => notifications.schedule(30)}
