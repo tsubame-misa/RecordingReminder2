@@ -108,7 +108,7 @@ def requires_auth(f):
 ################################
 
 
-@app.route('/add_tv_list', methods=['PUT'])
+@app.route('/api/add_tv_list', methods=['PUT'])
 @requires_auth
 def add_tv_list():
     session = create_session()
@@ -169,7 +169,7 @@ def get_user_list():
     return jsonify(data)
 
 
-@app.route('/get_all_list', methods=['GET'])
+@app.route('/api/get_all_list', methods=['GET'])
 @requires_auth
 def get_all_list():
     session = create_session()
@@ -180,7 +180,7 @@ def get_all_list():
     return jsonify(data)
 
 
-@app.route('/get_user_notification', methods=['GET'])
+@app.route('/api/get_user_notification', methods=['GET'])
 @requires_auth
 def get_user_noti():
     session = create_session()
@@ -195,7 +195,7 @@ def get_user_noti():
     return jsonify(data[0]['time'])
 
 
-@app.route('/change_notification', methods=['PUT'])
+@app.route('/api/change_notification', methods=['PUT'])
 @requires_auth
 def change_notification():
     session = create_session()
@@ -237,7 +237,7 @@ def get_user_program(id):
     return jsonify(data)
 
 
-@app.route('/change_user_tv_program/<id>', methods=['PUT'])
+@app.route('/api/change_user_tv_program/<id>', methods=['PUT'])
 @requires_auth
 def change_user_tv_program(id):
     session = create_session()
@@ -261,7 +261,7 @@ def change_user_tv_program(id):
     return "resive"
 
 
-@app.route('/delete_user_program_list/<id>', methods=['DELETE'])
+@app.route('/api/delete_user_program_list/<id>', methods=['DELETE'])
 @requires_auth
 def delete_user_program_list(id):
     session = create_session()
@@ -273,7 +273,7 @@ def delete_user_program_list(id):
     return get_user_list()
 
 
-@app.route('/get_user_id', methods=['GET'])
+@app.route('/api/get_user_id', methods=['GET'])
 @requires_auth
 def get_user_id():
     session = create_session()
@@ -281,7 +281,7 @@ def get_user_id():
     return jsonify(user_id)
 
 
-@app.route('/put_my_list/<id>', methods=['PUT'])
+@app.route('/api/put_my_list/<id>', methods=['PUT'])
 @requires_auth
 def put_my_list(id):
     session = create_session()

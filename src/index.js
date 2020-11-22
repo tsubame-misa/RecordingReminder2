@@ -14,6 +14,8 @@ render(
     clientId="rVpX2fcYShj3iDRseiAHeNQoIPZWSVct"
     redirectUri={window.location.origin}
     audience="https://rere"
+    useRefreshTokens
+    cacheLocation="localstorage"
   >
     <App />
   </Auth0Provider>,
