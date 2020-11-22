@@ -125,8 +125,28 @@ const Future = ({ history }) => {
   };
 
   if (data === [] || data === undefined) {
-    return <div>loading</div>;
-    //setShowLoading(true);
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>録画リスト</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+
+        <IonContent fullscreen>
+          <IonFab vertical="bottom" horizontal="end" slot="fixed">
+            <IonFabButton
+              color="dark"
+              onClick={() => {
+                history.push("/add_program");
+              }}
+            >
+              <IonIcon icon={add} />
+            </IonFabButton>
+          </IonFab>
+        </IonContent>
+      </IonPage>
+    );
   }
 
   return (
