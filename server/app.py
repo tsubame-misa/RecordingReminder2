@@ -78,6 +78,7 @@ def requires_auth(f):
                 payload = jwt.decode(
                     token,
                     rsa_key,
+                 
                     algorithms=['RS256'],
                     audience="https://rere",
                     issuer="https://recording-reminder.us.auth0.com/"
@@ -141,9 +142,7 @@ def add_tv_list():
 @requires_auth
 def get_user_list():
     session = create_session()
-    user_id = g.current_user['sub']
-
-    # 関数分けたほうがいい
+    cccc
     # get user list
     user_t = session.query(User).all()
     user_list = list(user_t[i].id for i in range(len(user_t)))
