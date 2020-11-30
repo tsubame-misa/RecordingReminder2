@@ -35,19 +35,85 @@ export const convertDate = (input) => {
   if (input === null || input == undefined) {
     return "";
   }
-
   const dateList = input.split(/[-T:]/);
+  const m = [
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+  ];
+
+  const d = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+  ];
+
+  const date = new Date(
+    dateList[0],
+    dateList[1] - 1,
+    dateList[2] + d[dateList[3]],
+    m[dateList[3]],
+    dateList[4],
+    0,
+    0
+  );
+
+  const aaa = Number(Number(dateList[2]) + Number(d[Number(dateList[3])]));
+
   const createdDay =
     dateList[0] +
     "/" +
     dateList[1] +
     "/" +
-    dateList[2] +
+    aaa +
     " " +
-    dateList[3] +
+    m[Number(dateList[3])] +
     ":" +
     dateList[4];
   //console.log(createdDay);
+
   return createdDay;
 };
 

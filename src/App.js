@@ -69,37 +69,10 @@ const App = () => {
   //useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/users`);
 
   if (isLoading) {
-    return (
-      <IonPage>
-        <IonCardContent>
-          <IonCard>Loading...</IonCard>
-
-          {/*} <IonButton
-            slot="center"
-            fill="outline"
-            expand="full"
-            onClick={loginWithRedirect}
-          >
-            Log in
-          </IonButton>
-          <IonButton
-            color="dark"
-            expand="full"
-            fill="outline"
-            onClick={() => logout({ returnTo: window.location.origin })}
-          >
-            Log out
-    </IonButton>*/}
-        </IonCardContent>
-      </IonPage>
-    );
+    return <IonPage>Loading...</IonPage>;
   }
   if (error) {
-    return (
-      <IonPage>
-        <IonCard>Oops... {error.message}</IonCard>
-      </IonPage>
-    );
+    return <IonPage>Oops... {error.message}</IonPage>;
   }
 
   if (isAuthenticated) {

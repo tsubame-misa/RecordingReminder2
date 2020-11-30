@@ -51,6 +51,7 @@ const Future = () => {
       setData(data);
     });
   }, []);
+  //console.log(data);
 
   if (data !== undefined) {
     data.sort((a, b) => {

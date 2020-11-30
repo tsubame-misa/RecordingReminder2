@@ -12,6 +12,7 @@ render(
   <Auth0Provider
     domain="recording-reminder.us.auth0.com"
     clientId="rVpX2fcYShj3iDRseiAHeNQoIPZWSVct"
+    clientId={process.env.REACT_APP_CLIENT_ID}
     redirectUri={window.location.origin}
     audience="https://rere"
     useRefreshTokens

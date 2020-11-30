@@ -87,7 +87,7 @@ const Setting = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
+        {/*} <IonList>
           {" "}
           <IonItem
             _ngcontent-mvh-c79=""
@@ -107,7 +107,7 @@ const Setting = () => {
               onIonChange={(e) => setChecked(e.detail.checked)}
             />
           </IonItem>
-        </IonList>
+  </IonList>*/}
         <IonItem>
           <IonSelect
             value={notiDateChenged == 1 ? preNotiDate : date}
