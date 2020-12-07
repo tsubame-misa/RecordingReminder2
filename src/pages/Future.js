@@ -30,90 +30,51 @@ import {
   request_delete,
 } from "../auth_fetch/index";
 import { convertCompilerOptionsFromJson } from "typescript";
-
+/*
 export const convertDate = (input) => {
   if (input === null || input == undefined) {
     return "";
   }
-  const dateList = input.split(/[-T:]/);
-  const m = [
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-  ];
 
-  const d = [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-  ];
+  const dateList = input.split(/[-T:]/);
 
   const date = new Date(
     dateList[0],
     dateList[1] - 1,
-    dateList[2] + d[dateList[3]],
-    m[dateList[3]],
+    dateList[2],
+    dateList[3],
     dateList[4],
     0,
     0
   );
-
-  const aaa = Number(Number(dateList[2]) + Number(d[Number(dateList[3])]));
 
   const createdDay =
     dateList[0] +
     "/" +
     dateList[1] +
     "/" +
-    aaa +
     " " +
-    m[Number(dateList[3])] +
+    dateList[3] +
     ":" +
     dateList[4];
   //console.log(createdDay);
 
+  return createdDay;
+};
+*/
+export const convertDate = (input) => {
+  if (input === null) {
+    return "";
+  }
+
+  const d = new Date(`${input} UTC`);
+  const year = d.getFullYear();
+  const month = `${d.getMonth() + 1}`.padStart(2, "0");
+  const date = `${d.getDate()}`.padStart(2, "0");
+  const hour = `${d.getHours()}`.padStart(2, "0");
+  const minute = `${d.getMinutes()}`.padStart(2, "0");
+  const createdDay =
+    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
   return createdDay;
 };
 

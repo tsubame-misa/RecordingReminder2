@@ -26,11 +26,11 @@ class TvLIst(Base):
 
     id = Column(Integer, primary_key=True)
     channel = Column(Text)
-    date = Column(Text)  # Datetimeにするかどうか
+    date = Column(DateTime)
     name = Column(Text)
     artist = Column(Text)  # 番号にするか名前にするか
-    start_time = Column(Text)  # Datetimeにするかどうか
-    end_time = Column(Text)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
     comment = Column(Text)
     creater = Column(Text)
 
@@ -54,11 +54,11 @@ class UserTvLIst(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Text, ForeignKey('users.id'))
     channel = Column(Text)
-    date = Column(Text)  # Datetimeにするかどうか
+    date = Column(DateTime)
     name = Column(Text)
     artist = Column(Text)  # 番号にするか名前にするか
-    start_time = Column(Text)  # Datetimeにするかどうか
-    end_time = Column(Text)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
     comment = Column(Text)
     check = Column(Integer)
 

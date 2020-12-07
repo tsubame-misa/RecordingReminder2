@@ -16,6 +16,7 @@ from functools import wraps
 import sys
 import sqlalchemy.exc
 import re
+import datetime
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -115,20 +116,30 @@ def add_tv_list():
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode())
-    add_tv_list = UserTvLIst(user_id=user_id, channel=data['channel'], date=data['date'], name=data['name'],
-                             artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], check=0)
+    date = datetime.datetime.strptime(data["date"], '%Y-%m-%dT%H:%M:%S.000Z')
+    stime = None
+    if data["startTime"] != None:
+        stime = datetime.datetime.strptime(
+            data["startTime"], '%Y-%m-%dT%H:%M:%S.%f%z')
+    etime = None
+    if data["endTime"] != None:
+        etime = datetime.datetime.strptime(
+            data["endTime"], '%Y-%m-%dT%H:%M:%S.%f%z')
+
+    add_tv_list = UserTvLIst(user_id=user_id, channel=data['channel'], date=date, name=data['name'],
+                             artist=data['artist'], start_time=stime, end_time=etime, comment=data['comment'], check=0)
     session.add(add_tv_list)
 
     all_t = session.query(TvLIst).filter_by().all()
     same = False
     for i in range(len(all_t)):  # ダブりがあったら追加しない
-        if all_t[i].date == data["date"] and user_t[i].channel == all_t['channel']:
+        if all_t[i].date == data["date"] and all_t[i].channel == data['channel']:
             same = True
             break
 
     if same == False:
-        share_list = TvLIst(channel=data['channel'], date=data['date'], name=data['name'],
-                            artist=data['artist'], start_time=data['startTime'], end_time=data['endTime'], comment=data['comment'], creater=user_id)
+        share_list = TvLIst(channel=data['channel'], date=date, name=data['name'],
+                            artist=data['artist'], start_time=stime, end_time=etime, comment=data['comment'], creater=user_id)
         session.add(share_list)
 
     session.add(add_tv_list)
