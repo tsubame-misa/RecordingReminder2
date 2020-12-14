@@ -30,6 +30,15 @@ import {
   request_delete,
 } from "../auth_fetch/index";
 import { convertCompilerOptionsFromJson } from "typescript";
+import AX from "./img/AX.png";
+import CX from "./img/CX.png";
+import E from "./img/E.png";
+import MX from "./img/MX.png";
+import NHK from "./img/NHK.png";
+import NX from "./img/NX.png";
+import TBS from "./img/TBS.jpg";
+import TX from "./img/TX.png";
+import styles from './styles.css'
 /*
 export const convertDate = (input) => {
   if (input === null || input == undefined) {
@@ -62,6 +71,45 @@ export const convertDate = (input) => {
   return createdDay;
 };
 */
+
+const channel_icons = [
+  "NHK.png",
+  "E.png",
+  "NX.png",
+  "AX.png",
+  "TBS.jpg",
+  "TX.png",
+  "CX.png",
+  "MX.png",
+];
+
+export const convertIcon = (input) => {
+  if (input == "NHK総合") {
+    return NHK;
+  }
+  if (input == "Eテレ") {
+    return E;
+  }
+  if (input == "日テレ") {
+    return NX;
+  }
+  if (input == "テレビ朝日") {
+    return AX;
+  }
+  if (input == "TBS") {
+    return TBS;
+  }
+  if (input == "テレビ東京") {
+    return TX;
+  }
+  if (input == "フジテレビ") {
+    return CX;
+  }
+  if (input == "東京MX") {
+    return MX;
+  }
+};
+
 export const convertDate = (input) => {
   if (input === null) {
     return "";
@@ -181,9 +229,10 @@ const Future = ({ history }) => {
                   target="_blank"
                   class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
-                  <IonChip>{d.channel}</IonChip>
+                  {/*<IonChip>{d.channel}</IonChip>*/}
+                  <img className="icon_image" src={convertIcon(d.channel)}></img>
                   <IonLabel>
-                    {convertDate(d.date)} &emsp; {d.name}
+                    &emsp; {convertDate(d.date)} &emsp; {d.name}
                   </IonLabel>
                 </IonItem>
                 <IonItemOptions>

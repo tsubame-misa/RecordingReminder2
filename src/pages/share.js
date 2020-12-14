@@ -19,9 +19,18 @@ import { add, ellipsisHorizontal, trash } from "ionicons/icons";
 import notifications from "../notification/index";
 import { useHistory } from "react-router-dom";
 import { convertToObject } from "typescript";
-import { convertDate, CmpTime } from "../pages/Future";
+import { convertDate, CmpTime, convertIcon } from "../pages/Future";
 import { useAuth0 } from "@auth0/auth0-react";
 import { request, request_put } from "../auth_fetch/index";
+import AX from "./img/AX.png";
+import CX from "./img/CX.png";
+import E from "./img/E.png";
+import MX from "./img/MX.png";
+import NHK from "./img/NHK.png";
+import NX from "./img/NX.png";
+import TBS from "./img/TBS.jpg";
+import TX from "./img/TX.png";
+import styles from './styles.css'
 
 const splitArtist = (item) => {
   if (item === undefined) {
@@ -138,9 +147,10 @@ const Future = () => {
                 target="_blank"
                 class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
               >
-                <IonChip>{d.channel}</IonChip>
+              
+                <img className="icon_image" src={convertIcon(d.channel)}></img>
                 <IonLabel>
-                  {convertDate(d.date)} &emsp; {d.name}
+                  &emsp; {convertDate(d.date)} &emsp; {d.name}
                 </IonLabel>
               </IonItem>
             );

@@ -54,9 +54,9 @@ const Detail = ({ history }) => {
     { name: "NHK総合" },
     { name: "Eテレ" },
     { name: "日テレ" },
-    { name: "テレビ東京" },
-    { name: "TBS" },
     { name: "テレビ朝日" },
+    { name: "TBS" },
+    { name: "テレビ東京" },
     { name: "フジテレビ" },
     { name: "東京MX" },
   ];

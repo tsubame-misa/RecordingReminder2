@@ -18,11 +18,19 @@ import {
 } from "@ionic/react";
 import { ellipsisHorizontal, trash } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-import { convertDate, CmpTime } from "./Future";
+import { convertDate, CmpTime, convertIcon } from "./Future";
 import { request_user_tv_list, request_delete } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { unchangedTextChangeRange } from "typescript";
-
+import AX from "./img/AX.png";
+import CX from "./img/CX.png";
+import E from "./img/E.png";
+import MX from "./img/MX.png";
+import NHK from "./img/NHK.png";
+import NX from "./img/NX.png";
+import TBS from "./img/TBS.jpg";
+import TX from "./img/TX.png";
+import styles from './styles.css'
 const Past = () => {
   const [data, setData] = useState([]);
   let history = useHistory();
@@ -102,9 +110,10 @@ const Past = () => {
                   target="_blank"
                   class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
-                  <IonChip>{d.channel}</IonChip>
+                
+                  <img className="icon_image" src={convertIcon(d.channel)}></img>
                   <IonLabel>
-                    {convertDate(d.date)} &emsp; {d.name}
+                    &emsp;{convertDate(d.date)} &emsp; {d.name}
                   </IonLabel>
                 </IonItem>
                 <IonItemOptions>
