@@ -175,6 +175,9 @@ def get_user_list():
 
     data = session.query(UserTvLIst).filter_by(user_id=user_id).all()
     data = [d.to_json() for d in data]
+    print(data)
+    #data = OrderedDict(data)
+    #print(data)
     session.close()
     return jsonify(data)
 

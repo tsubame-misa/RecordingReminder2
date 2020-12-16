@@ -30,7 +30,7 @@ import NHK from "./img/NHK.png";
 import NX from "./img/NX.png";
 import TBS from "./img/TBS.jpg";
 import TX from "./img/TX.png";
-import styles from './styles.css'
+import styles from "./styles.css";
 
 const splitArtist = (item) => {
   if (item === undefined) {
@@ -50,12 +50,12 @@ const Future = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [ID, setID] = useState(null);
   const [idx, setIdx] = useState(-1);
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_all_list`,
-      getAccessTokenSilently
+      getAccessTokenWithPopup
     ).then((data) => {
       setData(data);
     });
@@ -87,7 +87,7 @@ const Future = () => {
     console.log(data[idx].name);
     request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/put_my_list/${data[idx].id}`,
-      getAccessTokenSilently,
+      getAccessTokenWithPopup,
       data
     );
   };
@@ -147,7 +147,6 @@ const Future = () => {
                 target="_blank"
                 class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
               >
-              
                 <img className="icon_image" src={convertIcon(d.channel)}></img>
                 <IonLabel>
                   &emsp; {convertDate(d.date)} &emsp; {d.name}

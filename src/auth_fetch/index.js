@@ -2,9 +2,9 @@
 //import React, { useState, useEffect } from "react";
 //import { useIonViewWillEnter } from "@ionic/react";
 
-export const request = async (url, getAccessTokenSilently) => {
+export const request = async (url, getAccessTokenWithPopup) => {
   try {
-    const token = await getAccessTokenSilently({
+    const token = await getAccessTokenWithPopup({
       audience: "https://rere",
       scope: "read:posts",
     });
@@ -21,9 +21,9 @@ export const request = async (url, getAccessTokenSilently) => {
   }
 };
 
-export const request_user_tv_list = async (getAccessTokenSilently) => {
+export const request_user_tv_list = async (getAccessTokenWithPopup) => {
   try {
-    const token = await getAccessTokenSilently({
+    const token = await getAccessTokenWithPopup({
       audience: "https://rere",
       scope: "read:posts",
     });
@@ -42,9 +42,9 @@ export const request_user_tv_list = async (getAccessTokenSilently) => {
   }
 };
 
-export const request_delete = async (url, getAccessTokenSilently) => {
+export const request_delete = async (url, getAccessTokenWithPopup) => {
   try {
-    const token = await getAccessTokenSilently({
+    const token = await getAccessTokenWithPopup({
       audience: "https://rere",
       scope: "read:posts",
     });
@@ -60,9 +60,9 @@ export const request_delete = async (url, getAccessTokenSilently) => {
   }
 };
 
-export const request_put = async (url, getAccessTokenSilently, item) => {
+export const request_put = async (url, getAccessTokenWithPopup, item) => {
   try {
-    const token = await getAccessTokenSilently({
+    const token = await getAccessTokenWithPopup({
       audience: "https://rere",
       scope: "read:posts",
     });

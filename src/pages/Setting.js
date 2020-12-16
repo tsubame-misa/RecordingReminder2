@@ -39,12 +39,13 @@ const Setting = ({ history }) => {
     loginWithRedirect,
     logout,
     getAccessTokenSilently,
+    getAccessTokenWithPopup,
   } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
-      getAccessTokenSilently
+      getAccessTokenWithPopup
     ).then((data) => {
       setUserNoti(data);
     });
@@ -68,7 +69,7 @@ const Setting = ({ history }) => {
     };
     request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/change_notification`,
-      getAccessTokenSilently,
+      getAccessTokenWithPopup,
       data
     );
     setShowAlert(true);

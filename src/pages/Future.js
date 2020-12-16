@@ -38,7 +38,7 @@ import NHK from "./img/NHK.png";
 import NX from "./img/NX.png";
 import TBS from "./img/TBS.jpg";
 import TX from "./img/TX.png";
-import styles from './styles.css'
+import styles from "./styles.css";
 /*
 export const convertDate = (input) => {
   if (input === null || input == undefined) {
@@ -150,10 +150,11 @@ const Future = ({ history }) => {
     loginWithRedirect,
     logout,
     getAccessTokenSilently,
+    getAccessTokenWithPopup,
   } = useAuth0();
 
   useIonViewWillEnter(() => {
-    request_user_tv_list(getAccessTokenSilently).then((data) => {
+    request_user_tv_list(getAccessTokenWithPopup).then((data) => {
       setData(data);
     });
   }, []);
@@ -173,7 +174,7 @@ const Future = ({ history }) => {
 
     request_delete(
       `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
-      getAccessTokenSilently
+      getAccessTokenWithPopup
     ).then((data) => {
       setData(data);
     });
@@ -230,7 +231,10 @@ const Future = ({ history }) => {
                   class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
                   {/*<IonChip>{d.channel}</IonChip>*/}
-                  <img className="icon_image" src={convertIcon(d.channel)}></img>
+                  <img
+                    className="icon_image"
+                    src={convertIcon(d.channel)}
+                  ></img>
                   <IonLabel>
                     &emsp; {convertDate(d.date)} &emsp; {d.name}
                   </IonLabel>

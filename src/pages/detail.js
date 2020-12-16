@@ -39,12 +39,12 @@ const Detail = ({ history }) => {
   const path = window.location.pathname;
   const pathList = path.split(/[/]/);
   const backPass = pathList[pathList.length - 1];
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`,
-      getAccessTokenSilently
+      getAccessTokenWithPopup
     ).then((data) => {
       setData(data);
     });
@@ -79,7 +79,7 @@ const Detail = ({ history }) => {
     data.date = date;
     request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/change_user_tv_program/${id}`,
-      getAccessTokenSilently,
+      getAccessTokenWithPopup,
       data
     ).then(() => {
       setShowAlert(true);
