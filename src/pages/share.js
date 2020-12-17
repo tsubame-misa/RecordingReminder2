@@ -55,7 +55,7 @@ const Future = () => {
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_all_list`,
-      getAccessTokenWithPopup
+      getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
@@ -87,7 +87,7 @@ const Future = () => {
     console.log(data[idx].name);
     request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/put_my_list/${data[idx].id}`,
-      getAccessTokenWithPopup,
+      getAccessTokenSilently,
       data
     );
   };

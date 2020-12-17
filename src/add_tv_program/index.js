@@ -42,7 +42,7 @@ const Addprogram = ({ history }) => {
   const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
 
   useIonViewWillEnter(() => {
-    request_user_tv_list(getAccessTokenWithPopup).then((data) => {
+    request_user_tv_list(getAccessTokenSilently).then((data) => {
       setData(data);
     });
   }, []);
@@ -50,7 +50,7 @@ const Addprogram = ({ history }) => {
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
-      getAccessTokenWithPopup
+      getAccessTokenSilently
     ).then((data) => {
       setUserNoti(data);
     });
@@ -145,7 +145,7 @@ const Addprogram = ({ history }) => {
 
     return request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
-      getAccessTokenWithPopup,
+      getAccessTokenSilently,
       data
     );
   };

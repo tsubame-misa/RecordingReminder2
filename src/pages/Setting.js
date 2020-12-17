@@ -45,7 +45,7 @@ const Setting = ({ history }) => {
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
-      getAccessTokenWithPopup
+      getAccessTokenSilently
     ).then((data) => {
       setUserNoti(data);
     });
@@ -69,7 +69,7 @@ const Setting = ({ history }) => {
     };
     request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/change_notification`,
-      getAccessTokenWithPopup,
+      getAccessTokenSilently,
       data
     );
     setShowAlert(true);

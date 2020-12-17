@@ -44,7 +44,7 @@ const Detail = ({ history }) => {
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`,
-      getAccessTokenWithPopup
+      getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
@@ -79,7 +79,7 @@ const Detail = ({ history }) => {
     data.date = date;
     request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/change_user_tv_program/${id}`,
-      getAccessTokenWithPopup,
+      getAccessTokenSilently,
       data
     ).then(() => {
       setShowAlert(true);

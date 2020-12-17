@@ -38,7 +38,7 @@ const Past = () => {
   const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
 
   useIonViewWillEnter(() => {
-    request_user_tv_list(getAccessTokenWithPopup).then((data) => {
+    request_user_tv_list(getAccessTokenSilently).then((data) => {
       setData(data);
     });
   }, []);
@@ -59,7 +59,7 @@ const Past = () => {
     console.log("del", id);
     request_delete(
       `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
-      getAccessTokenWithPopup
+      getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
