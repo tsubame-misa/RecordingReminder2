@@ -1,19 +1,13 @@
-//import { useAuth0 } from "@auth0/auth0-react";
-//import React, { useState, useEffect } from "react";
-//import { useIonViewWillEnter } from "@ionic/react";
-
 export const request = async (url, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://rere",
-      scope: "read:posts",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
     const response = await fetch(url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      // body: JSON.stringify(token),
     });
     return await response.json();
   } catch (e) {
@@ -24,8 +18,7 @@ export const request = async (url, getAccessTokenSilently) => {
 export const request_user_tv_list = async (getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://rere",
-      scope: "read:posts",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
     const response = await fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_list`,
@@ -45,8 +38,7 @@ export const request_user_tv_list = async (getAccessTokenSilently) => {
 export const request_delete = async (url, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://rere",
-      scope: "read:posts",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
     const response = await fetch(url, {
       method: "DELETE",
@@ -63,8 +55,7 @@ export const request_delete = async (url, getAccessTokenSilently) => {
 export const request_put = async (url, getAccessTokenSilently, item) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://rere",
-      scope: "read:posts",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
     const response = await fetch(url, {
       method: "PUT",

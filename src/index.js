@@ -10,14 +10,23 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 render(
   <Auth0Provider
-    domain="recording-reminder.us.auth0.com"
+    //domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    //clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+    //redirectUri={window.location.origin}
+    //audience={process.env.REACT_APP_AUTH0_AUDIENCE}
+    domain="auth.vdslab.jp"
+    clientId="gZE2mJQUfh6xRVK0vB0gsx9Kh0adGOem"
+    //domain="recording-reminder.us.auth0.com"
     //clientId="94VKGJS7zzIa7O60yuIr8ZOF6BBYxZ6M"
-    clientId="rVpX2fcYShj3iDRseiAHeNQoIPZWSVct"
+    //clientId="rVpX2fcYShj3iDRseiAHeNQoIPZWSVct"
     //clientId={process.env.REACT_APP_CLIENT_ID}
+    //clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={window.location.origin}
-    audience="https://rere"
-    useRefreshTokens
-    cacheLocation="localstorage"
+    //audience="https://rere"
+    audience="https://blooming-coast-85852.herokuapp.com"
+
+    //useRefreshTokens
+    //cacheLocation="localstorage"
   >
     <App />
   </Auth0Provider>,

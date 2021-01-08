@@ -152,7 +152,8 @@ const Addprogram = ({ history }) => {
 
   const setNotification = () => {
     let d;
-    if (data === []) {
+    console.log(data);
+    if (data === [] || data === undefined) {
       //通知する
       CheckAndNoti(selectedDate, selectedDate);
     } else {

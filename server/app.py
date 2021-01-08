@@ -67,7 +67,7 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         token = get_token_auth_header()
         jsonurl = urllib.request.urlopen(
-            "https://recording-reminder.us.auth0.com/.well-known/jwks.json")
+            "https://auth.vdslab.jp/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
         unverified_header = jwt.get_unverified_header(token)
         rsa_key = {}
@@ -81,13 +81,13 @@ def requires_auth(f):
                     rsa_key,
 
                     algorithms=['RS256'],
-                    audience="https://rere",
-                    issuer="https://recording-reminder.us.auth0.com/"
+                    audience="https://blooming-coast-85852.herokuapp.com",
+                    issuer="https://auth.vdslab.jp/"
                 )
             except jwt.ExpiredSignatureError:
                 raise AuthError({"code": "token_expired",
                                  "description": "token is expired"}, 401)
-            except jwt.jwt.JWTClaimsError:
+            except jwt.JWTClaimsError:
                 raise AuthError({"code": "invalid_claims",
                                  "description":
                                  "incorrect claims,"
