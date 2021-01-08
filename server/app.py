@@ -177,7 +177,7 @@ def get_user_list():
     data = [d.to_json() for d in data]
     print(data)
     #data = OrderedDict(data)
-    #print(data)
+    # print(data)
     session.close()
     return jsonify(data)
 

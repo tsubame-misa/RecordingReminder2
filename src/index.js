@@ -11,8 +11,9 @@ import { Auth0Provider } from "@auth0/auth0-react";
 render(
   <Auth0Provider
     domain="recording-reminder.us.auth0.com"
+    //clientId="94VKGJS7zzIa7O60yuIr8ZOF6BBYxZ6M"
     clientId="rVpX2fcYShj3iDRseiAHeNQoIPZWSVct"
-    clientId={process.env.REACT_APP_CLIENT_ID}
+    //clientId={process.env.REACT_APP_CLIENT_ID}
     redirectUri={window.location.origin}
     audience="https://rere"
     useRefreshTokens
