@@ -13,7 +13,7 @@ render(
     clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={window.location.origin}
     audience={process.env.REACT_APP_AUTH0_AUDIENCE}
-    domain={process.env.REACT_APP_AUTH0_DOMAI}
+    domain="auth.vdslab.jp"
     //clientId="gZE2mJQUfh6xRVK0vB0gsx9Kh0adGOem"
     //domain="recording-reminder.us.auth0.com"
     //clientId="94VKGJS7zzIa7O60yuIr8ZOF6BBYxZ6M"
