@@ -21,7 +21,6 @@ export const request_user_tv_list = async (getAccessTokenSilently) => {
     const token = await getAccessTokenSilently({
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
-    console.log(token);
     const response = await fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_list`,
       {
