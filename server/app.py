@@ -74,6 +74,7 @@ def requires_auth(f):
         for key in jwks["keys"]:
             if key["kid"] == unverified_header["kid"]:
                 rsa_key = key
+        print(rsa_key)
         if rsa_key:
             try:
                 payload = jwt.decode(
