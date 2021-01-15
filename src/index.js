@@ -10,7 +10,6 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 render(
   <Auth0Provider
-    //domain={process.env.REACT_APP_AUTH0_DOMAIN}
     clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={window.location.origin}
     audience={process.env.REACT_APP_AUTH0_AUDIENCE}
@@ -25,8 +24,8 @@ render(
     //audience="https://rere"
     //audience="https://blooming-coast-85852.herokuapp.com"
 
-    //useRefreshTokens
-    //cacheLocation="localstorage"
+    useRefreshTokens
+    cacheLocation="localstorage"
   >
     <App />
   </Auth0Provider>,
