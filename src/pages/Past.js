@@ -32,7 +32,7 @@ const Past = () => {
     });
   }, []);
 
-  if (data !== undefined) {
+  if (data !== []) {
     data.sort((a, b) => {
       const a_date = convertDate(a.date);
       const b_date = convertDate(b.date);

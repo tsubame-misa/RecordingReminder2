@@ -5,33 +5,16 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonFab,
-  IonFabButton,
-  IonIcon,
   IonItem,
-  IonButton,
   IonAlert,
   useIonViewWillEnter,
-  IonChip,
   IonLabel,
+  IonItemDivider,
 } from "@ionic/react";
-import { add, ellipsisHorizontal, trash } from "ionicons/icons";
-import notifications from "../notification/index";
-import { useHistory } from "react-router-dom";
-import { convertToObject } from "typescript";
+
 import { convertDate, CmpTime, convertIcon } from "../pages/Future";
 import { useAuth0 } from "@auth0/auth0-react";
 import { request, request_put } from "../auth_fetch/index";
-import AX from "./img/AX.png";
-import CX from "./img/CX.png";
-import E from "./img/E.png";
-import MX from "./img/MX.png";
-import NHK from "./img/NHK.png";
-import NX from "./img/NX.png";
-import TBS from "./img/TBS.jpg";
-import TX from "./img/TX.png";
-import styles from "./styles.css";
-
 const splitArtist = (item) => {
   if (item === undefined) {
     return;
@@ -51,6 +34,7 @@ const Future = () => {
   const [ID, setID] = useState(null);
   const [idx, setIdx] = useState(-1);
   const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
+  const date_data = [];
 
   useIonViewWillEnter(() => {
     request(
@@ -62,15 +46,36 @@ const Future = () => {
   }, []);
   //console.log(data);
 
-  if (data !== undefined) {
+  if (data !== []) {
     data.sort((a, b) => {
-      if (a.date > b.date) {
+      const a_date = convertDate(a.date);
+      const b_date = convertDate(b.date);
+      if (a_date > b_date) {
         return 1;
       } else {
         return -1;
       }
     });
+    for (let i = 0; i < data.length; i++) {
+      const d = convertDate(data[i].date).slice(0, 10);
+      if (!date_data.includes(d)) {
+        date_data.push([d, 0]);
+      }
+    }
   }
+
+  const check = (date) => {
+    for (let i = 0; i < date_data.length; i++) {
+      if (date === date_data[i][0] && date_data[i][1] === 0) {
+        date_data[i][1] = 1;
+        return 1;
+      }
+      if (date <= date_data[i][0]) {
+        return 0;
+      }
+    }
+    return 0;
+  };
 
   const findIndx = (ID) => {
     if (data != undefined) {
@@ -120,38 +125,37 @@ const Future = () => {
             return CmpTime(d.date) > 0;
           })
           .map((d, id) => {
+            const date = convertDate(d.date);
             return (
-              /*<IonItem key={id}>
+              <div key={id}>
+                {check(date.slice(0, 10)) === 1 ? (
+                  <IonItemDivider>
+                    <IonLabel>{date.slice(0, 10)}</IonLabel>
+                  </IonItemDivider>
+                ) : (
+                  []
+                )}
                 <IonItem
+                  key={id}
+                  _ngcontent-yfv-c79=""
                   onClick={() => {
                     setID(d.id);
                     findIndx(d.id);
                     setShowAlert(true);
                   }}
+                  detail="false"
+                  target="_blank"
+                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
-                  {d.channel} &emsp;
-                  {convertDate(d.date)} &emsp;
-                  {d.name}
+                  <img
+                    className="icon_image"
+                    src={convertIcon(d.channel)}
+                  ></img>
+                  <IonLabel>
+                    &emsp; {convertDate(d.date)} &emsp; {d.name}
+                  </IonLabel>
                 </IonItem>
-                </IonItem>*/
-
-              <IonItem
-                key={id}
-                _ngcontent-yfv-c79=""
-                onClick={() => {
-                  setID(d.id);
-                  findIndx(d.id);
-                  setShowAlert(true);
-                }}
-                detail="false"
-                target="_blank"
-                class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-              >
-                <img className="icon_image" src={convertIcon(d.channel)}></img>
-                <IonLabel>
-                  &emsp; {convertDate(d.date)} &emsp; {d.name}
-                </IonLabel>
-              </IonItem>
+              </div>
             );
           })}
         <IonAlert

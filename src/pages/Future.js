@@ -97,9 +97,9 @@ const Future = ({ history }) => {
       setData(data);
     });
   }, []);
-  let sorted_data = [];
+
   if (data !== []) {
-    sorted_data = data.sort((a, b) => {
+    data.sort((a, b) => {
       const a_date = convertDate(a.date);
       const b_date = convertDate(b.date);
       if (a_date > b_date) {
@@ -117,10 +117,6 @@ const Future = ({ history }) => {
     }
   }
 
-  console.log(data);
-  console.log(date_data);
-  console.log(sorted_data);
-
   const delItem = (id) => {
     request_delete(
       `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
@@ -132,8 +128,6 @@ const Future = ({ history }) => {
 
   const check = (date) => {
     for (let i = 0; i < date_data.length; i++) {
-      //console.log(date_data[i], date);
-
       if (date === date_data[i][0] && date_data[i][1] === 0) {
         date_data[i][1] = 1;
         return 1;
