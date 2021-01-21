@@ -34,7 +34,9 @@ const Past = () => {
 
   if (data !== undefined) {
     data.sort((a, b) => {
-      if (a.date > b.date) {
+      const a_date = convertDate(a.date);
+      const b_date = convertDate(b.date);
+      if (a_date > b_date) {
         return 1;
       } else {
         return -1;
