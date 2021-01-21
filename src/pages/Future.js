@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -9,27 +9,17 @@ import {
   IonFabButton,
   IonIcon,
   IonItem,
-  IonButton,
   useIonViewWillEnter,
-  IonCheckbox,
-  IonList,
   IonItemSliding,
   IonItemOption,
   IonItemOptions,
   IonLoading,
-  IonItemGroup,
   IonLabel,
   IonItemDivider,
-  IonChip,
 } from "@ionic/react";
-import { add, ellipsisHorizontal, trash } from "ionicons/icons";
+import { add } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  request_user_tv_list,
-  request,
-  request_delete,
-} from "../auth_fetch/index";
-import { convertCompilerOptionsFromJson } from "typescript";
+import { request_user_tv_list, request_delete } from "../auth_fetch/index";
 import AX from "./img/AX.png";
 import CX from "./img/CX.png";
 import E from "./img/E.png";
@@ -39,49 +29,6 @@ import NX from "./img/NX.png";
 import TBS from "./img/TBS.jpg";
 import TX from "./img/TX.png";
 import styles from "./styles.css";
-/*
-export const convertDate = (input) => {
-  if (input === null || input == undefined) {
-    return "";
-  }
-
-  const dateList = input.split(/[-T:]/);
-
-  const date = new Date(
-    dateList[0],
-    dateList[1] - 1,
-    dateList[2],
-    dateList[3],
-    dateList[4],
-    0,
-    0
-  );
-
-  const createdDay =
-    dateList[0] +
-    "/" +
-    dateList[1] +
-    "/" +
-    " " +
-    dateList[3] +
-    ":" +
-    dateList[4];
-  //console.log(createdDay);
-
-  return createdDay;
-};
-*/
-
-const channel_icons = [
-  "NHK.png",
-  "E.png",
-  "NX.png",
-  "AX.png",
-  "TBS.jpg",
-  "TX.png",
-  "CX.png",
-  "MX.png",
-];
 
 export const convertIcon = (input) => {
   if (input == "NHK総合") {
@@ -137,8 +84,6 @@ export const CmpTime = (item) => {
     return 1;
   }
 };
-
-export const date_data = [];
 
 const Future = ({ history }) => {
   const [data, setData] = useState([]);
@@ -233,7 +178,7 @@ const Future = ({ history }) => {
           .map((d, id) => {
             const date = convertDate(d.date);
             return (
-              <div>
+              <div key={id}>
                 {check(date.slice(0, 10)) === 1 ? (
                   <IonItemDivider>
                     <IonLabel>{date.slice(0, 10)}</IonLabel>
