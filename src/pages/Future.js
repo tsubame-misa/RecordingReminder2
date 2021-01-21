@@ -130,6 +130,7 @@ export const CmpTime = (item) => {
   const current = new Date();
   const date0 = convertDate(item);
   const date = Date.parse(date0);
+
   if (date < current) {
     return -1;
   } else {
@@ -137,21 +138,14 @@ export const CmpTime = (item) => {
   }
 };
 
+export const date_data = [];
+
 const Future = ({ history }) => {
   const [data, setData] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  const date_data = [];
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-    getAccessTokenWithPopup,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request_user_tv_list(getAccessTokenSilently).then((data) => {
@@ -159,7 +153,7 @@ const Future = ({ history }) => {
     });
   }, []);
 
-  if (data != undefined) {
+  if (data[0] !== undefined) {
     data.sort((a, b) => {
       if (a.date > b.date) {
         return 1;
@@ -167,17 +161,35 @@ const Future = ({ history }) => {
         return -1;
       }
     });
+
+    for (let i = 0; i < data.length; i++) {
+      const d = convertDate(data[i].date).slice(0, 10);
+      if (!date_data.includes(d)) {
+        date_data.push([d, 0]);
+      }
+    }
   }
 
   const delItem = (id) => {
-    console.log("del", id);
-
     request_delete(
       `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
       getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
+  };
+
+  const check = (date) => {
+    for (let i = 0; i < date_data.length; i++) {
+      if (date === date_data[i][0] && date_data[i][1] === 0) {
+        date_data[i][1] = 1;
+        return 1;
+      }
+      if (date <= date_data[i][0]) {
+        return 0;
+      }
+    }
+    return 0;
   };
 
   if (data === [] || data === undefined) {
@@ -219,65 +231,49 @@ const Future = ({ history }) => {
             return CmpTime(d.date) > 0;
           })
           .map((d, id) => {
+            const date = convertDate(d.date);
             return (
-              <IonItemSliding key={id}>
-                <IonItem
-                  _ngcontent-yfv-c79=""
-                  onClick={() => {
-                    history.push(`/detail/${d.id}/from_future`);
-                  }}
-                  detail="false"
-                  target="_blank"
-                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-                >
-                  {/*<IonChip>{d.channel}</IonChip>*/}
-                  <img
-                    className="icon_image"
-                    src={convertIcon(d.channel)}
-                  ></img>
-                  <IonLabel>
-                    &emsp; {convertDate(d.date)} &emsp; {d.name}
-                  </IonLabel>
-                </IonItem>
-                <IonItemOptions>
-                  <IonItemOption
-                    color="danger"
-                    expandable
+              <div>
+                {check(date.slice(0, 10)) === 1 ? (
+                  <IonItemDivider>
+                    <IonLabel>{date.slice(0, 10)}</IonLabel>
+                  </IonItemDivider>
+                ) : (
+                  []
+                )}
+                <IonItemSliding key={id}>
+                  <IonItem
+                    _ngcontent-yfv-c79=""
                     onClick={() => {
-                      delItem(d.id);
+                      history.push(`/detail/${d.id}/from_future`);
                     }}
+                    detail="false"
+                    target="_blank"
+                    class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                   >
-                    delete
-                  </IonItemOption>
-                </IonItemOptions>
-              </IonItemSliding>
+                    <img
+                      className="icon_image"
+                      src={convertIcon(d.channel)}
+                    ></img>
+                    <IonLabel>
+                      &emsp; {date.slice(11)} &emsp; {d.name}
+                    </IonLabel>
+                  </IonItem>
+                  <IonItemOptions>
+                    <IonItemOption
+                      color="danger"
+                      expandable
+                      onClick={() => {
+                        delItem(d.id);
+                      }}
+                    >
+                      delete
+                    </IonItemOption>
+                  </IonItemOptions>
+                </IonItemSliding>
+              </div>
             );
           })}
-
-        {/*<IonList>
-          <IonItemGroup>
-            <IonItemDivider>
-              <IonLabel>label</IonLabel>
-            </IonItemDivider>
-            <IonItemSliding>
-              <IonItem
-                _ngcontent-yfv-c79=""
-                onClick={() => {
-                  history.push(`/detail/${data[0].id}/from_future`);
-                }}
-                detail="false"
-                target="_blank"
-                class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-              >
-                <IonChip>huji</IonChip>
-                <IonLabel>mezamashi</IonLabel>
-              </IonItem>
-              <IonItemOptions>
-                <IonItemOption>delete</IonItemOption>
-              </IonItemOptions>
-            </IonItemSliding>
-          </IonItemGroup>
-              </IonList>*/}
 
         <IonLoading
           cssClass="my-custom-class"
