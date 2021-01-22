@@ -89,12 +89,12 @@ const Setting = ({ history }) => {
           </IonItem>
         </IonList>
 
-        <IonItem>
+        {/*<IonItem>
           カラー
           <IonButton color="dark" fill="fill" slot="end">
             <IonIcon icon={chevronForwardOutline}></IonIcon>
           </IonButton>
-        </IonItem>
+        </IonItem>*/}
 
         <IonList>
           <IonItem lines="none"></IonItem>

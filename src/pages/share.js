@@ -147,7 +147,7 @@ const Future = () => {
                     src={convertIcon(d.channel)}
                   ></img>
                   <IonLabel>
-                    &emsp; {convertDate(d.date)} &emsp; {d.name}
+                    &emsp; {date.slice(11)} &emsp; {d.name}
                   </IonLabel>
                 </IonItem>
               </div>

@@ -26,6 +26,7 @@ import {
   request_delete,
 } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
+import { convertDate } from "../pages/Future";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -167,6 +168,8 @@ const Addprogram = ({ history }) => {
   };
 
   const CheckAndNoti = (a, b) => {
+    console.log(a, b);
+
     const dateListA = a.split(/[-T:]/);
     const dateListB = b.split(/[-T:]/);
     const dateB = new Date(
@@ -178,6 +181,9 @@ const Addprogram = ({ history }) => {
       0,
       0
     );
+
+    console.log(dateListA);
+    console.log(dateListB);
 
     if (
       //すでにその日に番組がある場合通知しない
@@ -206,8 +212,17 @@ const Addprogram = ({ history }) => {
         m = newDate.getMonth();
         d = newDate.getDate();
       }
+      console.log(y, m, d);
 
-      const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
+      const date = new Date(
+        y,
+        m - 1,
+        d,
+        notiDateList[0],
+        notiDateList[1],
+        0,
+        0
+      );
 
       //差分の秒数後に通知
       console.log(date);

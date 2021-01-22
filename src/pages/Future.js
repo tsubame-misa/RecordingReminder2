@@ -92,13 +92,18 @@ const Future = ({ history }) => {
 
   const { getAccessTokenSilently } = useAuth0();
 
-  useIonViewWillEnter(() => {
+  /*useIonViewWillEnter(() => {
     request_user_tv_list(getAccessTokenSilently).then((data) => {
       setData(data);
     });
-  }, []);
+  }, []);*/
+  useIonViewWillEnter(async () => {
+    const d = await request_user_tv_list(getAccessTokenSilently);
+    setData(d);
+  });
 
-  if (data !== []) {
+  if (!(data === [] || data === undefined)) {
+    ///if (data !== [] && data !== undefined) {
     data.sort((a, b) => {
       const a_date = convertDate(a.date);
       const b_date = convertDate(b.date);
@@ -139,7 +144,7 @@ const Future = ({ history }) => {
     return 0;
   };
 
-  /* if (data === [] || data === undefined) {
+  /*if (data === [] || data === undefined) {
     return (
       <IonPage>
         <IonHeader>
