@@ -24,10 +24,6 @@ const splitArtist = (item) => {
   return dateList.splice(1, dateList.length - 2);
 };
 
-const Loading = () => {
-  return <p>Loading...</p>;
-};
-
 const Future = () => {
   const [data, setData] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
@@ -44,7 +40,6 @@ const Future = () => {
       setData(data);
     });
   }, []);
-  //console.log(data);
 
   if (data !== []) {
     data.sort((a, b) => {
@@ -97,7 +92,7 @@ const Future = () => {
     );
   };
 
-  if (data === [] || data === undefined) {
+  /*if (data === [] || data === undefined) {
     return (
       <IonPage>
         <IonHeader>
@@ -109,7 +104,7 @@ const Future = () => {
         <IonContent fullscreen></IonContent>
       </IonPage>
     );
-  }
+  }*/
 
   return (
     <IonPage>

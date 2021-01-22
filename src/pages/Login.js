@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  IonHeader,
-  IonLoading,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonPage,
-  IonButton,
-  IonFooter,
-} from "@ionic/react";
+import { IonLoading, IonContent, IonPage, IonButton } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import icon from "./img/icon_white_circle.png";
 

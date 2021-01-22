@@ -73,7 +73,7 @@ const Past = () => {
     });
   };
 
-  if (data === [] || data === undefined) {
+  /*if (data === [] || data === undefined) {
     return (
       <IonPage>
         <IonHeader>
@@ -85,7 +85,7 @@ const Past = () => {
         <IonContent fullscreen></IonContent>
       </IonPage>
     );
-  }
+  }*/
 
   return (
     <IonPage>

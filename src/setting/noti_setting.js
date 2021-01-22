@@ -35,15 +35,7 @@ const Setting = () => {
   const [preNotiDate, setPreNotiDate] = useState("pre");
   const [checked, setChecked] = useState(1);
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(

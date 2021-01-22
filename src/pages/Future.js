@@ -139,7 +139,7 @@ const Future = ({ history }) => {
     return 0;
   };
 
-  if (data === [] || data === undefined) {
+  /* if (data === [] || data === undefined) {
     return (
       <IonPage>
         <IonHeader>
@@ -162,7 +162,7 @@ const Future = ({ history }) => {
         </IonContent>
       </IonPage>
     );
-  }
+  }*/
 
   return (
     <IonPage>

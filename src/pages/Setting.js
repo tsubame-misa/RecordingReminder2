@@ -31,16 +31,7 @@ const Setting = ({ history }) => {
   const [preNotiTime, setPreNotiTime] = useState("20:00");
   const [preNotiDate, setPreNotiDate] = useState("pre");
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-    getAccessTokenWithPopup,
-  } = useAuth0();
+  const { logout, getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
