@@ -214,15 +214,7 @@ const Addprogram = ({ history }) => {
       }
       console.log(y, m, d);
 
-      const date = new Date(
-        y,
-        m - 1,
-        d,
-        notiDateList[0],
-        notiDateList[1],
-        0,
-        0
-      );
+      const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
 
       //差分の秒数後に通知
       console.log(date);
