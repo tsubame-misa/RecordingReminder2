@@ -201,7 +201,7 @@ const Addprogram = ({ history }) => {
       const notiDateList = notiTime.split(/[-T:]/);
       const current = new Date();
       let y = dateList[0],
-        m = dateList[1],
+        m = dateList[1] - 1,
         d = dateListB[2];
 
       if (notiDate === "pre") {
