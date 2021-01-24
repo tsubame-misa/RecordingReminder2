@@ -20,6 +20,8 @@ import {
   IonList,
   IonCard,
   IonAlert,
+  IonGrid,
+  IonRow,
 } from "@ionic/react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -174,36 +176,42 @@ const Detail = ({ history }) => {
           {/*できれば２＊５にしたい*/}
           <IonCard>
             <IonItem>アーティスト</IonItem>
-            {artists.map((a, i) => (
-              <IonItem key={i}>
-                <IonLabel>{a.name}</IonLabel>
-                <IonCheckbox
-                  slot="end"
-                  required
-                  checked={
-                    data != null &&
-                    data !== undefined &&
-                    data.artist !== undefined &&
-                    data.artist.includes(a.name)
-                  }
-                  onIonChange={() => {
-                    if (data.artist.includes(a.name)) {
-                      setData(
-                        Object.assign({}, data, {
-                          artist: data.artist.filter((name) => name !== a.name),
-                        })
-                      );
-                    } else {
-                      setData(
-                        Object.assign({}, data, {
-                          artist: data.artist.concat([a.name]),
-                        })
-                      );
-                    }
-                  }}
-                />
-              </IonItem>
-            ))}
+            <IonGrid>
+              <IonRow>
+                {artists.map((a, i) => (
+                  <IonItem key={i}>
+                    <IonLabel>{a.name}</IonLabel>
+                    <IonCheckbox
+                      slot="end"
+                      required
+                      checked={
+                        data != null &&
+                        data !== undefined &&
+                        data.artist !== undefined &&
+                        data.artist.includes(a.name)
+                      }
+                      onIonChange={() => {
+                        if (data.artist.includes(a.name)) {
+                          setData(
+                            Object.assign({}, data, {
+                              artist: data.artist.filter(
+                                (name) => name !== a.name
+                              ),
+                            })
+                          );
+                        } else {
+                          setData(
+                            Object.assign({}, data, {
+                              artist: data.artist.concat([a.name]),
+                            })
+                          );
+                        }
+                      }}
+                    />
+                  </IonItem>
+                ))}
+              </IonRow>
+            </IonGrid>
           </IonCard>
 
           <IonItem>

@@ -40,7 +40,7 @@ const Addprogram = ({ history }) => {
   const [notiDate, setNotiDate] = useState("pre");
   const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
-  const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request_user_tv_list(getAccessTokenSilently).then((data) => {
@@ -87,7 +87,7 @@ const Addprogram = ({ history }) => {
     { name: "伊野尾慧" },
     { name: "高木雄也" },
     { name: "八乙女光" },
-    { name: "藪宏太" },
+    { name: "藪宏太　" },
     { name: "全員" },
   ];
 
@@ -98,17 +98,15 @@ const Addprogram = ({ history }) => {
       programName === null ||
       artist === null
     ) {
+      /*ionAlertに直す */
       alert("記入漏れがあります");
       return 0;
     }
 
-    //同じ日にちのものがない確認し、なければ通知の予約をする
-    setNotification();
-
     //const dateList = data.date.split(/[-T:]/);
     const dateList = selectedDate.split(/[-T:]/);
     // const current = new Date();
-    console.log(dateList);
+    //console.log(dateList);
     const date = new Date(
       dateList[0],
       dateList[1] - 1,
@@ -121,11 +119,10 @@ const Addprogram = ({ history }) => {
     //const realDate = date.getUTCMonth();
     //console.log(realDate);
 
-    console.log(date);
+    //console.log(date);
 
     const data = {
       channel: selectedChannel,
-      //date: selectedDate,
       date: date,
       name: programName,
       artist: artist,
@@ -142,13 +139,26 @@ const Addprogram = ({ history }) => {
     setEndTime(null);
     setText(null);
 
-    console.log(data);
+    // get_id(data);
+    //同じ日にちのものがない確認し、なければ通知の予約をする
+    //setNotification();
+
+    //console.log(data);
 
     return request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
       getAccessTokenSilently,
       data
     );
+  };
+
+  const get_id = async (data) => {
+    var id = await request_put(
+      `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
+      getAccessTokenSilently,
+      data
+    );
+    console.log(id);
   };
 
   const setNotification = () => {
@@ -333,6 +343,7 @@ const Addprogram = ({ history }) => {
           expand="full"
           onClick={async () => {
             const i = await sendData();
+            console.log(i);
             if (i !== 0) {
               history.push("/future");
             }
