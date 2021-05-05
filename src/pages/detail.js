@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   IonContent,
   IonHeader,
@@ -17,7 +17,7 @@ import {
   IonInput,
   useIonViewWillEnter,
   IonCheckbox,
-  IonList,
+  // IonList,
   IonCard,
   IonAlert,
   IonGrid,
@@ -26,9 +26,9 @@ import {
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  request_user_tv_list,
+  // request_user_tv_list,
   request_put,
-  request_delete,
+  //request_delete,
   request,
 } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -41,7 +41,7 @@ const Detail = ({ history }) => {
   const path = window.location.pathname;
   const pathList = path.split(/[/]/);
   const backPass = pathList[pathList.length - 1];
-  const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
@@ -94,7 +94,7 @@ const Detail = ({ history }) => {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              {backPass == "from_future" ? (
+              {backPass === "from_future" ? (
                 <IonBackButton defaultHref="/" />
               ) : (
                 <IonBackButton defaultHref="/past" />
@@ -113,7 +113,7 @@ const Detail = ({ history }) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            {backPass == "from_future" ? (
+            {backPass === "from_future" ? (
               <IonBackButton defaultHref="/" />
             ) : (
               <IonBackButton defaultHref="/past" />

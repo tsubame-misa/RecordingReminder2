@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -29,7 +29,7 @@ const Future = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [ID, setID] = useState(null);
   const [idx, setIdx] = useState(-1);
-  const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const date_data = [];
 
   useIonViewWillEnter(() => {
@@ -145,6 +145,7 @@ const Future = () => {
                   <img
                     className="icon_image"
                     src={convertIcon(d.channel)}
+                    alt=""
                   ></img>
                   <IonLabel>
                     &emsp; {date.slice(11)} &emsp; {d.name}

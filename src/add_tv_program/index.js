@@ -9,7 +9,7 @@ import {
   IonItem,
   IonLabel,
   IonButton,
-  IonButtons,
+  //IonButtons,
   IonSelect,
   IonSelectOption,
   IonDatetime,
@@ -27,6 +27,7 @@ import {
 } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { convertDate } from "../pages/Future";
+import { useStorage } from "@ionic/react-hooks/storage";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -41,6 +42,10 @@ const Addprogram = ({ history }) => {
   const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
+
+  const TASKS_STORAGE = "tasks";
+  const { get, set } = useStorage();
+  const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
 
   useIonViewWillEnter(() => {
     request_user_tv_list(getAccessTokenSilently).then((data) => {
@@ -58,14 +63,24 @@ const Addprogram = ({ history }) => {
   }, []);
   //console.log(notiTime);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (userNoti !== null && userNoti !== undefined) {
       const notiList = userNoti.split(/[/:]/);
       //console.log(notiList);
       setNotiTime(notiList[1] + ":" + notiList[2]);
       setNotiDate(notiList[0]);
     }
-  });
+  });*/
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const tasksString = await get(TASKS_STORAGE);
+      const taskData = tasksString ? JSON.parse(tasksString) : [];
+      console.log(taskData);
+      setTask2(taskData);
+    };
+    getTasks();
+  }, [get]);
 
   const channel = [
     { name: "NHK総合" },
@@ -141,7 +156,7 @@ const Addprogram = ({ history }) => {
 
     // get_id(data);
     //同じ日にちのものがない確認し、なければ通知の予約をする
-    //setNotification();
+    setNotification();
 
     //console.log(data);
 
@@ -192,8 +207,8 @@ const Addprogram = ({ history }) => {
       0
     );
 
-    console.log(dateListA);
-    console.log(dateListB);
+    //console.log(dateListA);
+    //console.log(dateListB);
 
     if (
       //すでにその日に番組がある場合通知しない
@@ -222,18 +237,23 @@ const Addprogram = ({ history }) => {
         m = newDate.getMonth();
         d = newDate.getDate();
       }
-      console.log(y, m, d);
-
+      //console.log(y, m, d);
+      const id =
+        String(y) + String(m).padStart(2, "0") + String(d).padStart(2, "0");
+      // console.log("id = ", id);
       const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
 
       //差分の秒数後に通知
-      console.log(date);
-      console.log(current);
+      //console.log(date);
+      //console.log(current);
       const diff = date.getTime() - current.getTime();
       const second = Math.floor(diff / 1000);
-      console.log(second);
+      //console.log(second);
       if (second > 0) {
-        notifications.schedule(second);
+        tasks2.push({ id: id, min: second });
+        set(TASKS_STORAGE, JSON.stringify(tasks2));
+        console.log(tasks2);
+        notifications.schedule(second, id, tasks2);
         /*console.log(log);
 
         let notiData = JSON.parse(localStorage.getItem("notiData"));

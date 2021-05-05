@@ -31,28 +31,28 @@ import TX from "./img/TX.png";
 import styles from "./styles.css";
 
 export const convertIcon = (input) => {
-  if (input == "NHK総合") {
+  if (input === "NHK総合") {
     return NHK;
   }
-  if (input == "Eテレ") {
+  if (input === "Eテレ") {
     return E;
   }
-  if (input == "日テレ") {
+  if (input === "日テレ") {
     return NX;
   }
-  if (input == "テレビ朝日") {
+  if (input === "テレビ朝日") {
     return AX;
   }
-  if (input == "TBS") {
+  if (input === "TBS") {
     return TBS;
   }
-  if (input == "テレビ東京") {
+  if (input === "テレビ東京") {
     return TX;
   }
-  if (input == "フジテレビ") {
+  if (input === "フジテレビ") {
     return CX;
   }
-  if (input == "東京MX") {
+  if (input === "東京MX") {
     return MX;
   }
 };
@@ -206,6 +206,7 @@ const Future = ({ history }) => {
                     <img
                       className="icon_image"
                       src={convertIcon(d.channel)}
+                      alt=""
                     ></img>
                     <IonLabel>
                       &emsp; {date.slice(11)} &emsp; {d.name}

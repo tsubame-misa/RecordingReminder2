@@ -124,6 +124,7 @@ const Past = () => {
                     <img
                       className="icon_image"
                       src={convertIcon(d.channel)}
+                      alt=""
                     ></img>
                     <IonLabel>
                       &emsp;{date.slice(11)} &emsp; {d.name}

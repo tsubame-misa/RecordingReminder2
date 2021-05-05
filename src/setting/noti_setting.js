@@ -6,21 +6,21 @@ import {
   IonTitle,
   IonToolbar,
   IonItem,
-  IonCard,
+  //IonCard,
   IonSelect,
   IonSelectOption,
   IonDatetime,
   IonButton,
   IonAlert,
-  IonIcon,
+  // IonIcon,
   useIonViewWillEnter,
-  IonList,
-  IonListHeader,
+  //IonList,
+  //IonListHeader,
   IonBackButton,
-  IonLabel,
-  IonToggle,
+  //IonLabel,
+  //IonToggle,
 } from "@ionic/react";
-import { chevronForwardOutline } from "ionicons/icons";
+//import { chevronForwardOutline } from "ionicons/icons";
 import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -33,7 +33,7 @@ const Setting = () => {
   const [notiDateChenged, setNotiDateChanged] = useState(1);
   const [preNotiTime, setPreNotiTime] = useState("20:00");
   const [preNotiDate, setPreNotiDate] = useState("pre");
-  const [checked, setChecked] = useState(1);
+  //const [checked, setChecked] = useState(1);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -114,7 +114,7 @@ const Setting = () => {
           &emsp;
           <IonDatetime
             displayFormat="HH:mm"
-            value={notiTimeChenged == 1 ? preNotiTime : notiTime}
+            value={notiTimeChenged === 1 ? preNotiTime : notiTime}
             //minuteValues="0,15,30,45"
             onIonChange={(e) => {
               setNotiTimeChanged(0);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IonLoading, IonContent, IonPage, IonButton } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import icon from "./img/icon_white_circle.png";
@@ -13,6 +13,7 @@ const Login = () => {
           <img
             src={icon}
             className="my-4 text-center object-contain h-48 w-full"
+            alt=""
           ></img>
           <div className="text-center text-xl  m-1">
             <p>「Re」cording「Re」minder</p>
