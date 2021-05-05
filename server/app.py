@@ -67,15 +67,15 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         token = get_token_auth_header()
         jsonurl = urllib.request.urlopen(
-           # "https://recording-reminder.us.auth0.com/.well-known/jwks.json")
-            "https://auth.vdslab.jp/.well-known/jwks.json")
+            "https://recording-reminder.us.auth0.com/.well-known/jwks.json")
+        # "https://auth.vdslab.jp/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
         unverified_header = jwt.get_unverified_header(token)
         rsa_key = {}
         for key in jwks["keys"]:
             if key["kid"] == unverified_header["kid"]:
                 rsa_key = key
-        print(rsa_key)
+        # print(rsa_key)
         if rsa_key:
             try:
                 payload = jwt.decode(
@@ -84,8 +84,8 @@ def requires_auth(f):
 
                     algorithms=['RS256'],
                     audience="https://blooming-coast-85852.herokuapp.com",
-                    issuer="https://auth.vdslab.jp/"
-                    #issuer="https://recording-reminder.us.auth0.com"
+                    # issuer="https://auth.vdslab.jp/"
+                    issuer="https://recording-reminder.us.auth0.com/"
                 )
             except jwt.ExpiredSignatureError:
                 raise AuthError({"code": "token_expired",
@@ -149,7 +149,7 @@ def add_tv_list():
     session.commit()
     session.close()
 
-    return get_user_list()
+    return jsonify(1)
 
 
 @app.route('/api/get_user_list', methods=['GET'])
@@ -160,7 +160,7 @@ def get_user_list():
     # get user list
     user_t = session.query(User).all()
     user_list = list(user_t[i].id for i in range(len(user_t)))
-    print(user_list)
+    # print(user_list)
     registered = False
     # check registerd
     for _id in user_list:
@@ -178,7 +178,7 @@ def get_user_list():
 
     data = session.query(UserTvLIst).filter_by(user_id=user_id).all()
     data = [d.to_json() for d in data]
-    print(data)
+    # print(data)
     #data = OrderedDict(data)
     # print(data)
     session.close()

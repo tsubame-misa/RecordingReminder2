@@ -23,10 +23,8 @@ import {
   request_put,
   request_user_tv_list,
   request,
-  request_delete,
 } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
-import { convertDate } from "../pages/Future";
 import { useStorage } from "@ionic/react-hooks/storage";
 
 const Addprogram = ({ history }) => {
@@ -44,7 +42,7 @@ const Addprogram = ({ history }) => {
   const { getAccessTokenSilently } = useAuth0();
 
   const TASKS_STORAGE = "tasks";
-  const { get, set } = useStorage();
+  const { get, set, remove } = useStorage();
   const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
 
   useIonViewWillEnter(() => {
@@ -61,7 +59,6 @@ const Addprogram = ({ history }) => {
       setUserNoti(data);
     });
   }, []);
-  //console.log(notiTime);
 
   /*useEffect(() => {
     if (userNoti !== null && userNoti !== undefined) {
@@ -76,7 +73,6 @@ const Addprogram = ({ history }) => {
     const getTasks = async () => {
       const tasksString = await get(TASKS_STORAGE);
       const taskData = tasksString ? JSON.parse(tasksString) : [];
-      console.log(taskData);
       setTask2(taskData);
     };
     getTasks();
@@ -118,10 +114,7 @@ const Addprogram = ({ history }) => {
       return 0;
     }
 
-    //const dateList = data.date.split(/[-T:]/);
     const dateList = selectedDate.split(/[-T:]/);
-    // const current = new Date();
-    //console.log(dateList);
     const date = new Date(
       dateList[0],
       dateList[1] - 1,
@@ -131,10 +124,6 @@ const Addprogram = ({ history }) => {
       0,
       0
     );
-    //const realDate = date.getUTCMonth();
-    //console.log(realDate);
-
-    //console.log(date);
 
     const data = {
       channel: selectedChannel,
@@ -154,11 +143,9 @@ const Addprogram = ({ history }) => {
     setEndTime(null);
     setText(null);
 
-    // get_id(data);
     //同じ日にちのものがない確認し、なければ通知の予約をする
-    setNotification();
-
-    //console.log(data);
+    //setNotification(date);
+    CheckAndNoti(date, selectedDate, date);
 
     return request_put(
       `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
@@ -167,106 +154,83 @@ const Addprogram = ({ history }) => {
     );
   };
 
-  const get_id = async (data) => {
-    var id = await request_put(
-      `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
-      getAccessTokenSilently,
-      data
-    );
-    console.log(id);
-  };
+  const CheckAndNoti = (a, b, preDate) => {
+    const item = calcSecond(b);
+    const id = item["id"];
+    const second = item["second"];
 
-  const setNotification = () => {
-    let d;
-    console.log(data);
-    if (data === [] || data === undefined) {
-      //通知する
-      CheckAndNoti(selectedDate, selectedDate);
-    } else {
-      for (let i = 0; i < data.length; i++) {
-        d = CheckAndNoti(data[i].date, selectedDate);
-        if (d === 1) {
-          break;
+    //同じ日時があったら通知しない(is_notiをfalseに)
+    let is_noti = true;
+    for (let item of tasks2) {
+      if (item.id === id) {
+        is_noti = false;
+        break;
+      }
+    }
+
+    if (second > 0 && is_noti) {
+      console.log("通知する！！");
+      //通知の前からある予約の秒数の再設定
+      for (let item of tasks2) {
+        const obj = calcSecond(item.date);
+        item.id = obj.id;
+        item.min = obj.second;
+        if (item.min < 0) {
+          item.rm = true;
         }
       }
+      tasks2.push({ id: id, min: second, date: b, rm: false });
+      set(TASKS_STORAGE, JSON.stringify(tasks2));
+      console.log(tasks2);
+      const d2 = tasks2.filter((item) => item.rm !== true);
+      remove(TASKS_STORAGE);
+      setTask2(d2);
+      console.log(d2);
+      set(TASKS_STORAGE, JSON.stringify(d2));
+      console.log(tasks2);
+      notifications.schedule(second, id, tasks2);
+      return 1;
+    } else {
+      console.log("通知しない");
+      return 0;
     }
   };
 
-  const CheckAndNoti = (a, b) => {
-    console.log(a, b);
-
-    const dateListA = a.split(/[-T:]/);
-    const dateListB = b.split(/[-T:]/);
+  const calcSecond = (b) => {
+    const dateList = b.split(/[-T:]/);
     const dateB = new Date(
-      dateListB[0],
-      dateListB[1] - 1,
-      dateListB[2],
-      dateListB[3],
-      dateListB[4],
+      dateList[0],
+      dateList[1] - 1,
+      dateList[2],
+      dateList[3],
+      dateList[4],
       0,
       0
-    );
+    ); //通知する 000* 60 * 60*24
 
-    //console.log(dateListA);
-    //console.log(dateListB);
+    const notiDateList = notiTime.split(/[-T:]/);
+    const current = new Date();
+    let y = dateList[0],
+      m = dateList[1] - 1,
+      d = dateList[2];
 
-    if (
-      //すでにその日に番組がある場合通知しない
-      a !== b &&
-      dateListA[0] === dateListB[0] &&
-      dateListA[1] === dateListB[1] &&
-      dateListA[2] === dateListB[2]
-    ) {
-      return 0;
-    } else {
-      //通知する 000* 60 * 60*24
-      console.log("通知する！");
+    const id =
+      String(y) + String(m + 1).padStart(2, "0") + String(d).padStart(2, "0");
 
-      const dateList = b.split(/[-T:]/);
-      const notiDateList = notiTime.split(/[-T:]/);
-      const current = new Date();
-      let y = dateList[0],
-        m = dateList[1] - 1,
-        d = dateListB[2];
-
-      if (notiDate === "pre") {
-        //一日引く
-        const dateTime = dateB.getTime() - 1000 * 60 * 60 * 24;
-        const newDate = new Date(dateTime);
-        y = newDate.getFullYear();
-        m = newDate.getMonth();
-        d = newDate.getDate();
-      }
-      //console.log(y, m, d);
-      const id =
-        String(y) + String(m).padStart(2, "0") + String(d).padStart(2, "0");
-      // console.log("id = ", id);
-      const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
-
-      //差分の秒数後に通知
-      //console.log(date);
-      //console.log(current);
-      const diff = date.getTime() - current.getTime();
-      const second = Math.floor(diff / 1000);
-      //console.log(second);
-      if (second > 0) {
-        tasks2.push({ id: id, min: second });
-        set(TASKS_STORAGE, JSON.stringify(tasks2));
-        console.log(tasks2);
-        notifications.schedule(second, id, tasks2);
-        /*console.log(log);
-
-        let notiData = JSON.parse(localStorage.getItem("notiData"));
-        if (notiData == null || notiData === undefined) {
-          notiData = [log];
-        } else {
-          notiData.push(log);
-        }
-        localStorage.setItem("notiData", JSON.stringify(notiData));*/
-      }
-
-      return 1;
+    if (notiDate === "pre") {
+      //一日引く
+      const dateTime = dateB.getTime() - 1000 * 60 * 60 * 24;
+      const newDate = new Date(dateTime);
+      y = newDate.getFullYear();
+      m = newDate.getMonth();
+      d = newDate.getDate();
     }
+    const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
+
+    //差分の秒数後に通知
+    const diff = date.getTime() - current.getTime();
+    const second = Math.floor(diff / 1000);
+    return { id: id, second: second };
   };
 
   return (
@@ -363,7 +327,6 @@ const Addprogram = ({ history }) => {
           expand="full"
           onClick={async () => {
             const i = await sendData();
-            console.log(i);
             if (i !== 0) {
               history.push("/future");
             }
