@@ -26,6 +26,7 @@ import {
 } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
+import { convertCompilerOptionsFromJson, getSourceMapRange } from "typescript";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -35,8 +36,8 @@ const Addprogram = ({ history }) => {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [artist, setArtist] = useState();
-  const [notiTime, setNotiTime] = useState("20:00");
-  const [notiDate, setNotiDate] = useState("pre");
+  const [notiTime, setNotiTime] = useState();
+  const [notiDate, setNotiDate] = useState();
   //const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
@@ -56,10 +57,12 @@ const Addprogram = ({ history }) => {
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
       getAccessTokenSilently
     ).then((data) => {
-      console.log(data, "2");
-      setUserNoti(data);
+      const data_list = data.split(/[/]/);
+      console.log(data_list);
+      setNotiDate(data_list[0]);
+      setNotiTime(data_list[1]);
     });
-  }, []);
+  }, [notiDate, notiTime]);
 
   /*useEffect(() => {
     if (userNoti !== null && userNoti !== undefined) {
@@ -164,10 +167,13 @@ const Addprogram = ({ history }) => {
     let is_noti = true;
     for (let item of tasks2) {
       if (item.id === id) {
+        console.log("aaa", item.id, id);
         is_noti = false;
         break;
       }
     }
+
+    console.log(second, is_noti);
 
     if (second > 0 && is_noti) {
       console.log("通知する！！");
@@ -210,6 +216,7 @@ const Addprogram = ({ history }) => {
     ); //通知する 000* 60 * 60*24
 
     const notiDateList = notiTime.split(/[-T:]/);
+    console.log(notiDateList);
     const current = new Date();
     let y = dateList[0],
       m = dateList[1] - 1,
@@ -227,9 +234,11 @@ const Addprogram = ({ history }) => {
       d = newDate.getDate();
     }
     const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
-
+    console.log(date);
+    console.log(current);
     //差分の秒数後に通知
     const diff = date.getTime() - current.getTime();
+    console.log(date, current, diff);
     const second = Math.floor(diff / 1000);
     return { id: id, second: second };
   };

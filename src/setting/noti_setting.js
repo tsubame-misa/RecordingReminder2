@@ -25,6 +25,7 @@ import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
 import notifications from "../notification/index";
+import { createNoSubstitutionTemplateLiteral } from "typescript";
 
 const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);
@@ -43,7 +44,6 @@ const Setting = () => {
   const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
 
   useIonViewWillEnter(() => {
-    console.log("whhhhh");
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
       getAccessTokenSilently
@@ -57,7 +57,6 @@ const Setting = () => {
   }, []);
 
   useEffect(() => {
-    console.log("pdokpgo");
     const getTasks = async () => {
       const tasksString = await get(TASKS_STORAGE);
       const taskData = tasksString ? JSON.parse(tasksString) : [];
