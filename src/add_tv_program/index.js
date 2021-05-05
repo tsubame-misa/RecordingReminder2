@@ -37,7 +37,7 @@ const Addprogram = ({ history }) => {
   const [artist, setArtist] = useState();
   const [notiTime, setNotiTime] = useState("20:00");
   const [notiDate, setNotiDate] = useState("pre");
-  const [data, setData] = useState([]);
+  //const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -45,17 +45,18 @@ const Addprogram = ({ history }) => {
   const { get, set, remove } = useStorage();
   const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
 
-  useIonViewWillEnter(() => {
+  /*useIonViewWillEnter(() => {
     request_user_tv_list(getAccessTokenSilently).then((data) => {
       setData(data);
     });
-  }, []);
+  }, []);*/
 
   useIonViewWillEnter(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
       getAccessTokenSilently
     ).then((data) => {
+      console.log(data, "2");
       setUserNoti(data);
     });
   }, []);
@@ -188,7 +189,7 @@ const Addprogram = ({ history }) => {
       console.log(d2);
       set(TASKS_STORAGE, JSON.stringify(d2));
       console.log(tasks2);
-      notifications.schedule(second, id, tasks2);
+      notifications.schedule(tasks2);
       return 1;
     } else {
       console.log("通知しない");

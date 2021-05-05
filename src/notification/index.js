@@ -6,7 +6,7 @@ import { useStorage } from "@ionic/react-hooks/storage";
 const { LocalNotifications } = Plugins;
 
 class Notifications {
-  async schedule(minute, id, data) {
+  async schedule(data) {
     try {
       // Request/ check permissions
       //if (!(await LocalNotifications.requestPermission()).granted) return;
@@ -35,7 +35,6 @@ class Notifications {
       });
 
       console.log("scheduled notifications", notifs);
-      console.log(id);
 
       return await notifs;
     } catch (error) {
