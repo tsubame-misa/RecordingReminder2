@@ -193,7 +193,7 @@ const Addprogram = ({ history }) => {
       remove(TASKS_STORAGE);
       setTask2(d2);
       console.log(d2);
-      set(TASKS_STORAGE, JSON.stringify(d2));
+      set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);
       notifications.schedule(tasks2);
       return 1;

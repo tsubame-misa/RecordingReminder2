@@ -6,6 +6,46 @@ import { useStorage } from "@ionic/react-hooks/storage";
 const { LocalNotifications } = Plugins;
 
 class Notifications {
+  async removeAllListeners() {
+    try {
+      console.log("hello rm!");
+      LocalNotifications.removeAllListeners();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async stopLocalPush() {
+    try {
+      LocalNotifications.getPending().then(
+        (res) => {
+          console.log(res, "elo");
+          LocalNotifications.cancel(res);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async check() {
+    try {
+      LocalNotifications.getPending().then(
+        (res) => {
+          console.log(res, "check");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async schedule(data) {
     try {
       // Request/ check permissions

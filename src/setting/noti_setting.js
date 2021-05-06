@@ -54,16 +54,23 @@ const Setting = () => {
       setPreNotiTime(data_list[1]);
       console.log(preNotiDate, preNotiTime);
     });
-  }, []);
 
-  useEffect(() => {
     const getTasks = async () => {
       const tasksString = await get(TASKS_STORAGE);
       const taskData = tasksString ? JSON.parse(tasksString) : [];
       setTask2(taskData);
     };
     getTasks();
-  }, [get]);
+  }, []);
+
+  /*useEffect(() => {
+    const getTasks = async () => {
+      const tasksString = await get(TASKS_STORAGE);
+      const taskData = tasksString ? JSON.parse(tasksString) : [];
+      setTask2(taskData);
+    };
+    getTasks();
+  }, [get]);*/
 
   /*useIonViewWillEnter(async () => {
     const d = await request_user_tv_list(getAccessTokenSilently);
@@ -109,12 +116,18 @@ const Setting = () => {
     }
     console.log(tasks2);
     const d2 = tasks2.filter((item) => item.rm !== true);
+    console.log(d2);
     remove(TASKS_STORAGE);
     setTask2(d2);
     console.log(d2);
-    set(TASKS_STORAGE, JSON.stringify(d2));
+    set(TASKS_STORAGE, JSON.stringify(tasks2));
     console.log(tasks2);
-    notifications.schedule(tasks2);
+    notifications.stopLocalPush();
+    notifications.schedule(d2);
+    /*
+    notifications.stopLocalPush();
+    console.log(tasks2);
+    notifications.schedule(tasks2);*/
   };
 
   const calcSecond = (b, notiDate) => {
@@ -152,6 +165,15 @@ const Setting = () => {
     const diff = date.getTime() - current.getTime();
     const second = Math.floor(diff / 1000);
     return { id: id, second: second };
+  };
+
+  const cancelNoti = () => {
+    notifications.stopLocalPush();
+    remove(TASKS_STORAGE);
+  };
+  const checklNoti = () => {
+    notifications.check();
+    remove(TASKS_STORAGE);
   };
 
   return (
@@ -215,6 +237,31 @@ const Setting = () => {
             変更する
           </IonButton>
         </IonItem>
+        <IonItem>
+          {" "}
+          <IonButton
+            slot="end"
+            color="dark"
+            onClick={() => {
+              cancelNoti();
+            }}
+          >
+            通知を全部取り消す
+          </IonButton>
+        </IonItem>
+        <IonItem>
+          {" "}
+          <IonButton
+            slot="end"
+            color="dark"
+            onClick={() => {
+              checklNoti();
+            }}
+          >
+            予約数確認
+          </IonButton>
+        </IonItem>
+
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
