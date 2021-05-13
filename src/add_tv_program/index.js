@@ -19,11 +19,14 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import notifications from "../notification/index";
-import { request_put, request } from "../auth_fetch/index";
+import {
+  request_put,
+  request_user_tv_list,
+  request,
+} from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
-import { Plugins, LocalNotification } from "@capacitor/core";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
+import { convertCompilerOptionsFromJson, getSourceMapRange } from "typescript";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -38,11 +41,12 @@ const Addprogram = ({ history }) => {
   //const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
-  const { LocalNotifications } = Plugins;
+
   const TASKS_STORAGE = "tasks";
   const { get, set, remove } = useStorage();
   const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
   const [count, setCount] = useState();
+
   /*useIonViewWillEnter(() => {
     request_user_tv_list(getAccessTokenSilently).then((data) => {
       setData(data);
@@ -61,7 +65,6 @@ const Addprogram = ({ history }) => {
         setNotiTime(data_list[1]);
       }
     });
-    //LocalNotifications.requestPermission();
   }, [notiDate, notiTime]);
 
   useEffect(() => {
@@ -112,145 +115,7 @@ const Addprogram = ({ history }) => {
       programName === null ||
       artist === null
     ) {
-      alert("記入漏れがあります");
-      return;
-    }
-
-    //同じ日にちのものがない確認し、なければ通知の予約をする
-    setNotification();
-
-    const data = {
-      channel: selectedChannel,
-      date: selectedDate,
-      name: programName,
-      artist: artist,
-      startTime: startTime,
-      endTime: endTime,
-      comment: text,
-      id: count + 1,
-    };
-
-    const dateList = data.date.split(/[-T:]/);
-    const current = new Date();
-    console.log(dateList);
-    const date = new Date(
-      dateList[0],
-      dateList[1] - 1,
-      dateList[2],
-      dateList[3],
-      dateList[4],
-      0,
-      0
-    );
-
-    let datalist = JSON.parse(localStorage.getItem("data"));
-    if (datalist === null) {
-      datalist = [data];
-    } else {
-      datalist.push(data);
-    }
-
-    datalist.sort((a, b) => {
-      if (a.date > b.date) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
-
-    localStorage.setItem("data", JSON.stringify(datalist));
-    localStorage.setItem("count", JSON.stringify(count + 1));
-
-    setSelectedChannel(null);
-    setSelectedDate(null);
-    setProgramName(null);
-    setArtist(null);
-    setStartTime(null);
-    setEndTime(null);
-    setText(null);
-
-    history.push("/host/future");
-  };
-
-  const setNotification = () => {
-    let datalist = JSON.parse(localStorage.getItem("data"));
-    let d;
-    if (datalist === null) {
-      CheckAndNoti(selectedDate, selectedDate);
-    } else {
-      for (let i = 0; i < datalist.length; i++) {
-        d = CheckAndNoti(datalist[i].date, selectedDate);
-        if (d === 1) {
-          break;
-        }
-      }
-    }
-  };
-
-  const CheckAndNoti = (a, b) => {
-    const dateListA = a.split(/[-T:]/);
-    const dateListB = b.split(/[-T:]/);
-    const dateB = new Date(
-      dateListB[0],
-      dateListB[1] - 1,
-      dateListB[2],
-      dateListB[3],
-      dateListB[4],
-      0,
-      0
-    );
-    console.log(dateB);
-
-    if (
-      a !== b &&
-      dateListA[0] === dateListB[0] &&
-      dateListA[1] === dateListB[1] &&
-      dateListA[2] === dateListB[2]
-    ) {
-      //通知しない
-      return 0;
-    } else {
-      //通知する 000* 60 * 60*24
-      console.log("通知する！");
-
-      const dateList = b.split(/[-T:]/);
-      const notiDateList = notiTime.split(/[-T:]/);
-      const current = new Date();
-      let y = dateList[0],
-        m = dateList[1],
-        d = dateListB[2];
-
-      if (notiDate === "pre") {
-        //一日引く
-        const dateTime = dateB.getTime() - 1000 * 60 * 60 * 24;
-        const newDate = new Date(dateTime);
-        y = newDate.getFullYear();
-        m = newDate.getMonth();
-        d = newDate.getDate();
-      }
-
-      const date = new Date(y, m, d, notiDateList[3], notiDateList[4], 0, 0);
-
-      //差分の秒数後に通知
-      const diff = date.getTime() - current.getTime();
-      const second = Math.floor(diff / 1000);
-      console.log(second);
-      //if (second > 0) {
-      notifications.schedule(second);
-      //}
-
-      return 1;
-    }
-  };
-
-  /*const sendData = () => {
-    if (
-      selectedChannel === null ||
-      selectedDate === null ||
-      programName === null ||
-      artist === null
-    ) {
-      //ionAlertに直す 
+      /*ionAlertに直す */
       alert("記入漏れがあります");
       return 0;
     }
@@ -298,7 +163,7 @@ const Addprogram = ({ history }) => {
 
   const CheckAndNoti = (a, b, preDate) => {
     const item = calcSecond(b);
-    const id = String(item["id"]);
+    const id = item["id"];
     const second = item["second"];
 
     //同じ日時があったら通知しない(is_notiをfalseに)
@@ -322,7 +187,7 @@ const Addprogram = ({ history }) => {
         }
       }
       tasks2.push({ id: id, min: second, date: b, rm: false });
-      /* set(TASKS_STORAGE, JSON.stringify(tasks2));
+      set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);
       const d2 = tasks2.filter((item) => item.rm !== true);
       remove(TASKS_STORAGE);
@@ -330,7 +195,6 @@ const Addprogram = ({ history }) => {
       console.log(d2);
       set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);
-      //notifications.schedule(tasks2);
       notifications.schedule(tasks2);
       return 1;
     } else {
@@ -375,7 +239,7 @@ const Addprogram = ({ history }) => {
     console.log(date, current, diff);
     const second = Math.floor(diff / 1000);
     return { id: id, second: second };
-  };*/
+  };
 
   return (
     <IonPage>

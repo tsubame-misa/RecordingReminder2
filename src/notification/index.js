@@ -1,11 +1,10 @@
 import { Plugins, LocalNotification } from "@capacitor/core";
 import { useIonViewWillEnter } from "@ionic/react";
-/*import { useIonViewWillEnter } from "@ionic/react";
 import React, { useState, useEffect } from "react";
-import { useStorage } from "@ionic/react-hooks/storage";*/
+import { useStorage } from "@ionic/react-hooks/storage";
 
 const { LocalNotifications } = Plugins;
-/*
+
 class Notifications {
   async removeAllListeners() {
     try {
@@ -47,17 +46,19 @@ class Notifications {
     }
   }
 
-  async schedule(data) {
+  /*async schedule(data) {
     try {
       // Request/ check permissions
-      if (!(await LocalNotifications.requestPermission()).granted) return;
+      //if (!(await LocalNotifications.requestPermission()).granted) return;
 
+      /*
       // Clear old notifications in prep for refresh (OPTIONAL)
-      /*const pending = await LocalNotifications.getPending();
+      const pending = await LocalNotifications.getPending();
       if (pending.notifications.length > 0)
-        await LocalNotifications.cancel(pending);*/
+        await LocalNotifications.cancel(pending);
+      */
 
-/*const notifs = await LocalNotifications.schedule({
+  /*const notifs = await LocalNotifications.schedule({
         notifications: data.map(({ id, min }) => {
           console.log("hei", id, min);
           return {
@@ -66,10 +67,7 @@ class Notifications {
             body: "",
             //変えたほうが良い？
             id: id,
-            attachments: null,
-            actionTypeId: "",
             sound: "normail",
-            extra: null,
             //minute秒後に通知
             schedule: { at: new Date(Date.now() + 1000 * min) },
           };
@@ -82,24 +80,8 @@ class Notifications {
     } catch (error) {
       console.error(error);
     }
-  }
-}*/
-
-class Notifications {
-  /*  showMes = () => {
-    const [data, setData] = useState([]);
-    useIonViewWillEnter(() => {
-      if ("data" in localStorage) {
-        setData(JSON.parse(localStorage.getItem("data")));
-        console.log(data);
-      }
-    });
-
-    return 1;
-  };*/
-
+  }*/
   async schedule(minute) {
-    console.log("here");
     try {
       // Request/ check permissions
       if (!(await LocalNotifications.requestPermission()).granted) return;
@@ -121,7 +103,6 @@ class Notifications {
           },
         ],
       });
-      console.log("fin");
     } catch (error) {
       console.error(error);
     }

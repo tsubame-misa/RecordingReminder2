@@ -25,6 +25,7 @@ const Login = () => {
       async function open() {
         try {
           listeners.remove();
+
           Browser.close();
           console.log("close Browser");
           const redirectUrl = new URL(data.url);
