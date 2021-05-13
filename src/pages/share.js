@@ -34,14 +34,15 @@ const Future = () => {
 
   useIonViewWillEnter(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/get_all_list`,
+      "https://blooming-coast-85852.herokuapp.com/api/get_all_list",
+      //`${process.env.REACT_APP_API_ENDPOINT}/get_all_list`,
       getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
   }, []);
 
-  if (data !== []) {
+  if (data !== [] && data !== undefined) {
     data.sort((a, b) => {
       const a_date = convertDate(a.date);
       const b_date = convertDate(b.date);
@@ -86,13 +87,14 @@ const Future = () => {
   const addMyList = (idx) => {
     console.log(data[idx].name);
     request_put(
-      `${process.env.REACT_APP_API_ENDPOINT}/put_my_list/${data[idx].id}`,
+      `https://blooming-coast-85852.herokuapp.com/api/put_my_list/${data[idx].id}`,
+      //`${process.env.REACT_APP_API_ENDPOINT}/put_my_list/${data[idx].id}`,
       getAccessTokenSilently,
       data
     );
   };
 
-  /*if (data === [] || data === undefined) {
+  if (data === [] || data === undefined) {
     return (
       <IonPage>
         <IonHeader>
@@ -104,7 +106,7 @@ const Future = () => {
         <IonContent fullscreen></IonContent>
       </IonPage>
     );
-  }*/
+  }
 
   return (
     <IonPage>

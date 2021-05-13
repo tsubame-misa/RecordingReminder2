@@ -54,24 +54,25 @@ const Addprogram = ({ history }) => {
 
   useIonViewWillEnter(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
+      "https://blooming-coast-85852.herokuapp.com/api/get_user_notification",
+      //`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
       getAccessTokenSilently
     ).then((data) => {
-      const data_list = data.split(/[/]/);
-      console.log(data_list);
-      setNotiDate(data_list[0]);
-      setNotiTime(data_list[1]);
+      const data_list = data?.split(/[/]/);
+      if (data_list) {
+        setNotiDate(data_list[0]);
+        setNotiTime(data_list[1]);
+      }
     });
   }, [notiDate, notiTime]);
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (userNoti !== null && userNoti !== undefined) {
       const notiList = userNoti.split(/[/:]/);
-      //console.log(notiList);
       setNotiTime(notiList[1] + ":" + notiList[2]);
       setNotiDate(notiList[0]);
     }
-  });*/
+  });
 
   useEffect(() => {
     const getTasks = async () => {
@@ -152,7 +153,8 @@ const Addprogram = ({ history }) => {
     CheckAndNoti(date, selectedDate, date);
 
     return request_put(
-      `${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
+      "https://blooming-coast-85852.herokuapp.com/api/add_tv_list",
+      //`${process.env.REACT_APP_API_ENDPOINT}/add_tv_list`,
       getAccessTokenSilently,
       data
     );
@@ -167,13 +169,10 @@ const Addprogram = ({ history }) => {
     let is_noti = true;
     for (let item of tasks2) {
       if (item.id === id) {
-        console.log("aaa", item.id, id);
         is_noti = false;
         break;
       }
     }
-
-    console.log(second, is_noti);
 
     if (second > 0 && is_noti) {
       console.log("通知する！！");
@@ -214,9 +213,7 @@ const Addprogram = ({ history }) => {
       0,
       0
     ); //通知する 000* 60 * 60*24
-
     const notiDateList = notiTime.split(/[-T:]/);
-    console.log(notiDateList);
     const current = new Date();
     let y = dateList[0],
       m = dateList[1] - 1,

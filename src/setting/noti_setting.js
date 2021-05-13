@@ -25,13 +25,12 @@ import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
 import notifications from "../notification/index";
-import { createNoSubstitutionTemplateLiteral } from "typescript";
 
 const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [userNoti, setUserNoti] = useState(null);
+  //const [userNoti, setUserNoti] = useState(null);
   const [notiTimeChenged, setNotiTimeChanged] = useState(1);
   const [notiDateChenged, setNotiDateChanged] = useState(1);
   const [preNotiTime, setPreNotiTime] = useState("20:00");
@@ -45,7 +44,8 @@ const Setting = () => {
 
   useIonViewWillEnter(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
+      "https://blooming-coast-85852.herokuapp.com/api/get_user_notification",
+      //`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
       getAccessTokenSilently
     ).then((data) => {
       const data_list = data.split(/[/]/);
@@ -94,7 +94,8 @@ const Setting = () => {
       time: notiTime,
     };
     request_put(
-      `${process.env.REACT_APP_API_ENDPOINT}/change_notification`,
+      "https://blooming-coast-85852.herokuapp.com/api/change_notification",
+      //`${process.env.REACT_APP_API_ENDPOINT}/change_notification`,
       getAccessTokenSilently,
       data
     );

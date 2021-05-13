@@ -1,4 +1,6 @@
 export const request = async (url, getAccessTokenSilently) => {
+  //console.log("request_put", url);
+
   try {
     const token = await getAccessTokenSilently({
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
@@ -17,12 +19,14 @@ export const request = async (url, getAccessTokenSilently) => {
 };
 
 export const request_user_tv_list = async (getAccessTokenSilently) => {
+  //console.log("get_user_list");
   try {
     const token = await getAccessTokenSilently({
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
     const response = await fetch(
-      `${process.env.REACT_APP_API_ENDPOINT}/get_user_list`,
+      "https://blooming-coast-85852.herokuapp.com/api/get_user_list",
+      //`${process.env.REACT_APP_API_ENDPOINT}/get_user_list`,
       {
         method: "GET",
         headers: {
@@ -54,6 +58,7 @@ export const request_delete = async (url, getAccessTokenSilently) => {
 };
 
 export const request_put = async (url, getAccessTokenSilently, item) => {
+  //sconsole.log("request_put", url);
   try {
     const token = await getAccessTokenSilently({
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,

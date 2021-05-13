@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -10,15 +10,6 @@ import {
   IonTabs,
   IonFab,
   IonFabButton,
-  IonContent,
-  IonPage,
-  IonHeader,
-  IonCard,
-  IonCardContent,
-  IonButton,
-  IonLoading,
-  IonTitle,
-  IonItem,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -28,7 +19,6 @@ import {
   settings,
   add,
   telescopeOutline,
-  eyeOutline,
 } from "ionicons/icons";
 import Future from "./pages/Future";
 import Past from "./pages/Past";

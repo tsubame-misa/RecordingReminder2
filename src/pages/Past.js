@@ -32,7 +32,7 @@ const Past = () => {
     });
   }, []);
 
-  if (data !== []) {
+  if (data !== [] && data !== undefined) {
     data.sort((a, b) => {
       const a_date = convertDate(a.date);
       const b_date = convertDate(b.date);
@@ -66,14 +66,15 @@ const Past = () => {
   const delItem = (id) => {
     console.log("del", id);
     request_delete(
-      `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
+      `https://blooming-coast-85852.herokuapp.com/api/delete_user_program_list/${id}`,
+      //`${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
       getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
   };
 
-  /*if (data === [] || data === undefined) {
+  if (data === [] || data === undefined) {
     return (
       <IonPage>
         <IonHeader>
@@ -85,7 +86,7 @@ const Past = () => {
         <IonContent fullscreen></IonContent>
       </IonPage>
     );
-  }*/
+  }
 
   return (
     <IonPage>

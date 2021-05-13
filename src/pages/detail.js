@@ -45,7 +45,8 @@ const Detail = ({ history }) => {
 
   useIonViewWillEnter(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`,
+      `https://blooming-coast-85852.herokuapp.com/api/get_user_list/${id}`,
+      //`${process.env.REACT_APP_API_ENDPOINT}/get_user_list/${id}`,
       getAccessTokenSilently
     ).then((data) => {
       setData(data);
@@ -80,7 +81,8 @@ const Detail = ({ history }) => {
     const date = new Date(data.date);
     data.date = date;
     request_put(
-      `${process.env.REACT_APP_API_ENDPOINT}/change_user_tv_program/${id}`,
+      `https://blooming-coast-85852.herokuapp.com/api/change_user_tv_program/${id}`,
+      //`${process.env.REACT_APP_API_ENDPOINT}/change_user_tv_program/${id}`,
       getAccessTokenSilently,
       data
     ).then(() => {

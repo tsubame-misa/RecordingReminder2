@@ -10,13 +10,9 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 render(
   <Auth0Provider
-    /*clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     audience={process.env.REACT_APP_AUTH0_AUDIENCE}
     domain="auth.vdslab.jp"
-    */
-    clientId="94VKGJS7zzIa7O60yuIr8ZOF6BBYxZ6M"
-    audience="https://blooming-coast-85852.herokuapp.com"
-    domain="recording-reminder.us.auth0.com"
     redirectUri={window.location.origin}
     useRefreshTokens
     cacheLocation="localstorage"

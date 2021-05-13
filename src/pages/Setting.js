@@ -18,7 +18,7 @@ import {
   // IonListHeader,
 } from "@ionic/react";
 import { chevronForwardOutline } from "ionicons/icons";
-import { request_put, request } from "../auth_fetch/index";
+import { request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Setting = ({ history }) => {
@@ -28,14 +28,15 @@ const Setting = ({ history }) => {
   const [userNoti, setUserNoti] = useState(null);
   //const [notiTimeChenged, setNotiTimeChanged] = useState(1);
   //const [notiDateChenged, setNotiDateChanged] = useState(1);
-  const [preNotiTime, setPreNotiTime] = useState("20:00");
-  const [preNotiDate, setPreNotiDate] = useState("pre");
+  const [preNotiTime, setPreNotiTime] = useState();
+  const [preNotiDate, setPreNotiDate] = useState();
 
   const { logout, getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
+      "https://blooming-coast-85852.herokuapp.com/api/get_user_notification",
+      //`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
       getAccessTokenSilently
     ).then((data) => {
       setUserNoti(data);

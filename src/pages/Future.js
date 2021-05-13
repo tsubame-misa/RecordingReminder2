@@ -28,7 +28,7 @@ import NHK from "./img/NHK.png";
 import NX from "./img/NX.png";
 import TBS from "./img/TBS.jpg";
 import TX from "./img/TX.png";
-import styles from "./styles.css";
+import "./styles.css";
 
 export const convertIcon = (input) => {
   if (input === "NHK総合") {
@@ -75,9 +75,11 @@ export const convertDate = (input) => {
 
 export const CmpTime = (item) => {
   const current = new Date();
-  const date0 = convertDate(item);
-  const date = Date.parse(date0);
-
+  //const date0 = convertDate(item);
+  //const date = Date.parse(date0);
+  const date = Date.parse(item);
+  //console.log(item, date0);
+  //console.log(date, current);
   if (date < current) {
     return -1;
   } else {
@@ -124,7 +126,8 @@ const Future = ({ history }) => {
 
   const delItem = (id) => {
     request_delete(
-      `${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
+      `https://blooming-coast-85852.herokuapp.com/api/delete_user_program_list/${id}`,
+      //`${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,
       getAccessTokenSilently
     ).then((data) => {
       setData(data);
@@ -144,7 +147,7 @@ const Future = ({ history }) => {
     return 0;
   };
 
-  /*if (data === [] || data === undefined) {
+  if (data === [] || data === undefined) {
     return (
       <IonPage>
         <IonHeader>
@@ -167,7 +170,7 @@ const Future = ({ history }) => {
         </IonContent>
       </IonPage>
     );
-  }*/
+  }
 
   return (
     <IonPage>
