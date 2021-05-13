@@ -20,18 +20,25 @@ import {
 import { chevronForwardOutline } from "ionicons/icons";
 import { request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Plugins } from "@capacitor/core";
 
 const Setting = ({ history }) => {
-  const [notiTime, setNotiTime] = useState(null);
+  const [userNoti, setUserNoti] = useState(null);
+  /*const [notiTime, setNotiTime] = useState(null);
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [userNoti, setUserNoti] = useState(null);
   //const [notiTimeChenged, setNotiTimeChanged] = useState(1);
-  //const [notiDateChenged, setNotiDateChanged] = useState(1);
+  //const [notiDateChenged, setNotiDateChanged] = useState(1);*/
   const [preNotiTime, setPreNotiTime] = useState();
   const [preNotiDate, setPreNotiDate] = useState();
-
-  const { logout, getAccessTokenSilently } = useAuth0();
+  const { Browser, App } = Plugins;
+  const {
+    logout,
+    getAccessTokenSilently,
+    buildLogoutUrl,
+    //handleRedirectCallback,
+    //isAuthenticated,
+  } = useAuth0();
 
   useIonViewWillEnter(() => {
     request(
@@ -50,6 +57,35 @@ const Setting = ({ history }) => {
       setPreNotiDate(notiList[0]);
     }
   });
+
+  async function logoutWithRedirect(RedirectLoginOptions) {
+    //logout();
+    const authUrl = await buildLogoutUrl();
+    //console.log("in logoutWithRedirect");
+    Browser.open({ url: authUrl });
+
+    const listeners = App.addListener("appUrlOpen", (data) => {
+      console.log("in listener");
+      logout();
+      open();
+      async function open() {
+        try {
+          listeners.remove();
+
+          Browser.close();
+          //console.log("close Browser");
+          const redirectUrl = new URL(data.url);
+          //console.log("redirectURl = ", redirectUrl);
+          if (redirectUrl.pathname.match("")) {
+            //await handleRedirectCallback(data.url);
+            await getAccessTokenSilently().toPromise();
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
 
   /*const sendData = () => {
     if (date == null && notiTime == null) {
@@ -99,11 +135,19 @@ const Setting = ({ history }) => {
 
         <IonList>
           <IonItem lines="none"></IonItem>
-          <IonButton
+          {/*<IonButton
             color="dark"
             expand="full"
             fill="outline"
             onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Log out
+          </IonButton>*/}
+          <IonButton
+            color="dark"
+            expand="full"
+            fill="outline"
+            onClick={() => logoutWithRedirect()}
           >
             Log out
           </IonButton>

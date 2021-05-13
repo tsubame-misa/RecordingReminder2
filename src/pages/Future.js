@@ -115,7 +115,6 @@ const Future = ({ history }) => {
         return -1;
       }
     });
-
     for (let i = 0; i < data.length; i++) {
       const d = convertDate(data[i].date).slice(0, 10);
       if (!date_data.includes(d)) {
