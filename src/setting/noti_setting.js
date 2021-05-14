@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -6,26 +6,20 @@ import {
   IonTitle,
   IonToolbar,
   IonItem,
-  //IonCard,
   IonSelect,
   IonSelectOption,
   IonDatetime,
   IonButton,
   IonAlert,
-  // IonIcon,
   useIonViewWillEnter,
-  //IonList,
-  //IonListHeader,
   IonBackButton,
-  //IonLabel,
-  //IonToggle,
 } from "@ionic/react";
-//import { chevronForwardOutline } from "ionicons/icons";
 import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
 import notifications from "../notification/index";
 import { CmpTime } from "../pages/Future";
+import "../pages/styles.css";
 
 const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);

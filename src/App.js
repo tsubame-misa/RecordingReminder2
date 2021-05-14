@@ -28,6 +28,7 @@ import Detail from "./pages/detail";
 import Share from "./pages/share";
 import NotiSetting from "./setting/noti_setting";
 import Login from "./pages/Login";
+import "./pages/styles.css";
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -94,7 +95,7 @@ const App = () => {
                 </IonFabButton>
               </IonFab>
 
-              <IonTabBar slot="bottom">
+              <IonTabBar slot="bottom" color="new">
                 <IonTabButton tab="future" href="/future">
                   <IonIcon icon={playCircleOutline} />
                   <IonLabel>録画リスト</IonLabel>

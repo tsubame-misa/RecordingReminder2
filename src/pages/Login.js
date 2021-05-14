@@ -6,7 +6,7 @@ import { Plugins } from "@capacitor/core";
 
 const Login = () => {
   const {
-    isLoading,
+    //isLoading,
     buildAuthorizeUrl,
     handleRedirectCallback,
     getAccessTokenSilently,

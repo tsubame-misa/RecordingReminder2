@@ -17,29 +17,26 @@ import {
   IonInput,
   useIonViewWillEnter,
   IonCheckbox,
-  // IonList,
   IonCard,
   IonAlert,
   IonGrid,
   IonRow,
+  IonItemGroup,
+  IonLifeCycleContext,
+  IonList,
 } from "@ionic/react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import {
-  // request_user_tv_list,
-  request_put,
-  //request_delete,
-  request,
-} from "../auth_fetch/index";
+import { useLocation, useParams } from "react-router-dom";
+import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
+import { chevronBackOutline } from "ionicons/icons";
 
-const Detail = ({ history }) => {
+const Detail = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [data, setData] = useState(null);
   const item = useParams();
   const id = item.id;
-  const path = window.location.pathname;
-  const pathList = path.split(/[/]/);
+  const pathList = useLocation().pathname.split(/[/]/);
   const backPass = pathList[pathList.length - 1];
   const { getAccessTokenSilently } = useAuth0();
 
@@ -94,7 +91,7 @@ const Detail = ({ history }) => {
     return (
       <IonPage>
         <IonHeader>
-          <IonToolbar>
+          <IonToolbar color="new">
             <IonButtons slot="start">
               {backPass === "from_future" ? (
                 <IonBackButton defaultHref="/" />
@@ -113,12 +110,22 @@ const Detail = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="new">
           <IonButtons slot="start">
             {backPass === "from_future" ? (
-              <IonBackButton defaultHref="/" />
+              <IonBackButton
+                slot="start"
+                fill="clear"
+                defaultHref="/"
+                icon={chevronBackOutline}
+              />
             ) : (
-              <IonBackButton defaultHref="/past" />
+              <IonBackButton
+                slot="start"
+                fill="clear"
+                defaultHref="/past"
+                icon={chevronBackOutline}
+              />
             )}
           </IonButtons>
           <IonTitle>番組詳細</IonTitle>
@@ -147,8 +154,8 @@ const Detail = ({ history }) => {
             <IonSelect
               value={data.channel}
               required
-              okText="Okay"
-              cancelText="Dismiss"
+              okText="完了"
+              cancelText="キャンセル"
               onIonChange={(e) => {
                 setData(Object.assign({}, data, { name: e.detail.value }));
               }}
@@ -167,6 +174,8 @@ const Detail = ({ history }) => {
             <IonDatetime
               displayFormat="YYYY/MM/DD/ HH:mm"
               placeholder="Select Date"
+              doneText="完了"
+              cancelText="キャンセル"
               required
               value={data.date}
               onIonChange={(e) => {
@@ -176,16 +185,33 @@ const Detail = ({ history }) => {
           </IonItem>
 
           {/*できれば２＊５にしたい*/}
-          <IonCard>
-            <IonItem>アーティスト</IonItem>
-            <IonGrid>
+          <div>
+            <IonItem lines="none">アーティスト</IonItem>
+            <IonGrid
+              style={{
+                borderBottom: "solid 0.1px #d7d8da",
+                padding: "0px",
+                marginLeft: "20px",
+                marginTop: "-0.85rem",
+              }}
+            >
               <IonRow>
                 {artists.map((a, i) => (
-                  <IonItem key={i}>
-                    <IonLabel>{a.name}</IonLabel>
+                  <IonItem key={i} lines="none">
+                    {a.name.length < 4 ? (
+                      a.name.length === 2 ? (
+                        <IonLabel>{a.name}&emsp;&emsp;</IonLabel>
+                      ) : (
+                        <IonLabel>{a.name}&emsp;</IonLabel>
+                      )
+                    ) : (
+                      <IonLabel>{a.name}</IonLabel>
+                    )}
+
                     <IonCheckbox
                       slot="end"
                       required
+                      color="medium"
                       checked={
                         data != null &&
                         data !== undefined &&
@@ -214,29 +240,31 @@ const Detail = ({ history }) => {
                 ))}
               </IonRow>
             </IonGrid>
-          </IonCard>
+          </div>
 
           <IonItem>
             <IonLabel>アーティスト出演時刻</IonLabel>
             {/*別の形式がいいかもしれない */}
             <IonDatetime
               displayFormat="HH:mm"
-              placeholder="Start"
+              placeholder="開始"
               value={data.startTime}
+              doneText="完了"
+              className="キャンセル"
               onIonChange={(e) => {
                 setData(Object.assign({}, data, { startTime: e.detail.value }));
               }}
             ></IonDatetime>
             <IonDatetime
               displayFormat="HH:mm"
-              placeholder="End"
+              placeholder="終了"
               value={data.endTime}
               onIonChange={(e) => {
                 setData(Object.assign({}, data, { endTime: e.detail.value }));
               }}
             ></IonDatetime>
           </IonItem>
-          <IonItem>
+          <IonItem lines="none">
             <IonTextarea
               placeholder="その他・コメント"
               value={data.comment}
@@ -246,7 +274,7 @@ const Detail = ({ history }) => {
             ></IonTextarea>
           </IonItem>
           <IonButton color="dark" expand="full" type="submit">
-            変更する
+            変更を保存する
           </IonButton>
           <IonAlert
             isOpen={showAlert}

@@ -75,11 +75,7 @@ export const convertDate = (input) => {
 
 export const CmpTime = (item) => {
   const current = new Date();
-  //const date0 = convertDate(item);
-  //const date = Date.parse(date0);
   const date = Date.parse(item);
-  //console.log(item, date0);
-  //console.log(date, current);
   if (date < current) {
     return -1;
   } else {
@@ -94,18 +90,12 @@ const Future = ({ history }) => {
 
   const { getAccessTokenSilently } = useAuth0();
 
-  /*useIonViewWillEnter(() => {
-    request_user_tv_list(getAccessTokenSilently).then((data) => {
-      setData(data);
-    });
-  }, []);*/
   useIonViewWillEnter(async () => {
     const d = await request_user_tv_list(getAccessTokenSilently);
     setData(d);
   });
 
   if (!(data === [] || data === undefined)) {
-    ///if (data !== [] && data !== undefined) {
     data.sort((a, b) => {
       const a_date = convertDate(a.date);
       const b_date = convertDate(b.date);
@@ -152,11 +142,12 @@ const Future = ({ history }) => {
       <IonPage>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>録画リスト</IonTitle>
+            <IonTitle color="new">録画リスト</IonTitle>
           </IonToolbar>
         </IonHeader>
 
         <IonContent fullscreen>
+          Loading...
           <IonFab vertical="bottom" horizontal="end" slot="fixed">
             <IonFabButton
               color="dark"
@@ -175,7 +166,7 @@ const Future = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="new">
           <IonTitle>録画リスト</IonTitle>
         </IonToolbar>
       </IonHeader>

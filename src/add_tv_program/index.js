@@ -9,7 +9,6 @@ import {
   IonItem,
   IonLabel,
   IonButton,
-  //IonButtons,
   IonSelect,
   IonSelectOption,
   IonDatetime,
@@ -19,14 +18,10 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import notifications from "../notification/index";
-import {
-  request_put,
-  request_user_tv_list,
-  request,
-} from "../auth_fetch/index";
+import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
-import { convertCompilerOptionsFromJson, getSourceMapRange } from "typescript";
+import { chevronBackOutline } from "ionicons/icons";
 
 const Addprogram = ({ history }) => {
   const [programName, setProgramName] = useState();
@@ -43,9 +38,8 @@ const Addprogram = ({ history }) => {
   const { getAccessTokenSilently } = useAuth0();
 
   const TASKS_STORAGE = "tasks";
-  const { get, set, remove } = useStorage();
+  const { get, set } = useStorage();
   const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
-  const [count, setCount] = useState();
 
   /*useIonViewWillEnter(() => {
     request_user_tv_list(getAccessTokenSilently).then((data) => {
@@ -244,8 +238,13 @@ const Addprogram = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonBackButton slot="start" defaultHref="/" />
+        <IonToolbar color="new">
+          <IonBackButton
+            slot="start"
+            fill="clear"
+            defaultHref="/"
+            icon={chevronBackOutline}
+          />
           <IonTitle>番組を登録する</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -261,8 +260,8 @@ const Addprogram = ({ history }) => {
           <IonLabel>チャンネル名</IonLabel>
           <IonSelect
             value={selectedChannel}
-            okText="Okay"
-            cancelText="Dismiss"
+            okText="決定"
+            cancelText="キャンセル"
             onIonChange={(e) => {
               setSelectedChannel(e.detail.value);
             }}
@@ -280,9 +279,11 @@ const Addprogram = ({ history }) => {
           <IonLabel>日時</IonLabel>
           <IonDatetime
             displayFormat="YYYY/MM/DD/ HH:mm"
-            placeholder="Select Date"
+            placeholder="日付を選択してください"
             value={selectedDate}
             onIonChange={(e) => setSelectedDate(e.detail.value)}
+            doneText="完了"
+            cancelText="キャンセル"
           ></IonDatetime>
         </IonItem>
 
@@ -290,8 +291,8 @@ const Addprogram = ({ history }) => {
           <IonLabel>アーティスト</IonLabel>
           <IonSelect
             value={artist}
-            okText="Okay"
-            cancelText="Dismiss"
+            okText="完了"
+            cancelText="キャンセル"
             multiple={true}
             onIonChange={(e) => {
               setArtist(e.detail.value);
@@ -312,22 +313,24 @@ const Addprogram = ({ history }) => {
           {/*別の形式がいいかもしれない */}
           <IonDatetime
             displayFormat="HH:mm"
-            placeholder="Start"
+            placeholder="開始"
             value={startTime}
             onIonChange={(e) => setStartTime(e.detail.value)}
           ></IonDatetime>
           <IonDatetime
             displayFormat="HH:mm"
-            placeholder="End"
+            placeholder="終了"
             value={endTime}
             onIonChange={(e) => setEndTime(e.detail.value)}
           ></IonDatetime>
         </IonItem>
-        <IonItem>
+        <IonItem lines="none">
           <IonTextarea
             placeholder="その他・コメント"
             value={text}
+            rows="8"
             onIonChange={(e) => setText(e.detail.value)}
+            style={{ heigth: "100px" }}
           ></IonTextarea>
         </IonItem>
         <IonButton

@@ -11,3 +11,38 @@
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+ion-header {
+  display: block;
+  position: relative;
+  -ms-flex-order: -1;
+  order: -1;
+  width: 100%;
+  z-index: 10;
+  height: 80px;
+}
+
+ion-button {
+  --border-radius: 10px;
+}
+
+ion-toolbar {
+  --min-height: 80px;
+}
+
+ion-tab-bar {
+  height: 80px;
+}
+
+ion-title {
+  height: 80px;
+}
+
+ion-tab-button {
+  /* --background-focused: red !important;*/
+}
+
+ion-item-divider {
+  background-color: #dadada;
+  color: white;
+}

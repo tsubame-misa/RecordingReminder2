@@ -1,8 +1,4 @@
-import { Plugins, LocalNotification } from "@capacitor/core";
-import { useIonViewWillEnter } from "@ionic/react";
-import React, { useState, useEffect } from "react";
-import { useStorage } from "@ionic/react-hooks/storage";
-import { parseIsolatedEntityName } from "typescript";
+import { Plugins } from "@capacitor/core";
 
 const { LocalNotifications } = Plugins;
 

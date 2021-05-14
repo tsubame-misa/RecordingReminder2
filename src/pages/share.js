@@ -74,9 +74,9 @@ const Future = () => {
   };
 
   const findIndx = (ID) => {
-    if (data != undefined) {
+    if (data !== undefined) {
       for (let i = 0; i < data.length; i++) {
-        if (data[i].id == ID) {
+        if (data[i].id === ID) {
           setIdx(i);
         }
       }
@@ -98,7 +98,7 @@ const Future = () => {
     return (
       <IonPage>
         <IonHeader>
-          <IonToolbar>
+          <IonToolbar color="new">
             <IonTitle>録画済み</IonTitle>
           </IonToolbar>
         </IonHeader>
@@ -111,7 +111,7 @@ const Future = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="new">
           <IonTitle>探す</IonTitle>
         </IonToolbar>
       </IonHeader>

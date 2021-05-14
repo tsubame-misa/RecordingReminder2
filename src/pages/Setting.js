@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -6,34 +6,24 @@ import {
   IonTitle,
   IonToolbar,
   IonItem,
-  /*IonCard,
-  IonSelect,
-  IonSelectOption,
-  IonDatetime,*/
   IonButton,
-  // IonAlert,
   IonIcon,
-  useIonViewWillEnter,
+  //useIonViewWillEnter,
   IonList,
-  // IonListHeader,
 } from "@ionic/react";
 import { chevronForwardOutline } from "ionicons/icons";
-import { request } from "../auth_fetch/index";
+//import { request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Plugins } from "@capacitor/core";
 
 const Setting = ({ history }) => {
-  const [notiTime, setNotiTime] = useState(null);
-  const [date, setDate] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
-  const [userNoti, setUserNoti] = useState(null);
-  //const [notiTimeChenged, setNotiTimeChanged] = useState(1);
-  //const [notiDateChenged, setNotiDateChanged] = useState(1);
+  /*const [userNoti, setUserNoti] = useState(null);
   const [preNotiTime, setPreNotiTime] = useState();
-  const [preNotiDate, setPreNotiDate] = useState();
+  const [preNotiDate, setPreNotiDate] = useState();*/
+  const { Browser, App } = Plugins;
+  const { logout, buildLogoutUrl, getAccessTokenSilently } = useAuth0();
 
-  const { logout, getAccessTokenSilently } = useAuth0();
-
-  useIonViewWillEnter(() => {
+  /*useIonViewWillEnter(() => {
     request(
       "https://blooming-coast-85852.herokuapp.com/api/get_user_notification",
       //`${process.env.REACT_APP_API_ENDPOINT}/get_user_notification`,
@@ -49,7 +39,30 @@ const Setting = ({ history }) => {
       setPreNotiTime(notiList[1] + ":" + notiList[2]);
       setPreNotiDate(notiList[0]);
     }
-  });
+  });*/
+
+  async function logoutWithRedirect(RedirectLoginOptions) {
+    const authUrl = await buildLogoutUrl();
+    Browser.open({ url: authUrl });
+
+    const listeners = App.addListener("appUrlOpen", (data) => {
+      console.log("in listener");
+      logout();
+      open();
+      async function open() {
+        try {
+          listeners.remove();
+          Browser.close();
+          const redirectUrl = new URL(data.url);
+          if (redirectUrl.pathname.match("")) {
+            await getAccessTokenSilently().toPromise();
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+  }
 
   /*const sendData = () => {
     if (date == null && notiTime == null) {
@@ -70,7 +83,7 @@ const Setting = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="new">
           <IonTitle>設定</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -99,11 +112,19 @@ const Setting = ({ history }) => {
 
         <IonList>
           <IonItem lines="none"></IonItem>
-          <IonButton
+          {/*<IonButton
             color="dark"
             expand="full"
             fill="outline"
             onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Log out
+          </IonButton>*/}
+          <IonButton
+            color="dark"
+            expand="full"
+            fill="outline"
+            onClick={() => logoutWithRedirect()}
           >
             Log out
           </IonButton>

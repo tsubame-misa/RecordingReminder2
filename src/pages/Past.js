@@ -78,7 +78,7 @@ const Past = () => {
     return (
       <IonPage>
         <IonHeader>
-          <IonToolbar>
+          <IonToolbar color="new">
             <IonTitle>録画済み</IonTitle>
           </IonToolbar>
         </IonHeader>
@@ -91,7 +91,7 @@ const Past = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="new">
           <IonTitle>録画済み</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -116,7 +116,7 @@ const Past = () => {
                   <IonItem
                     _ngcontent-yfv-c79=""
                     onClick={() => {
-                      history.push(`/detail/${d.id}/from_future`);
+                      history.push(`/detail/${d.id}/from_past`);
                     }}
                     detail="false"
                     target="_blank"
