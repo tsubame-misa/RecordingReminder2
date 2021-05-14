@@ -25,6 +25,7 @@ import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
 import notifications from "../notification/index";
+import { CmpTime } from "../pages/Future";
 
 const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);
@@ -105,26 +106,41 @@ const Setting = () => {
 
   const changeNotiTime = (d) => {
     console.log("通知する！！");
+
     //通知の前からある予約の秒数の再設定
     console.log(tasks2);
+    notifications.stopLocalPush();
+    //notifications.removeAllListeners();
     for (let item of tasks2) {
       const obj = calcSecond(item.date, d);
       item.id = obj.id;
       item.min = obj.second;
-      if (item.min < 0) {
+
+      /*if (item.min < 0) {
+        item.rm = true;
+      }*/
+      if (item.min > 0) {
+        notifications.schedule(item);
+      }
+      //番組日時から二日以上すぎていたら通知候補リスト削除
+      if (CmpTime(item.date) < 0 /*-1 * 86400 * 2*/) {
+        console.log(CmpTime(item.date) < 0);
         item.rm = true;
       }
     }
-    console.log(tasks2);
+    //console.log(tasks2);
     const d2 = tasks2.filter((item) => item.rm !== true);
-    console.log(d2);
+    //console.log(d2);
     remove(TASKS_STORAGE);
     setTask2(d2);
-    console.log(d2);
+    //console.log(d2);
+    console.log(tasks2);
     set(TASKS_STORAGE, JSON.stringify(tasks2));
     console.log(tasks2);
-    notifications.stopLocalPush();
-    notifications.schedule(d2);
+    //notifications.stopLocalPush();
+    // notifications.removeAllListeners();
+
+    //notifications.schedule(d2);
     /*
     notifications.stopLocalPush();
     console.log(tasks2);

@@ -178,24 +178,24 @@ const Addprogram = ({ history }) => {
     if (second > 0 && is_noti) {
       console.log("通知する！！");
       //通知の前からある予約の秒数の再設定
-      for (let item of tasks2) {
+      /*for (let item of tasks2) {
         const obj = calcSecond(item.date);
         item.id = obj.id;
         item.min = obj.second;
         if (item.min < 0) {
           item.rm = true;
         }
-      }
+      }*/
       tasks2.push({ id: id, min: second, date: b, rm: false });
       set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);
-      const d2 = tasks2.filter((item) => item.rm !== true);
+      /*const d2 = tasks2.filter((item) => item.rm !== true);
       remove(TASKS_STORAGE);
       setTask2(d2);
       console.log(d2);
       set(TASKS_STORAGE, JSON.stringify(tasks2));
-      console.log(tasks2);
-      notifications.schedule(tasks2);
+      console.log(tasks2);*/
+      notifications.schedule({ id: id, min: second, date: b, rm: false });
       return 1;
     } else {
       console.log("通知しない");

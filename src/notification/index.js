@@ -2,6 +2,7 @@ import { Plugins, LocalNotification } from "@capacitor/core";
 import { useIonViewWillEnter } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { useStorage } from "@ionic/react-hooks/storage";
+import { parseIsolatedEntityName } from "typescript";
 
 const { LocalNotifications } = Plugins;
 
@@ -81,25 +82,26 @@ class Notifications {
       console.error(error);
     }
   }*/
-  async schedule(minute) {
+  async schedule(item) {
+    console.log(item, item.id);
     try {
       // Request/ check permissions
       if (!(await LocalNotifications.requestPermission()).granted) return;
 
       // Clear old notifications in prep for refresh (OPTIONAL)
-      const pending = await LocalNotifications.getPending();
+      /*const pending = await LocalNotifications.getPending();
       if (pending.notifications.length > 0)
-        await LocalNotifications.cancel(pending);
+        await LocalNotifications.cancel(pending);*/
 
       await LocalNotifications.schedule({
         notifications: [
           {
             title: "録画しましたか？",
             body: "",
-            id: 1, //変えたほうが良い？
+            id: parseInt(item.id), //変えたほうが良い？
             //minute秒後に通知
             sound: "normail",
-            schedule: { at: new Date(Date.now() + 1000 * 5) },
+            schedule: { at: new Date(Date.now() + 1000 * item.min) },
           },
         ],
       });
