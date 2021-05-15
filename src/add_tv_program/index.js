@@ -204,6 +204,7 @@ const Addprogram = ({ history }) => {
   };
 
   const calcSecond = (b) => {
+    console.log(b);
     const dateList = b.split(/[-T:]/);
     const dateB = new Date(
       dateList[0],
@@ -231,12 +232,14 @@ const Addprogram = ({ history }) => {
       m = newDate.getMonth();
       d = newDate.getDate();
     }
-    const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
+    const date = new Date(y, m, d, notiDateList[3], notiDateList[4], 0, 0);
+    //const date = new Date(2021, 4, 15, 15, 0, 0, 0);
+    //console.log(y, m, d, notiDateList, typeof m);
     console.log(date);
     console.log(current);
     //差分の秒数後に通知
     const diff = date.getTime() - current.getTime();
-    console.log(date, current, diff);
+    console.log(date, current, diff / 1000);
     const second = Math.floor(diff / 1000);
     return { id: id, second: second };
   };

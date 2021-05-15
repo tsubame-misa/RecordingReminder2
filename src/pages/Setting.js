@@ -129,6 +129,7 @@ const Setting = () => {
       const obj = calcSecond(item.date, d);
       item.id = obj.id;
       item.min = obj.second;
+      console.log(item);
       if (item.min > 0) {
         notifications.schedule(item);
       }
@@ -230,7 +231,7 @@ const Setting = () => {
 
         {checked ? (
           <div>
-            <IonItem>
+            <IonItem lines="none">
               <IonSelect
                 value={notiDateChenged === 1 ? preNotiDate : date}
                 onIonChange={(e) => {
@@ -273,7 +274,7 @@ const Setting = () => {
         ) : (
           []
         )}
-        <IonItem>
+        {/*<IonItem>
           <IonButton
             slot="end"
             color="dark"
@@ -283,7 +284,7 @@ const Setting = () => {
           >
             予約数確認
           </IonButton>
-        </IonItem>
+          </IonItem>*/}
 
         <IonItem lines="none"></IonItem>
         {/*<IonButton
