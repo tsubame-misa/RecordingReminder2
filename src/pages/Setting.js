@@ -56,26 +56,16 @@ const Setting = () => {
       setTask2(taskData);
     };
     getTasks();
-
-    /*const data = JSON.parse(localStorage.getItem("noti"));
-    console.log(data);
-    if (data === null) {
-      setChecked(true);
-      //localStorage.setItem("noti", false);
-    }
-    setChecked(data);*/
   }, []);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("noti"));
-    console.log(data);
     if (data === null) {
       setChecked(true);
       localStorage.setItem("noti", true);
     } else {
       setChecked(data);
     }
-    console.log(checked);
   }, [checked]);
 
   async function logoutWithRedirect() {
@@ -274,7 +264,7 @@ const Setting = () => {
         ) : (
           []
         )}
-        {/*<IonItem>
+        <IonItem>
           <IonButton
             slot="end"
             color="dark"
@@ -284,7 +274,7 @@ const Setting = () => {
           >
             予約数確認
           </IonButton>
-          </IonItem>*/}
+        </IonItem>
 
         <IonItem lines="none"></IonItem>
         {/*<IonButton
@@ -296,7 +286,6 @@ const Setting = () => {
             Log out
           </IonButton>*/}
         <IonButton
-          //color="new"
           expand="full"
           fill="outline"
           onClick={() => logoutWithRedirect()}

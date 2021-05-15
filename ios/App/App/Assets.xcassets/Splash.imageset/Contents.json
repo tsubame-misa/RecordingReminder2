@@ -6,7 +6,7 @@
       "scale" : "1x"
     },
     {
-      "filename" : "Default@2x~universal~anyany.png",
+      "filename" : "Default-736h.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -16,12 +16,12 @@
       "scale" : "3x"
     },
     {
-      "filename" : "Default~iphone.png",
+      "filename" : "Default-1792h~iphone.png",
       "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "filename" : "Default@2x~iphone.png",
+      "filename" : "Default-568h@2x~iphone.png",
       "idiom" : "iphone",
       "scale" : "2x"
     },

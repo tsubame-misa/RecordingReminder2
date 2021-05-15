@@ -19,12 +19,10 @@ const Setting = () => {
   const [notiTime, setNotiTime] = useState(null);
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  //const [userNoti, setUserNoti] = useState(null);
   const [notiTimeChenged, setNotiTimeChanged] = useState(1);
   const [notiDateChenged, setNotiDateChanged] = useState(1);
   const [preNotiTime, setPreNotiTime] = useState("20:00");
   const [preNotiDate, setPreNotiDate] = useState("pre");
-  //const [checked, setChecked] = useState(1);
   const { getAccessTokenSilently } = useAuth0();
 
   const TASKS_STORAGE = "tasks";
@@ -52,28 +50,6 @@ const Setting = () => {
     getTasks();
   }, []);
 
-  /*useEffect(() => {
-    const getTasks = async () => {
-      const tasksString = await get(TASKS_STORAGE);
-      const taskData = tasksString ? JSON.parse(tasksString) : [];
-      setTask2(taskData);
-    };
-    getTasks();
-  }, [get]);*/
-
-  /*useIonViewWillEnter(async () => {
-    const d = await request_user_tv_list(getAccessTokenSilently);
-    setData(d);
-  });*/
-
-  /* useEffect(() => {
-    if (userNoti !== null && userNoti !== undefined) {
-      const notiList = userNoti.split(/[/:]/);
-      setPreNotiTime(notiList[1] + ":" + notiList[2]);
-      setPreNotiDate(notiList[0]);
-    }
-  });*/
-
   const sendData = () => {
     if (date == null && notiTime == null) {
       return;
@@ -96,43 +72,27 @@ const Setting = () => {
     console.log("通知する！！");
 
     //通知の前からある予約の秒数の再設定
-    console.log(tasks2);
     notifications.stopLocalPush();
-    //notifications.removeAllListeners();
     for (let item of tasks2) {
       const obj = calcSecond(item.date, d);
       item.id = obj.id;
       item.min = obj.second;
-
-      /*if (item.min < 0) {
-        item.rm = true;
-      }*/
       if (item.min > 0) {
         notifications.schedule(item);
       }
       //番組日時から二日以上すぎていたら通知候補リスト削除
-      if (CmpTime(item.date) < 0 /*-1 * 86400 * 2*/) {
+      if (CmpTime(item.date) < -1 * 86400 * 2) {
         console.log(CmpTime(item.date) < 0);
         item.rm = true;
       }
     }
-    //console.log(tasks2);
+
     const d2 = tasks2.filter((item) => item.rm !== true);
-    //console.log(d2);
     remove(TASKS_STORAGE);
     setTask2(d2);
-    //console.log(d2);
     console.log(tasks2);
     set(TASKS_STORAGE, JSON.stringify(tasks2));
     console.log(tasks2);
-    //notifications.stopLocalPush();
-    // notifications.removeAllListeners();
-
-    //notifications.schedule(d2);
-    /*
-    notifications.stopLocalPush();
-    console.log(tasks2);
-    notifications.schedule(tasks2);*/
   };
 
   const calcSecond = (b, notiDate) => {

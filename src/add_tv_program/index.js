@@ -41,12 +41,6 @@ const Addprogram = ({ history }) => {
   const { get, set } = useStorage();
   const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
 
-  /*useIonViewWillEnter(() => {
-    request_user_tv_list(getAccessTokenSilently).then((data) => {
-      setData(data);
-    });
-  }, []);*/
-
   useIonViewWillEnter(() => {
     request(
       "https://blooming-coast-85852.herokuapp.com/api/get_user_notification",
@@ -145,7 +139,6 @@ const Addprogram = ({ history }) => {
     setText(null);
 
     //同じ日にちのものがない確認し、なければ通知の予約をする
-    //setNotification(date);
     CheckAndNoti(date, selectedDate, date);
 
     return request_put(
@@ -162,6 +155,7 @@ const Addprogram = ({ history }) => {
     const second = item["second"];
 
     //同じ日時があったら通知しない(is_notiをfalseに)
+    //ダブらせる実験やってみる
     let is_noti = true;
     for (let item of tasks2) {
       if (item.id === id) {
@@ -184,12 +178,6 @@ const Addprogram = ({ history }) => {
       tasks2.push({ id: id, min: second, date: b, rm: false });
       set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);
-      /*const d2 = tasks2.filter((item) => item.rm !== true);
-      remove(TASKS_STORAGE);
-      setTask2(d2);
-      console.log(d2);
-      set(TASKS_STORAGE, JSON.stringify(tasks2));
-      console.log(tasks2);*/
       console.log("notiCheck ", notiChecked);
       if (notiChecked) {
         notifications.schedule({ id: id, min: second, date: b, rm: false });
@@ -233,8 +221,6 @@ const Addprogram = ({ history }) => {
       d = newDate.getDate();
     }
     const date = new Date(y, m, d, notiDateList[3], notiDateList[4], 0, 0);
-    //const date = new Date(2021, 4, 15, 15, 0, 0, 0);
-    //console.log(y, m, d, notiDateList, typeof m);
     console.log(date);
     console.log(current);
     //差分の秒数後に通知
@@ -337,7 +323,7 @@ const Addprogram = ({ history }) => {
           <IonTextarea
             placeholder="その他・コメント"
             value={text}
-            rows="8"
+            cols="8"
             onIonChange={(e) => setText(e.detail.value)}
             style={{ heigth: "100px" }}
           ></IonTextarea>
