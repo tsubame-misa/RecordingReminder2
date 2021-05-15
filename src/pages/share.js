@@ -21,7 +21,7 @@ const splitArtist = (item) => {
     return;
   }
   const dateList = item.split(/["}{,]/);
-  console.log(dateList);
+  //console.log(dateList);
   return dateList.splice(1, dateList.length - 2);
 };
 
@@ -69,14 +69,14 @@ const Future = () => {
     };
     getTasks();
     const data = JSON.parse(localStorage.getItem("noti"));
-    console.log(data);
+    //console.log(data);
     if (data === null) {
       setNotiChecked(true);
       localStorage.setItem("noti", true);
     } else {
       setNotiChecked(data);
     }
-    console.log(notiChecked);
+    //notiChecked);
   }, [get, notiChecked]);
 
   if (data !== [] && data !== undefined) {
@@ -118,7 +118,7 @@ const Future = () => {
         }
       }
     }
-    console.log(idx);
+    //console.log(idx);
   };
 
   const addMyList = (idx) => {
@@ -132,7 +132,7 @@ const Future = () => {
   };
 
   const CheckAndNoti = (b) => {
-    console.log(b);
+    //console.log(b);
     const item = calcSecond(b);
     const id = item["id"];
     const second = item["second"];
@@ -156,8 +156,8 @@ const Future = () => {
       console.log("通知する！！");
       tasks2.push({ id: id, min: second, date: b, rm: false, count: 1 });
       set(TASKS_STORAGE, JSON.stringify(tasks2));
-      console.log(tasks2);
-      console.log("notiCheck ", notiChecked);
+      //console.log(tasks2);
+      //console.log("notiCheck ", notiChecked);
       if (notiChecked) {
         notifications.schedule({ id: id, min: second, date: b, rm: false });
       } else {
@@ -171,7 +171,7 @@ const Future = () => {
   };
 
   const calcSecond = (b) => {
-    console.log(b);
+    //console.log(b);
     const dateList = b.split(/[-T:T/]/);
     const dateB = new Date(
       dateList[0],
@@ -200,13 +200,13 @@ const Future = () => {
       m = newDate.getMonth();
       d = newDate.getDate();
     }
-    console.log(notiDateList);
+    //console.log(notiDateList);
     const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
-    console.log(date);
-    console.log(current);
+    //console.log(date);
+    //console.log(current);
     //差分の秒数後に通知
     const diff = date.getTime() - current.getTime();
-    console.log(date, current, diff / 1000);
+    //console.log(date, current, diff / 1000);
     const second = Math.floor(diff / 1000);
     return { id: id, second: second };
   };

@@ -63,14 +63,14 @@ const Addprogram = ({ history }) => {
     };
     getTasks();
     const data = JSON.parse(localStorage.getItem("noti"));
-    console.log(data);
+
     if (data === null) {
       setNotiChecked(true);
       localStorage.setItem("noti", true);
     } else {
       setNotiChecked(data);
     }
-    console.log(notiChecked);
+    //console.log(notiChecked);
   }, [get, notiChecked]);
 
   const channel = [
@@ -182,10 +182,15 @@ const Addprogram = ({ history }) => {
       }*/
       tasks2.push({ id: id, min: second, date: b, rm: false, count: 1 });
       set(TASKS_STORAGE, JSON.stringify(tasks2));
-      console.log(tasks2);
-      console.log("notiCheck ", notiChecked);
+      //console.log(tasks2);
+      //console.log("notiCheck ", notiChecked);
       if (notiChecked) {
-        notifications.schedule({ id: id, min: second, date: b, rm: false });
+        notifications.schedule({
+          id: parseInt(id),
+          min: second,
+          date: b,
+          rm: false,
+        });
       } else {
         console.log("今は通知しない");
       }
@@ -197,7 +202,7 @@ const Addprogram = ({ history }) => {
   };
 
   const calcSecond = (b) => {
-    console.log(b);
+    //console.log(b);
     const dateList = b.split(/[-T:]/);
     const dateB = new Date(
       dateList[0],
@@ -225,16 +230,16 @@ const Addprogram = ({ history }) => {
       m = newDate.getMonth();
       d = newDate.getDate();
     }
-    console.log(notiDateList);
+    //console.log(notiDateList);
     /*web*/
     const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
     /*モバイル*/
     //const date = new Date(y, m, d, notiDateList[3], notiDateList[4], 0, 0);
-    console.log(date);
-    console.log(current);
+    //console.log(date);
+    //console.log(current);
     //差分の秒数後に通知
     const diff = date.getTime() - current.getTime();
-    console.log(date, current, diff / 1000);
+    //console.log(date, current, diff / 1000);
     const second = Math.floor(diff / 1000);
     return { id: id, second: second };
   };

@@ -64,7 +64,7 @@ const Past = () => {
   };
 
   const delItem = (id) => {
-    console.log("del", id);
+    //console.log("del", id);
     request_delete(
       `https://blooming-coast-85852.herokuapp.com/api/delete_user_program_list/${id}`,
       //`${process.env.REACT_APP_API_ENDPOINT}/delete_user_program_list/${id}`,

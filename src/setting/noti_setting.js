@@ -36,10 +36,10 @@ const Setting = () => {
       getAccessTokenSilently
     ).then((data) => {
       const data_list = data.split(/[/]/);
-      console.log(data_list);
+      //console.log(data_list);
       setPreNotiDate(data_list[0]);
       setPreNotiTime(data_list[1]);
-      console.log(preNotiDate, preNotiTime);
+      //console.log(preNotiDate, preNotiTime);
     });
 
     const getTasks = async () => {
@@ -82,7 +82,7 @@ const Setting = () => {
       }
       //番組日時から二日以上すぎていたら通知候補リスト削除
       if (CmpTime(item.date) < -1 * 86400 * 2) {
-        console.log(CmpTime(item.date) < 0);
+        //console.log(CmpTime(item.date) < 0);
         item.rm = true;
       }
     }
@@ -90,13 +90,13 @@ const Setting = () => {
     const d2 = tasks2.filter((item) => item.rm !== true);
     remove(TASKS_STORAGE);
     setTask2(d2);
-    console.log(tasks2);
+    //console.log(tasks2);
     set(TASKS_STORAGE, JSON.stringify(tasks2));
-    console.log(tasks2);
+    //console.log(tasks2);
   };
 
   const calcSecond = (b, notiDate) => {
-    console.log(b);
+    //console.log(b);
     const dateList = b.split(/[-T:]/);
     const dateB = new Date(
       dateList[0],

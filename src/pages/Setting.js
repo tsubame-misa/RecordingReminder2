@@ -113,19 +113,19 @@ const Setting = () => {
     console.log("通知する！！");
 
     //通知の前からある予約の秒数の再設定
-    console.log(tasks2);
+    //console.log(tasks2);
     notifications.stopLocalPush();
     for (let item of tasks2) {
       const obj = calcSecond(item.date, d);
       item.id = obj.id;
       item.min = obj.second;
-      console.log(item);
+      //console.log(item);
       if (item.min > 0) {
         notifications.schedule(item);
       }
       //番組日時から二日以上すぎていたら通知候補リスト削除
       if (CmpTime(item.date) < -1 * 86400 * 2) {
-        console.log(CmpTime(item.date) < 0);
+        //console.log(CmpTime(item.date) < 0);
         item.rm = true;
       }
     }
@@ -133,11 +133,11 @@ const Setting = () => {
     remove(TASKS_STORAGE);
     setTask2(d2);
     set(TASKS_STORAGE, JSON.stringify(tasks2));
-    console.log(tasks2);
+    //console.log(tasks2);
   };
 
   const calcSecond = (b, notiDate) => {
-    console.log(b);
+    //console.log(b);
     const dateList = b.split(/[-T:]/);
     const dateB = new Date(
       dateList[0],
@@ -148,8 +148,8 @@ const Setting = () => {
       0,
       0
     ); //通知する 000* 60 * 60*24
-    console.log("noti=", notiTime);
-    console.log("prenoti", preNotiTime);
+    //console.log("noti=", notiTime);
+    //console.log("prenoti", preNotiTime);
     let notiDateList = preNotiTime.split(/[-T:]/);
     if (notiTime !== null) {
       notiDateList = notiTime.split(/[-T:]/);
@@ -179,7 +179,7 @@ const Setting = () => {
   };
 
   const setNotiData = () => {
-    console.log(checked);
+    //console.log(checked);
     if (checked !== undefined) {
       localStorage.setItem("noti", !checked);
     }
@@ -194,9 +194,13 @@ const Setting = () => {
     notifications.stopLocalPush();
   };
 
-  const checklNoti = () => {
+  /*const checklNoti = () => {
     notifications.check();
   };
+  /*const cancelNoti2 = () => {
+    notifications.stopLocalPush();
+    remove(TASKS_STORAGE);
+  };*/
 
   return (
     <IonPage>
@@ -264,7 +268,7 @@ const Setting = () => {
         ) : (
           []
         )}
-        <IonItem>
+        {/*<IonItem>
           <IonButton
             slot="end"
             color="dark"
@@ -274,7 +278,7 @@ const Setting = () => {
           >
             予約数確認
           </IonButton>
-        </IonItem>
+          </IonItem>*/}
 
         <IonItem lines="none"></IonItem>
         <IonButton

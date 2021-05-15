@@ -1,11 +1,12 @@
 import { Plugins } from "@capacitor/core";
+//import { notifications } from "ionicons/icons";
 
 const { LocalNotifications } = Plugins;
 
 class Notifications {
   async removeAllListeners() {
     try {
-      console.log("hello rm!");
+      //console.log("hello rm!");
       LocalNotifications.removeAllListeners();
     } catch (error) {
       console.error(error);
@@ -16,7 +17,7 @@ class Notifications {
     try {
       LocalNotifications.getPending().then(
         (res) => {
-          console.log(res, "elo");
+          //console.log(res, "elo");
           LocalNotifications.cancel(res);
         },
         (error) => {
@@ -28,11 +29,50 @@ class Notifications {
     }
   }
 
+  /*async cancelPush(id) {
+    try {
+      LocalNotifications.getPending().then(
+        (res) => {
+          console.log(res, "cancel", id);
+          const d = [
+            {
+              notifications: { id: 20210525 },
+            },
+          ];
+          LocalNotifications.cancel(d);
+          /*let idx = -1;
+          for (let i = 0; i < res.notifications.length; i++) {
+            console.log(res.notifications[i], id);
+            if (res.notifications[i].id === id) {
+              idx = i;
+              break;
+            }
+          }
+          console.log(idx, res.notifications[idx]);
+          const d = [
+            {
+              notifications: { id: "20210528" },
+            },
+          ];
+          LocalNotifications.cancel(d);
+          /*if (idx !== -1) {
+            LocalNotifications.cancel(res.notifications[idx]);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }*/
+
   async check() {
     try {
       LocalNotifications.getPending().then(
         (res) => {
-          console.log(res, "check");
+          //console.log(res, "check");
         },
         (error) => {
           console.log(error);
@@ -79,7 +119,7 @@ class Notifications {
     }
   }*/
   async schedule(item) {
-    console.log(item, item.id);
+    //console.log(item, item.id);
     try {
       // Request/ check permissions
       if (!(await LocalNotifications.requestPermission()).granted) return;
@@ -94,7 +134,7 @@ class Notifications {
           {
             title: "録画しましたか？",
             body: "",
-            id: parseInt(item.id), //変えたほうが良い？
+            id: item.id, //変えたほうが良い？
             //minute秒後に通知
             sound: "normail",
             schedule: { at: new Date(Date.now() + 1000 * item.min) },
