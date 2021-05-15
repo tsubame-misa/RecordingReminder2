@@ -76,7 +76,6 @@ const Setting = () => {
     } else {
       setChecked(data);
     }
-
     console.log(checked);
   }, [checked]);
 

@@ -33,10 +33,10 @@ const Addprogram = ({ history }) => {
   const [artist, setArtist] = useState();
   const [notiTime, setNotiTime] = useState();
   const [notiDate, setNotiDate] = useState();
+  const [notiChecked, setNotiChecked] = useState();
   //const [data, setData] = useState([]);
   const [userNoti, setUserNoti] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
-
   const TASKS_STORAGE = "tasks";
   const { get, set } = useStorage();
   const [tasks2, setTask2] = useState([{ id: "19990909", min: 1 }]);
@@ -62,21 +62,22 @@ const Addprogram = ({ history }) => {
   }, [notiDate, notiTime]);
 
   useEffect(() => {
-    if (userNoti !== null && userNoti !== undefined) {
-      const notiList = userNoti.split(/[/:]/);
-      setNotiTime(notiList[1] + ":" + notiList[2]);
-      setNotiDate(notiList[0]);
-    }
-  });
-
-  useEffect(() => {
     const getTasks = async () => {
       const tasksString = await get(TASKS_STORAGE);
       const taskData = tasksString ? JSON.parse(tasksString) : [];
       setTask2(taskData);
     };
     getTasks();
-  }, [get]);
+    const data = JSON.parse(localStorage.getItem("noti"));
+    console.log(data);
+    if (data === null) {
+      setNotiChecked(true);
+      localStorage.setItem("noti", true);
+    } else {
+      setNotiChecked(data);
+    }
+    console.log(notiChecked);
+  }, [get, notiChecked]);
 
   const channel = [
     { name: "NHK総合" },
@@ -189,7 +190,12 @@ const Addprogram = ({ history }) => {
       console.log(d2);
       set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);*/
-      notifications.schedule({ id: id, min: second, date: b, rm: false });
+      console.log("notiCheck ", notiChecked);
+      if (notiChecked) {
+        notifications.schedule({ id: id, min: second, date: b, rm: false });
+      } else {
+        console.log("今は通知しない");
+      }
       return 1;
     } else {
       console.log("通知しない");
