@@ -159,9 +159,14 @@ const Addprogram = ({ history }) => {
     let is_noti = true;
     for (let item of tasks2) {
       if (item.id === id) {
+        item.count += 1;
         is_noti = false;
         break;
       }
+    }
+
+    if (is_noti === false) {
+      set(TASKS_STORAGE, JSON.stringify(tasks2));
     }
 
     if (second > 0 && is_noti) {
@@ -175,7 +180,7 @@ const Addprogram = ({ history }) => {
           item.rm = true;
         }
       }*/
-      tasks2.push({ id: id, min: second, date: b, rm: false });
+      tasks2.push({ id: id, min: second, date: b, rm: false, count: 1 });
       set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);
       console.log("notiCheck ", notiChecked);
@@ -220,7 +225,11 @@ const Addprogram = ({ history }) => {
       m = newDate.getMonth();
       d = newDate.getDate();
     }
-    const date = new Date(y, m, d, notiDateList[3], notiDateList[4], 0, 0);
+    console.log(notiDateList);
+    /*web*/
+    const date = new Date(y, m, d, notiDateList[0], notiDateList[1], 0, 0);
+    /*モバイル*/
+    //const date = new Date(y, m, d, notiDateList[3], notiDateList[4], 0, 0);
     console.log(date);
     console.log(current);
     //差分の秒数後に通知

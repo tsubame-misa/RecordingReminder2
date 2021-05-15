@@ -194,9 +194,9 @@ const Setting = () => {
     notifications.stopLocalPush();
   };
 
-  /*const checklNoti = () => {
+  const checklNoti = () => {
     notifications.check();
-  };*/
+  };
 
   return (
     <IonPage>
@@ -264,7 +264,7 @@ const Setting = () => {
         ) : (
           []
         )}
-        {/*} <IonItem>
+        <IonItem>
           <IonButton
             slot="end"
             color="dark"
@@ -274,7 +274,7 @@ const Setting = () => {
           >
             予約数確認
           </IonButton>
-          </IonItem>*/}
+        </IonItem>
 
         <IonItem lines="none"></IonItem>
         <IonButton

@@ -142,15 +142,19 @@ const Future = () => {
     let is_noti = true;
     for (let item of tasks2) {
       if (item.id === id) {
+        item.count += 1;
         is_noti = false;
         break;
       }
     }
-    console.log("notiCheck ", notiChecked);
-    console.log(second, is_noti);
+
+    if (is_noti === false) {
+      set(TASKS_STORAGE, JSON.stringify(tasks2));
+    }
+
     if (second > 0 && is_noti) {
       console.log("通知する！！");
-      tasks2.push({ id: id, min: second, date: b, rm: false });
+      tasks2.push({ id: id, min: second, date: b, rm: false, count: 1 });
       set(TASKS_STORAGE, JSON.stringify(tasks2));
       console.log(tasks2);
       console.log("notiCheck ", notiChecked);
