@@ -2,18 +2,19 @@ import React from "react";
 import { IonContent, IonPage, IonButton } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import icon from "./img/icon_white_circle.png";
-import { Plugins } from "@capacitor/core";
+//import { Plugins } from "@capacitor/core";
 
 const Login = () => {
   const {
     //isLoading,
-    buildAuthorizeUrl,
+    loginWithRedirect,
+    /*buildAuthorizeUrl,
     handleRedirectCallback,
-    getAccessTokenSilently,
+    getAccessTokenSilently,*/
   } = useAuth0();
-  const { Browser, App } = Plugins;
+  //const { Browser, App } = Plugins;
 
-  async function loginWithRedirect2() {
+  /*async function loginWithRedirect2() {
     const authUrl = await buildAuthorizeUrl();
     console.log("in logWithRedirect2", authUrl);
     Browser.open({ url: authUrl });
@@ -39,7 +40,7 @@ const Login = () => {
         }
       }
     });
-  }
+  }*/
 
   return (
     <IonPage>
@@ -54,11 +55,19 @@ const Login = () => {
             <p>「Re」cording「Re」minder</p>
             <p>録画予約を忘れない</p>
           </div>
-          <IonButton
+          {/*<IonButton
             color="secondary"
             fill="clear"
             size="large"
             onClick={loginWithRedirect2}
+          >
+            ログイン
+          </IonButton>*/}
+          <IonButton
+            onClick={loginWithRedirect}
+            color="secondary"
+            fill="clear"
+            size="large"
           >
             ログイン
           </IonButton>

@@ -20,13 +20,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";
 import notifications from "../notification/index";
 import { CmpTime } from "../pages/Future";
-import { Plugins } from "@capacitor/core";
+//import { Plugins } from "@capacitor/core";
 //import Setteing from "../setting/noti_setting";
 
 const Setting = () => {
   const [checked, setChecked] = useState();
-  const { Browser, App } = Plugins;
-  const { logout, buildLogoutUrl, getAccessTokenSilently } = useAuth0();
+  //const { Browser, App } = Plugins;
+  const { logout, /*buildLogoutUrl, */ getAccessTokenSilently } = useAuth0();
   const [notiTime, setNotiTime] = useState(null);
   const [date, setDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
@@ -68,7 +68,7 @@ const Setting = () => {
     }
   }, [checked]);
 
-  async function logoutWithRedirect() {
+  /*async function logoutWithRedirect() {
     const authUrl = await buildLogoutUrl();
     Browser.open({ url: authUrl });
 
@@ -89,7 +89,7 @@ const Setting = () => {
         }
       }
     });
-  }
+  }*/
 
   const sendData = () => {
     if (date == null && notiTime == null) {
@@ -194,9 +194,9 @@ const Setting = () => {
     notifications.stopLocalPush();
   };
 
-  const checklNoti = () => {
+  /*const checklNoti = () => {
     notifications.check();
-  };
+  };*/
 
   return (
     <IonPage>
@@ -264,7 +264,7 @@ const Setting = () => {
         ) : (
           []
         )}
-        <IonItem>
+        {/*} <IonItem>
           <IonButton
             slot="end"
             color="dark"
@@ -274,24 +274,23 @@ const Setting = () => {
           >
             予約数確認
           </IonButton>
-        </IonItem>
+          </IonItem>*/}
 
         <IonItem lines="none"></IonItem>
-        {/*<IonButton
-            color="dark"
-            expand="full"
-            fill="outline"
-            onClick={() => logout({ returnTo: window.location.origin })}
-          >
-            Log out
-          </IonButton>*/}
         <IonButton
+          expand="full"
+          fill="outline"
+          onClick={() => logout({ returnTo: window.location.origin })}
+        >
+          ログアウト
+        </IonButton>
+        {/*<IonButton
           expand="full"
           fill="outline"
           onClick={() => logoutWithRedirect()}
         >
           Log out
-        </IonButton>
+        </IonButton>*/}
       </IonContent>
     </IonPage>
   );
