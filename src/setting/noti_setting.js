@@ -142,6 +142,7 @@ const Setting = () => {
   };
 
   const calcSecond = (b, notiDate) => {
+    console.log(b);
     const dateList = b.split(/[-T:]/);
     const dateB = new Date(
       dateList[0],
@@ -188,15 +189,15 @@ const Setting = () => {
   };
 
   return (
-    <IonPage>
+    /*<IonPage>
       <IonHeader>
         <IonToolbar>
           <IonBackButton slot="start" defaultHref="/setting" />
           <IonTitle>通知</IonTitle>
         </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        {/*} <IonList>
+      </IonHeader>*/
+    /*<IonContent fullscreen>*/
+    /*} <IonList>
           {" "}
           <IonItem
             _ngcontent-mvh-c79=""
@@ -216,71 +217,72 @@ const Setting = () => {
               onIonChange={(e) => setChecked(e.detail.checked)}
             />
           </IonItem>
-  </IonList>*/}
-        <IonItem>
-          <IonSelect
-            value={notiDateChenged === 1 ? preNotiDate : date}
-            onIonChange={(e) => {
-              setNotiDateChanged(0);
-              setDate(e.detail.value);
-            }}
-          >
-            <IonSelectOption value="pre">前日</IonSelectOption>
-            <IonSelectOption value="on">当日</IonSelectOption>
-          </IonSelect>
-          &emsp;
-          <IonDatetime
-            displayFormat="HH:mm"
-            value={notiTimeChenged === 1 ? preNotiTime : notiTime}
-            //minuteValues="0,15,30,45"
-            onIonChange={(e) => {
-              setNotiTimeChanged(0);
-              setNotiTime(e.detail.value);
-            }}
-          ></IonDatetime>
-          <IonButton
-            slot="end"
-            color="dark"
-            onClick={() => {
-              sendData();
-            }}
-          >
-            変更する
-          </IonButton>
-        </IonItem>
-        <IonItem>
-          {" "}
-          <IonButton
-            slot="end"
-            color="dark"
-            onClick={() => {
-              cancelNoti();
-            }}
-          >
-            通知を全部取り消す
-          </IonButton>
-        </IonItem>
-        <IonItem>
-          {" "}
-          <IonButton
-            slot="end"
-            color="dark"
-            onClick={() => {
-              checklNoti();
-            }}
-          >
-            予約数確認
-          </IonButton>
-        </IonItem>
-
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          cssClass="my-custom-class"
-          header={"変更しました"}
-          buttons={["OK"]}
-        />
-        {/*<IonItem>
+  </IonList>*/
+    <div>
+      <IonItem>
+        <IonSelect
+          value={notiDateChenged === 1 ? preNotiDate : date}
+          onIonChange={(e) => {
+            setNotiDateChanged(0);
+            setDate(e.detail.value);
+          }}
+        >
+          <IonSelectOption value="pre">前日</IonSelectOption>
+          <IonSelectOption value="on">当日</IonSelectOption>
+        </IonSelect>
+        &emsp;
+        <IonDatetime
+          displayFormat="HH:mm"
+          value={notiTimeChenged === 1 ? preNotiTime : notiTime}
+          //minuteValues="0,15,30,45"
+          onIonChange={(e) => {
+            setNotiTimeChanged(0);
+            setNotiTime(e.detail.value);
+          }}
+        ></IonDatetime>
+        <IonButton
+          slot="end"
+          color="dark"
+          onClick={() => {
+            sendData();
+          }}
+        >
+          変更する
+        </IonButton>
+      </IonItem>
+      {/*<IonItem>
+        {" "}
+        <IonButton
+          slot="end"
+          color="dark"
+          onClick={() => {
+            cancelNoti();
+          }}
+        >
+          通知を全部取り消す
+        </IonButton>
+      </IonItem>
+      <IonItem>
+        {" "}
+        <IonButton
+          slot="end"
+          color="dark"
+          onClick={() => {
+            checklNoti();
+          }}
+        >
+          予約数確認
+        </IonButton>
+      </IonItem>
+        */}
+      <IonAlert
+        isOpen={showAlert}
+        onDidDismiss={() => setShowAlert(false)}
+        cssClass="my-custom-class"
+        header={"変更しました"}
+        buttons={["OK"]}
+      />
+      {/*<IonItem>
           <IonSelect
             value={notiDateChenged == 1 ? preNotiDate : date}
             onIonChange={(e) => {
@@ -311,8 +313,9 @@ const Setting = () => {
             追加する
           </IonButton>
         </IonItem>*/}
-      </IonContent>
-    </IonPage>
+      {/*</IonContent>*/}
+      {/*</IonPage>*/}
+    </div>
   );
 };
 

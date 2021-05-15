@@ -22,10 +22,6 @@ ion-header {
   height: 80px;
 }
 
-ion-button {
-  --border-radius: 10px;
-}
-
 ion-toolbar {
   --min-height: 80px;
 }
