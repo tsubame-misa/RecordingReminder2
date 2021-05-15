@@ -27,7 +27,6 @@ const splitArtist = (item) => {
 const Future = () => {
   const [data, setData] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-  const [ID, setID] = useState(null);
   const [idx, setIdx] = useState(-1);
   const { getAccessTokenSilently } = useAuth0();
   const date_data = [];
@@ -136,7 +135,6 @@ const Future = () => {
                   key={id}
                   _ngcontent-yfv-c79=""
                   onClick={() => {
-                    setID(d.id);
                     findIndx(d.id);
                     setShowAlert(true);
                   }}
@@ -168,15 +166,13 @@ const Future = () => {
           message={splitArtist(data[idx]?.artist) + " " + data[idx]?.comment}
           buttons={[
             {
+              text: "戻る",
+            },
+            {
               text: "登録",
-              role: "cancel",
-              cssClass: "secondary",
               handler: () => {
                 addMyList(idx);
               },
-            },
-            {
-              text: "戻る",
             },
           ]}
         />

@@ -13,7 +13,7 @@ const Login = () => {
   } = useAuth0();
   const { Browser, App } = Plugins;
 
-  async function loginWithRedirect2(RedirectLoginOptions) {
+  async function loginWithRedirect2() {
     const authUrl = await buildAuthorizeUrl();
     console.log("in logWithRedirect2", authUrl);
     Browser.open({ url: authUrl });
@@ -54,7 +54,12 @@ const Login = () => {
             <p>「Re」cording「Re」minder</p>
             <p>録画予約を忘れない</p>
           </div>
-          <IonButton fill="clear" size="large" onClick={loginWithRedirect2}>
+          <IonButton
+            color="secondary"
+            fill="clear"
+            size="large"
+            onClick={loginWithRedirect2}
+          >
             ログイン
           </IonButton>
         </div>

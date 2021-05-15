@@ -34,10 +34,6 @@ ion-title {
   height: 80px;
 }
 
-ion-tab-button {
-  /* --background-focused: red !important;*/
-}
-
 ion-item-divider {
   background-color: #dadada;
   color: white;

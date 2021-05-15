@@ -35,7 +35,7 @@ const Addprogram = ({ history }) => {
   const [notiDate, setNotiDate] = useState();
   const [notiChecked, setNotiChecked] = useState();
   //const [data, setData] = useState([]);
-  const [userNoti, setUserNoti] = useState(null);
+
   const { getAccessTokenSilently } = useAuth0();
   const TASKS_STORAGE = "tasks";
   const { get, set } = useStorage();

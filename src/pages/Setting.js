@@ -15,7 +15,6 @@ import {
   useIonViewWillEnter,
   IonDatetime,
 } from "@ionic/react";
-import { chevronForwardOutline } from "ionicons/icons";
 import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStorage } from "@ionic/react-hooks/storage";

@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
   IonItem,
   IonSelect,
   IonSelectOption,
@@ -12,7 +7,6 @@ import {
   IonButton,
   IonAlert,
   useIonViewWillEnter,
-  IonBackButton,
 } from "@ionic/react";
 import { request_put, request } from "../auth_fetch/index";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -179,14 +173,14 @@ const Setting = () => {
     return { id: id, second: second };
   };
 
-  const cancelNoti = () => {
+  /*const cancelNoti = () => {
     notifications.stopLocalPush();
     remove(TASKS_STORAGE);
   };
   const checklNoti = () => {
     notifications.check();
     remove(TASKS_STORAGE);
-  };
+  };*/
 
   return (
     /*<IonPage>

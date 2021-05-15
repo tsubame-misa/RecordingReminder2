@@ -17,13 +17,9 @@ import {
   IonInput,
   useIonViewWillEnter,
   IonCheckbox,
-  IonCard,
   IonAlert,
   IonGrid,
   IonRow,
-  IonItemGroup,
-  IonLifeCycleContext,
-  IonList,
 } from "@ionic/react";
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
