@@ -228,6 +228,8 @@ const Setting = () => {
             <IonItem lines="none">
               <IonSelect
                 value={notiDateChenged === 1 ? preNotiDate : date}
+                okText="決定"
+                cancelText="キャンセル"
                 onIonChange={(e) => {
                   setNotiDateChanged(0);
                   setDate(e.detail.value);
@@ -240,6 +242,8 @@ const Setting = () => {
               <IonDatetime
                 displayFormat="HH:mm"
                 value={notiTimeChenged === 1 ? preNotiTime : notiTime}
+                doneText="決定"
+                cancelText="キャンセル"
                 //minuteValues="0,15,30,45"
                 onIonChange={(e) => {
                   setNotiTimeChanged(0);
